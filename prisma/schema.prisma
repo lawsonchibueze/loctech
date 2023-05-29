@@ -1,0 +1,211 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique
+  name           String?
+  role           UserRole @default(USER)
+  hashedPassword String?
+}
+
+model Course {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  description      String
+  image            String
+  price            Float
+  video            String?
+  category         CATEGORY
+  duration         Int?
+  learningObj      String[]
+  targetAud        String[]
+  prerequisites    String[]
+  slug             String         @unique
+  isFeatured       Boolean        @default(false)
+  isOnline         Boolean        @default(false)
+  isTrending       Boolean        @default(false)
+  curriculum       String?
+  curriculumList   String[]
+  metaTitle        String?
+  metaDesc         String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime
+  published        Boolean        @default(false)
+  instructorId     String         @db.ObjectId
+  Instructor       Instructor     @relation(fields: [instructorId], references: [id])
+  relatedCoursesId String         @db.ObjectId
+  RelatedCourses   RelatedCourses @relation(fields: [relatedCoursesId], references: [id])
+}
+
+model RelatedCourses {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  category  CATEGORY
+  course    Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model Hero {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  subtitle  String
+  button    String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model Instructor {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String?  @unique
+  image           String?
+  bio             String?
+  rating          Float?
+  reviews         String?
+  facebook        String?
+  twitter         String?
+  instagram       String?
+  linkedin        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
+  Course          Course[]
+  reviewer        String?
+  reviewerImage   String?
+  reviewerComment String?
+}
+
+model Testimonial {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  image     String
+  review    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model Partners {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String[]
+  image     String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+enum CATEGORY {
+  DATA_SCIENCE
+  CODING
+  CLOUD_COMPUTING
+  GRAPHICS_MEDIA
+  OFFICE_PRODUCTIVITY
+  NETWORKING
+}
+
+model CourseCategory {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String   @unique
+  image       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}
+
+model About {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  subtitle   String
+  coverImage String
+  image1     String
+  image2     String
+  image3     String?
+  content    String
+  mission    String
+  vision     String
+  values     String
+  gallery    String[]
+  partners   String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model OnlineCourse {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  subtitle  String
+  image     String
+  button    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model OfflineCourse {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  subtitle  String
+  image     String
+  button    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model Post {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  subtitle  String
+  slug      String    @unique
+  image     String
+  content   String
+  author    Author    @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+  authorId  String    @db.ObjectId
+  comment   Comment[]
+}
+
+model Author {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  post      Post[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    String?  @db.ObjectId
+}
+
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
