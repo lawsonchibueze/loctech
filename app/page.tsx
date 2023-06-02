@@ -7,7 +7,7 @@ import FeaturedCard from "./components/Featured/FeaturedCard";
 import FeaturedItem from "./components/Featured/FeaturedItem";
 import PathCard from "./components/PathCard";
 import SubjectCard from "./components/Subjects/SubjectCard";
-import Newsletter from "./components/Featured/Newsletter";
+import Newsletter from "./components/Newsletter";
 export default function Home() {
   return (
     <>
@@ -48,7 +48,7 @@ export default function Home() {
         <FeaturedItem />
       </Grid>
 
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" m="3rem 0">
         <PathCard />
       </Grid>
 
@@ -84,7 +84,7 @@ export default function Home() {
           title="Desgn"
         />
       </Grid>
-      <Newsletter/>
+      <Newsletter />
     </>
   );
 }

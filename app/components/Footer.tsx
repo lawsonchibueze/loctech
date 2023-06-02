@@ -12,48 +12,78 @@ export default function Footer() {
       <Grid
         item
         md={3}
-      
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="flex-start"
       >
         <Image src="/logo.png" width={120} height={120} alt="logo" />
         <Typography variant="h5" fontWeight="bold">
           Call us
         </Typography>
-        <Typography>+234 703 888 5466</Typography>
-        <Typography>
+        <Typography mt="10px">+234 703 888 5466</Typography>
+        <Typography mt="10px">
           {" "}
           4a Etim Okpoyo Close, Beside Total Petrol Station, Aba Road PH.
         </Typography>
-        <Typography>customercare@loctechng.com</Typography>
+        <Typography mt="10px">customercare@loctechng.com</Typography>
       </Grid>
 
-      <Grid item md={3}>
-        <Typography variant="h5" fontWeight="bold">
+      <Grid
+        item
+        md={3}
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
+
+      >
+        <Typography mt="10px" variant="h5" fontWeight="bold">
           About Us
         </Typography>
-        <Typography>Courses</Typography>
-        <Typography>Instructor</Typography>
-        <Typography>Events</Typography>
-        <Typography>Become A Teacher</Typography>
+        <Typography mt="10px">Courses</Typography>
+        <Typography mt="10px">Instructor</Typography>
+        <Typography mt="10px">Events</Typography>
+        <Typography mt="10px">Become A Teacher</Typography>
       </Grid>
 
-      <Grid item md={3}>
-        <Typography variant="h5" fontWeight="bold">
+      <Grid
+        item
+        md={3}
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
+
+      >
+        <Typography mt="10px" variant="h5" fontWeight="bold">
           News & Blogs
         </Typography>
-        <Typography>Library</Typography>
-        <Typography>Gallery</Typography>
-        <Typography>Partners</Typography>
-        <Typography>Career</Typography>
+        <Typography mt="10px">Library</Typography>
+        <Typography mt="10px">Gallery</Typography>
+        <Typography mt="10px">Partners</Typography>
+        <Typography mt="10px">Career</Typography>
       </Grid>
 
-      <Grid item md={3}>
-        <Typography variant="h5" fontWeight="bold">
+      <Grid
+        item
+        md={3}
+        container
+        direction="column"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
+
+      >
+        <Typography mt="10px" variant="h5" fontWeight="bold">
           Support
         </Typography>
-        <Typography>Documentation</Typography>
-        <Typography>FAQs</Typography>
-        <Typography>Forum</Typography>
-        <Typography>Sitemap</Typography>
+        <Typography mt="10px">Documentation</Typography>
+        <Typography mt="10px">FAQs</Typography>
+        <Typography mt="10px">Forum</Typography>
+        <Typography mt="10px">Sitemap</Typography>
       </Grid>
     </Grid>
   );

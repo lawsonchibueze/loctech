@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Typography, Grid, useTheme } from "../../lib/mui";
 import { tokens } from "@/app/lib/theme";
 import Image from "next/image";
+import Link from "next/link"
 import { FeaturedCourseArrType } from "@/app/types/_types";
 export default function FeaturedCard({
   id,
@@ -13,7 +14,9 @@ export default function FeaturedCard({
   price,
 }: FeaturedCourseArrType) {
   return (
+    
     <Grid item container  width="300px" xs={12} sm={6} md={3} gridAutoColumns={5}>
+      <Link href={`/courseDetail/${id}`} style={{width:"100%"}}>
       <Image
         src={img}
         width={500}
@@ -31,6 +34,7 @@ export default function FeaturedCard({
         <Typography fontWeight="bold" variant="h5">{price}</Typography>
         <Typography fontWeight="normal" >12 weeks</Typography>
       </Grid>
+    </Link>
     </Grid>
   );
 }

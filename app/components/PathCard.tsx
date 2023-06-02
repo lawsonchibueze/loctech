@@ -11,9 +11,10 @@ export default function PathCard() {
       item
       xs={12}
       md={6}
-      height="150px"
-      p="15px"
-      sx={{ backgroundColor: colors.grey[900] }}
+      height="250px"
+      
+      p="2rem 3rem"
+      sx={{ backgroundColor: colors.grey[900], borderRadius:"8px" }}
     >
       <Grid
         container
@@ -23,12 +24,12 @@ export default function PathCard() {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ alignItems: { xs: "center", md: "flex-start" } }}
+        sx={{ alignItems: { xs: "center", md: "flex-start" },justifyContent:{xs:"center"} }}
       >
         <Typography variant="h4" fontWeight="bold">
           Let Us Help
         </Typography>
-        <Typography variant="h3">
+        <Typography variant="h3" sx={{textAlign:{xs:"center"}, m:"20px 0"}} >
           Finding your{" "}
           <span style={{ fontWeight: "bolder" }}>Right Courses </span>{" "}
         </Typography>
@@ -42,6 +43,8 @@ export default function PathCard() {
         direction="row"
         justifyContent="flex-end"
         alignItems="center"
+        sx={{ alignItems: { xs: "center", md: "center" },justifyContent:{xs:"center"} }}
+
       >
         <Button
           sx={{
