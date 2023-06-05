@@ -21,6 +21,7 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "mongodb": "^5.5.0",
@@ -34,6 +35,8 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/eslint": "8.40.0",
     "prisma": "^4.14.1"
   }
 }

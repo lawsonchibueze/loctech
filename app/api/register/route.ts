@@ -1,10 +1,12 @@
-import bcrypt from "bcrypt";
-import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import prisma from "@/prisma/prisma";
-export const POST = async (req: Request) => {
-  const body = await req.json();
 
-  const { email, name, password } = body;
+export const POST = async (req: Request) => {
+  const { email, name, password } = await req.json();
+
+  if (!email) {
+    return new Response("Email not found", { status: 400 });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -13,8 +15,9 @@ export const POST = async (req: Request) => {
       email,
       hashedPassword,
       name,
+    
     },
   });
 
-  return NextResponse.json(newUser);
+  return new Response(JSON.stringify(newUser), { status: 201 });
 };
