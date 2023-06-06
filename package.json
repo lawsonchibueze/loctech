@@ -14,22 +14,24 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.2",
+    "@next-auth/prisma-adapter": "^1.0.6",
+    "@prisma/client": "^4.14.1",
     "@types/node": "20.2.3",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
+    "bcrypt": "^5.1.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "mongodb": "^5.5.0",
     "framer-motion": "^10.12.16",
     "next": "13.4.3",
+    "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-intersection-observer": "^9.4.4",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
-  },
-  "devDependencies": {
-    "@types/eslint": "8.40.0"
   }
 }
