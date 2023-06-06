@@ -2,19 +2,34 @@
 import React from "react";
 import { Grid, Box, Typography, Button, useTheme } from "../lib/mui";
 import { tokens } from "../lib/theme";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
 export default function PathCard() {
+    const { ref, inView } = useInView();
+
+  // Will render <custom-element /> into HTML
+  const MotionGrid = motion(Grid);
+  const MotionBtn = motion(Button);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Grid
+    container
+justifyContent="center"
+    ref={ref}>
+    { inView && <MotionGrid
+      initial={{ x: "100vw" }}
+      animate={{ x: 0 }}
+      transition={{ ease: "easeOut", duration: 2 }}
       container
       item
       xs={12}
       md={6}
       height="250px"
-      
       p="2rem 3rem"
-      sx={{ backgroundColor: colors.grey[900], borderRadius:"8px" }}
+      sx={{ backgroundColor: colors.grey[900], borderRadius: "8px" }}
     >
       <Grid
         container
@@ -24,12 +39,18 @@ export default function PathCard() {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ alignItems: { xs: "center", md: "flex-start" },justifyContent:{xs:"center"} }}
+        sx={{
+          alignItems: { xs: "center", md: "flex-start" },
+          justifyContent: { xs: "center" },
+        }}
       >
         <Typography variant="h4" fontWeight="bold">
           Let Us Help
         </Typography>
-        <Typography variant="h3" sx={{textAlign:{xs:"center"}, m:"20px 0"}} >
+        <Typography
+          variant="h3"
+          sx={{ textAlign: { xs: "center" }, m: "20px 0" }}
+        >
           Finding your{" "}
           <span style={{ fontWeight: "bolder" }}>Right Courses </span>{" "}
         </Typography>
@@ -43,24 +64,25 @@ export default function PathCard() {
         direction="row"
         justifyContent="flex-end"
         alignItems="center"
-        sx={{ alignItems: { xs: "center", md: "center" },justifyContent:{xs:"center"} }}
-
+        sx={{
+          alignItems: { xs: "center", md: "center" },
+          justifyContent: { xs: "center" },
+        }}
       >
-        <Button
+        <MotionBtn
+          whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
           sx={{
             p: "10px 15px",
             backgroundColor: colors.rose[500],
-            color:"#fff",
+            color: "#fff",
             fontSize: "18px",
             fontWeight: "bold",
-            "&:hover": {
-              backgroundColor: colors.rose[400],
-            },
           }}
         >
           Get Started
-        </Button>
+        </MotionBtn>
       </Grid>
+    </MotionGrid>}
     </Grid>
   );
 }

@@ -7,6 +7,7 @@ import Objectives from "@/app/components/Objectives";
 import Audience from "@/app/components/Audience";
 import Curriculum from "@/app/components/Curriculum";
 import CourseTag from "@/app/components/CourseTag";
+import AnimatedRoute from "@/app/components/AnimatedRoute";
 type PageProps = {
   params?: {
     slug?: string;
@@ -16,7 +17,7 @@ type PageProps = {
 export default function page({ params }: PageProps) {
   const courseSlug = params?.slug;
   return (
-    <Box>
+    <AnimatedRoute>
       <CourseHeader slug={courseSlug} />
       <Grid
         container
@@ -32,15 +33,15 @@ export default function page({ params }: PageProps) {
             </Typography>
           </Box>
           <Grid
-          container
-          item
-          xs={12}
-          md={4}
-          justifyContent="center"
-          sx={{ display: { xs: "flex", md: "none" },mt:"20px" }}
-        >
-          <CourseTag />
-        </Grid>
+            container
+            item
+            xs={12}
+            md={4}
+            justifyContent="center"
+            sx={{ display: { xs: "flex", md: "none" }, mt: "20px" }}
+          >
+            <CourseTag />
+          </Grid>
 
           {/* course description */}
           <CourseDesc />
@@ -61,6 +62,6 @@ export default function page({ params }: PageProps) {
           <CourseTag />
         </Grid>
       </Grid>
-    </Box>
+    </AnimatedRoute>
   );
 }

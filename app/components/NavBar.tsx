@@ -19,11 +19,9 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Link from "next/link";
 import {
   Grid,
-  Paper,
   useTheme,
   Box,
   Typography,
-  useMediaQuery,
 } from "../lib/mui";
 import { ColorModeContext, tokens } from "../lib/theme";
 
@@ -159,7 +157,7 @@ function NavItem({ title, to }: NavItemProps) {
         <Typography
           variant="h4"
           fontWeight="bold"
-          color={colors.rose[500]}
+          color={colors.rose[100]}
           sx={{ m: "0 5px", p: "5px" }}
         >
           {title}
