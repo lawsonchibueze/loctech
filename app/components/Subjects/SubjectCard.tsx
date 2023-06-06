@@ -1,6 +1,9 @@
+"use client";
 import { Box, Grid, Typography } from "@/app/lib/mui";
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
 interface SubjectCardProps {
   src: string;
   alt: string;
@@ -8,8 +11,11 @@ interface SubjectCardProps {
 }
 
 export default function SubjectCard({ src, alt, title }: SubjectCardProps) {
+  const MotionGrid = motion(Grid);
+
   return (
-    <Grid
+    <MotionGrid
+      whileHover={{ scale: 1.1 }}
       item
       container
       xs={12}
@@ -51,6 +57,6 @@ export default function SubjectCard({ src, alt, title }: SubjectCardProps) {
       >
         {title}
       </Typography>
-    </Grid>
+    </MotionGrid>
   );
 }

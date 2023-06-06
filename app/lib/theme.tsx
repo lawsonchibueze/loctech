@@ -10,7 +10,7 @@ export const tokens = (mode: PaletteMode) => ({
   ...(mode === "dark"
     ? {
         rose: {
-          100: "#ffd4e6",
+          100: "#fff",
           200: "#ffa9cd",
           300: "#ff7eb5",
           400: "#ff539c",
@@ -46,7 +46,7 @@ export const tokens = (mode: PaletteMode) => ({
       }
     : {
         rose: {
-          100: "#33081a",
+          100: "#ff2883",
           200: "#661034",
           300: "#99184f",
           400: "#cc2069",

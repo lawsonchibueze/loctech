@@ -1,10 +1,15 @@
 "use client";
 import React from "react";
+import { motion } from "framer-motion";
 import { Box, Grid, Typography, useTheme, Button } from "../lib/mui";
 import Image from "next/image";
 import { tokens } from "../lib/theme";
+import Card from "./Card";
 tokens;
 export default function Hero() {
+  const MotionGrid = motion(Grid);
+  const MotionBtn = motion(Button);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -36,7 +41,8 @@ export default function Hero() {
           </Typography>
         </Box>
         <Box>
-          <Button
+          <MotionBtn
+            whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
             variant="contained"
             size="large"
             sx={{
@@ -44,23 +50,29 @@ export default function Hero() {
               fontWeight: "bold",
               fontSize: "18px",
               color: colors.primary[900],
+              cursor: "pointer",
             }}
           >
             Register Now
-          </Button>
+          </MotionBtn>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Box>
-          <Image
-            src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
-            width={400}
-            height={300}
-            alt="pexels-cottonbro-studio-5083408.png"
-            style={{ width: "100%", borderRadius: "8px" }}
-          />
-        </Box>
-      </Grid>
+      <MotionGrid
+        item
+        xs={12}
+        sm={6}
+        initial={{ x: "-100vw" }}
+        animate={{ x: 0 }}
+        transition={{ ease: "easeOut", duration: 2 }}
+      >
+        <Image
+          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          width={400}
+          height={300}
+          alt="pexels-cottonbro-studio-5083408.png"
+          style={{ width: "100%", borderRadius: "8px" }}
+        />
+      </MotionGrid>
     </Grid>
   );
 }

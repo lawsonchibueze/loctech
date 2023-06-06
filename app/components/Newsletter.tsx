@@ -1,17 +1,19 @@
 "use client";
 import React from "react";
-import { Grid, Box, Typography, useTheme, Button } from "../../lib/mui";
+import { Grid, Box, Typography, useTheme, Button } from "../lib/mui";
 import { tokens } from "@/app/lib/theme";
 import Image from "next/image";
+import { motion } from "framer-motion";
 export default function Newsletter() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const MotionBtn = motion(Button);
+
   return (
     <Grid
       container
       height="350px"
-      
-      sx={{ backgroundColor: colors.grey[900] ,m:"2rem 0" ,p:{xs:"1rem"}}}
+      sx={{ backgroundColor: colors.grey[900], m: "2rem 0", p: { xs: "1rem" } }}
     >
       <Grid
         container
@@ -23,7 +25,7 @@ export default function Newsletter() {
         justifyContent="center"
         alignItems="center"
       >
-        <Box sx={{textAlign:{xs:"center", md:"start"}}}>
+        <Box sx={{ textAlign: { xs: "center", md: "start" } }}>
           <Typography variant="h4" fontWeight="bold">
             {" "}
             Achieve Your Goals With Loctech IT Training Institute
@@ -33,20 +35,18 @@ export default function Newsletter() {
             and promotions.
           </Typography>
 
-          <Button
-          sx={{
-            p: "10px 15px",
-            backgroundColor: colors.rose[500],
-            color:"#fff",
-            fontSize: "18px",
-            fontWeight: "bold",
-            "&:hover": {
-              backgroundColor: colors.rose[400],
-            },
-          }}
-        >
-          Register for free
-        </Button>
+          <MotionBtn
+            whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
+            sx={{
+              p: "10px 15px",
+              backgroundColor: colors.rose[500],
+              color: "#fff",
+              fontSize: "18px",
+              fontWeight: "bold",
+            }}
+          >
+            Register for free
+          </MotionBtn>
         </Box>
       </Grid>
 

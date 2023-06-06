@@ -7,10 +7,11 @@ import FeaturedCard from "./components/Featured/FeaturedCard";
 import FeaturedItem from "./components/Featured/FeaturedItem";
 import PathCard from "./components/PathCard";
 import SubjectCard from "./components/Subjects/SubjectCard";
-import Newsletter from "./components/Featured/Newsletter";
+import Newsletter from "./components/Newsletter";
+import AnimatedRoute from "./components/AnimatedRoute";
 export default function Home() {
   return (
-    <>
+    <AnimatedRoute>
       <Hero />
       <Grid
         container
@@ -27,6 +28,7 @@ export default function Home() {
             title="Online Courses from Loctech IT Training Institite"
             subtitle="New Certificate"
             btnText="Find Out More"
+            initialX="-100vw"
           />
         </Grid>
         <Grid xs={12} md={6} item>
@@ -34,6 +36,8 @@ export default function Home() {
             title="Online Courses from Loctech IT Training Institite"
             subtitle="New Certificate"
             btnText="Find Out More"
+            initialX="100vw"
+
           />
         </Grid>
       </Grid>
@@ -48,7 +52,7 @@ export default function Home() {
         <FeaturedItem />
       </Grid>
 
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" m="3rem 0">
         <PathCard />
       </Grid>
 
@@ -61,7 +65,7 @@ export default function Home() {
         <SubjectCard
           src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
           alt="courses"
-          title="Desgn"
+     title="Design"
         />
         <SubjectCard
           src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
@@ -84,7 +88,7 @@ export default function Home() {
           title="Desgn"
         />
       </Grid>
-      <Newsletter/>
-    </>
+      <Newsletter />
+    </AnimatedRoute>
   );
 }
