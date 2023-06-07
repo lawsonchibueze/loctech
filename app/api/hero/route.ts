@@ -1,4 +1,10 @@
 import prisma from "@/prisma/prisma";
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
+
+interface HeroParams {
+  id?: string;
+}
 
 export const GET = async () => {
   const heroes = await prisma.hero.findMany();
@@ -6,7 +12,13 @@ export const GET = async () => {
   return new Response(JSON.stringify(heroes), { status: 200 });
 };
 
-export const POST = async (req: Request) => {
+export const POST = async (
+  req: Request,
+  { params }: { params: HeroParams }
+) => {
+  // Get the current user and check if he is an admin
+  await checkCurrentUser();
+
   const { title, subtitle, button, image, createdAt, updatedAt } =
     await req.json();
 
@@ -22,37 +34,4 @@ export const POST = async (req: Request) => {
   });
 
   return new Response(JSON.stringify(newHero), { status: 201 });
-};
-
-export const PATCH = async (req: Request) => {
-  const { id, title, subtitle, button, image, createdAt, updatedAt } =
-    await req.json();
-
-  const updatedHero = await prisma.hero.update({
-    where: {
-      id,
-    },
-    data: {
-      title,
-      subtitle,
-      button,
-      image,
-      createdAt,
-      updatedAt,
-    },
-  });
-
-  return new Response(JSON.stringify(updatedHero), { status: 200 });
-};
-
-export const DELETE = async (req: Request) => {
-  const { id } = await req.json();
-
-  const deletedHero = await prisma.hero.delete({
-    where: {
-      id,
-    },
-  });
-
-  return new Response(JSON.stringify(deletedHero), { status: 200 });
 };
