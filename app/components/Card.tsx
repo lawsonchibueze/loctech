@@ -4,18 +4,30 @@ import { Box, Typography, Grid, useTheme, Button } from "../lib/mui";
 tokens;
 import Image from "next/image";
 import { tokens } from "../lib/theme";
+import { motion } from "framer-motion";
 
 interface CardProps {
   title: string;
   subtitle: string;
   btnText: string;
+  initialX: string;
 }
 
-export default function Card({ title, subtitle, btnText }: CardProps) {
+export default function Card({
+  title,
+  subtitle,
+  btnText,
+  initialX,
+}: CardProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const MotionGrid = motion(Grid);
+  const MotionBtn = motion(Button);
   return (
-    <Grid
+    <MotionGrid
+      initial={{ x: initialX }}
+      animate={{ x: 0 }}
+      transition={{ ease: "easeIn", duration: 3 }}
       container
       item
       sx={{
@@ -36,21 +48,20 @@ export default function Card({ title, subtitle, btnText }: CardProps) {
           </Box>
 
           <Box>
-            <Button
+            <MotionBtn
+            whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
               variant="contained"
               size="large"
               sx={{
                 backgroundColor: colors.rose[500],
                 fontWeight: "bold",
                 fontSize: "14px",
-                color: colors.primary[900],
-                "&:hover": {
-                  backgroundColor: colors.rose[400],
-                },
+                color: "#fff"
+            
               }}
             >
               {btnText}
-            </Button>
+            </MotionBtn>
           </Box>
         </Box>
       </Grid>
@@ -64,6 +75,6 @@ export default function Card({ title, subtitle, btnText }: CardProps) {
           style={{ width: "100%", borderRadius: "8px", objectFit: "cover" }}
         />
       </Grid>
-    </Grid>
+    </MotionGrid>
   );
 }
