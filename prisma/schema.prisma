@@ -20,6 +20,7 @@ model User {
   email          String   @unique
   name           String?
   role           UserRole @default(USER)
+  image          String?
   hashedPassword String?
 }
 
@@ -84,7 +85,7 @@ model Instructor {
   instagram       String?
   linkedin        String?
   createdAt       DateTime @default(now())
-  updatedAt       DateTime
+  updatedAt       DateTime @updatedAt
   Course          Course[]
   reviewer        String?
   reviewerImage   String?
@@ -200,12 +201,32 @@ model Comment {
   postId    String?  @db.ObjectId
 }
 
-model Contact {
+model ContactUS {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
   subject   String
   message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model Alumni {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  image            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime
+  currentlyWorking String
+  designation      String
+  courseStudied    String
+}
+
+model PromotionsPage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  subtitle  String
+  image     String
   createdAt DateTime @default(now())
   updatedAt DateTime
 }
