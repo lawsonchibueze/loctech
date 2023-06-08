@@ -104,6 +104,8 @@ function NavBar() {
                 <NavItem title="Online" to="/" />
                 <NavItem title="Classroom" to="/" />
                 <NavItem title="Instructors" to="/" />
+                <NavItem title="SignIn" to="/signIn" />
+
               </Box>
             </Grid>
           </Grid>
@@ -155,7 +157,7 @@ function NavItem({ title, to }: NavItemProps) {
     <Box sx={{ width: "100%", p: "5px" }}>
       <Link href={to}>
         <Typography
-          variant="h4"
+          variant="h5"
           fontWeight="bold"
           color={colors.rose[100]}
           sx={{ m: "0 5px", p: "5px" }}
