@@ -37,7 +37,7 @@ export const DELETE = async (
   req: Request,
   { params }: { params: HeroParams }
 ) => {
- await checkCurrentUser();
+  await checkCurrentUser();
 
   const { id } = params;
 
