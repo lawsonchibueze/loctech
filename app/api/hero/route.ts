@@ -12,10 +12,7 @@ export const GET = async () => {
   return new Response(JSON.stringify(heroes), { status: 200 });
 };
 
-export const POST = async (
-  req: Request,
-  { params }: { params: HeroParams }
-) => {
+export const POST = async (req: Request) => {
   // Get the current user and check if he is an admin
   await checkCurrentUser();
 
