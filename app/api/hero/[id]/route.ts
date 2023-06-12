@@ -5,6 +5,18 @@ interface HeroParams {
   id?: string;
 }
 
+export const GET = async (req: Request, { params }: { params: HeroParams }) => {
+  const { id } = params;
+
+  const hero = await prisma.hero.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return new Response(JSON.stringify(hero), { status: 200 });
+};
+
 export const PATCH = async (
   req: Request,
   { params }: { params: HeroParams }

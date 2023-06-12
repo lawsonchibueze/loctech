@@ -1,5 +1,4 @@
 import prisma from "@/prisma/prisma";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 
 interface HeroParams {
