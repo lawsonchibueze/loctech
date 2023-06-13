@@ -49,15 +49,14 @@ export default function Card({
 
           <Box>
             <MotionBtn
-            whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
+              whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
               variant="contained"
               size="large"
               sx={{
                 backgroundColor: colors.rose[500],
                 fontWeight: "bold",
                 fontSize: "14px",
-                color: "#fff"
-            
+                color: "#fff",
               }}
             >
               {btnText}

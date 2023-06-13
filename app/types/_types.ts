@@ -1,3 +1,5 @@
+import { EditorState } from "draft-js";
+
 export type FeaturedCourseArrType = {
   id: number;
   img: string;
@@ -6,3 +8,21 @@ export type FeaturedCourseArrType = {
   author: string;
   price: string;
 };
+
+
+export interface CourseProps{
+  courseTitle: string
+  // courseDescription:string
+  courseSlug: string
+  coursePrice : number
+  category: string
+  isFeatured:string
+  isTrending:string
+  isOnline:string
+}
+
+
+export interface OptionProps {
+  value: string 
+  label: string 
+}
