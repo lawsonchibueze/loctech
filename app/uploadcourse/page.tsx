@@ -10,7 +10,6 @@ import {
   SelectChangeEvent,
 } from "../lib/mui";
 import Header from "../components/Header";
-
 import Input from "../components/Input";
 import Draft from "../components/Draft";
 import DropDown from "../components/DropDown";
@@ -31,6 +30,9 @@ export default function page() {
     isFeatured: "false",
     isTrending: "false",
     isOnline: "false",
+    prerequisites: [],
+    learningObj: [],
+    curriculumList: [],
   });
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -49,6 +51,65 @@ export default function page() {
   const onChangeDraftHandler = (value: EditorState) => {
     //  draft onchange handler
     setEditorState(value);
+  };
+
+  //////////////PREREQUISTE
+
+  const onChangeCoursePrerequisitesHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    // input change handler for CoursePrerequisites
+    const updatedField = [...course.prerequisites];
+    updatedField[index] = e.target.value;
+    setCourse({ ...course, [e.target.name]: updatedField });
+  };
+
+  const addCoursePrerequisitesTextFieldHandler = () => {
+    //add textfield
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      prerequisites: [...prevCourse.prerequisites, ""],
+    }));
+  };
+
+  //////////////LEARNING OBJ
+  const onChangeLearningObjHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    // input change handler for LearningObj
+    const updatedField = [...course.learningObj];
+    updatedField[index] = e.target.value;
+    setCourse({ ...course, [e.target.name]: updatedField });
+  };
+
+  const addCourseLearningObjTextFieldHandler = () => {
+    //add textfield for learningObj
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      learningObj: [...prevCourse.learningObj, ""],
+    }));
+  };
+
+  //////////////COURSE CURRICULUM
+
+  const onChangeCurriculumListHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    // input change handler forCurriculumList
+    const updatedField = [...course.curriculumList];
+    updatedField[index] = e.target.value;
+    setCourse({ ...course, [e.target.name]: updatedField });
+  };
+
+  const addCourseCurriculumListTextFieldHandler = () => {
+    //add textfield forCurriculumList
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      curriculumList: [...prevCourse.curriculumList, ""],
+    }));
   };
 
   const submitHandler = () => {
@@ -148,6 +209,10 @@ export default function page() {
           <DynamicField
             label="Add course prerequisites"
             btnText="Add Prerequisite"
+            name="prerequisites"
+            value={course.prerequisites}
+            addTextFieldHandler={addCoursePrerequisitesTextFieldHandler}
+            onChange={onChangeCoursePrerequisitesHandler}
           />
         </Grid>
 
@@ -157,6 +222,10 @@ export default function page() {
           <DynamicField
             label="Add Learning Objectives "
             btnText="Add Objectives"
+            value={course.learningObj}
+            addTextFieldHandler={addCourseLearningObjTextFieldHandler}
+            onChange={onChangeLearningObjHandler}
+            name=" learningObj"
           />
         </Grid>
         {/* curriculun=m */}
@@ -165,6 +234,10 @@ export default function page() {
           <DynamicField
             label="Add Course Curriculum "
             btnText="Add Curriculum"
+            addTextFieldHandler={addCourseCurriculumListTextFieldHandler}
+            name="CurriculumList"
+            value={course.curriculumList}
+            onChange={onChangeCurriculumListHandler}
           />
         </Grid>
 

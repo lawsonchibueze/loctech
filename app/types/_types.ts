@@ -19,6 +19,9 @@ export interface CourseProps{
   isFeatured:string
   isTrending:string
   isOnline:string
+  prerequisites: string[]
+  learningObj:string[]
+  curriculumList: string[]
 }
 
 

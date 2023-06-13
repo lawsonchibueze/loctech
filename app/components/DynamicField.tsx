@@ -6,26 +6,31 @@ import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
 import AddIcon from "@mui/icons-material/Add";
 import { Label } from "@mui/icons-material";
+import { CourseProps } from "../types/_types";
 
 interface DynamicFieldProps {
   label: string;
   btnText: string;
+  name?: string
+  value: string[]
+  addTextFieldHandler: () => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, index:number) => void;
 }
 
-export default function DynamicField({ label, btnText }: DynamicFieldProps) {
+export default function DynamicField({ label, btnText, name,value , onChange, addTextFieldHandler}: DynamicFieldProps) {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [text, setText] = React.useState<string[]>([]);
 
-  const addTextFieldHandler = () => {
-    setText([...text, ""]);
-  };
+
+
+  
+ 
   return (
     <>
-      {text.map((value, index) => (
-        <Grid container item xs={12} md={6}>
-          <Input id={`${index}`} label={label} type="text" />
+      {value?.map((value, index) => (
+        <Grid container item xs={12} md={6} key={index}>
+          <Input id={`${index}`} label={label} type="text"  name={`${name }`} value={value} onChange={(e)=>onChange!(e,index)}/>
         </Grid>
       ))}
       <Grid container item>
