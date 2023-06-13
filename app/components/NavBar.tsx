@@ -17,12 +17,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 
 import Link from "next/link";
-import {
-  Grid,
-  useTheme,
-  Box,
-  Typography,
-} from "../lib/mui";
+import { Grid, useTheme, Box, Typography } from "../lib/mui";
 import { ColorModeContext, tokens } from "../lib/theme";
 
 function NavBar() {
@@ -48,13 +43,12 @@ function NavBar() {
         <Toolbar disableGutters>
           <Grid
             container
-            spacing={2}
             direction="row"
             justifyContent="center"
             alignItems="center"
             sx={{ justifyContent: { xs: "start", sm: "none", md: "block" } }}
           >
-            <Grid item xs={2}>
+            <Grid item xs={2} md={4}>
               {/* Content for the left side */}
               <Box display="flex">
                 <IconButton
@@ -66,20 +60,13 @@ function NavBar() {
                 <Image src="/logo.png" width={120} height={120} alt="logo" />
               </Box>
             </Grid>
+
             <Grid
               item
-              xs={3}
-              sx={{ display: { xs: "none", sm: "none", md: "block" } }}
-            >
-              {/* Content for the middle */}
-              <Box display="flex" alignItems="center">
-                <CategoryIcon />
-                <Typography variant="h3">Category</Typography>
-              </Box>
-            </Grid>
-            <Grid
-              item
+              container
               xs={7}
+              md={8}
+          
               sx={{ display: { xs: "none", sm: "none", md: "block" } }}
             >
               {/* Content for the right side */}
@@ -101,11 +88,10 @@ function NavBar() {
 
                 <NavItem title="About us" to="/" />
 
-                <NavItem title="Online" to="/" />
-                <NavItem title="Classroom" to="/" />
                 <NavItem title="Instructors" to="/" />
-                <NavItem title="SignIn" to="/signIn" />
+                <NavItem title="Upload  courses" to="/uploadcourse" />
 
+                <NavItem title="SignIn" to="/signIn" />
               </Box>
             </Grid>
           </Grid>
@@ -119,24 +105,29 @@ function NavBar() {
             flexDirection="column"
             alignItems="start"
           >
-            <IconButton>
+           <Grid  container justifyContent={{xs:"flex-start", md:"flex-end"}} >
+           <IconButton>
               <SearchIcon sx={{ fontSize: "20px" }} />
             </IconButton>
+           </Grid>
 
-            <IconButton onClick={colorMode.toggleColorMode}>
+
+           <Grid  container justifyContent={{xs:"flex-start", md:"flex-end"}} >
+           <IconButton onClick={colorMode.toggleColorMode}>
               {theme.palette.mode === "light" ? (
                 <LightModeOutlinedIcon />
               ) : (
                 <DarkModeOutlinedIcon />
               )}
             </IconButton>
+           </Grid>
+
+            
             <NavItem title="Home" to="/" />
             <NavItem title="Courses" to="/" />
 
             <NavItem title="About us" to="/" />
 
-            <NavItem title="Online" to="/" />
-            <NavItem title="Classroom" to="/" />
             <NavItem title="Instructors" to="/" />
           </Box>
         </Box>
@@ -146,7 +137,7 @@ function NavBar() {
 }
 
 interface NavItemProps {
-  title: string;
+  title: string  ;
   to: string;
 }
 
@@ -154,18 +145,19 @@ function NavItem({ title, to }: NavItemProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box sx={{ width: "100%", p: "5px" }}>
-      <Link href={to}>
+    <Grid container justifyContent={{xs:"flex-start", md:"center"}}>
+      <Link href={to} style={{width:"100%", }}>
         <Typography
           variant="h5"
           fontWeight="bold"
           color={colors.rose[100]}
+          textAlign={{xs:"start", md:"center"}}
           sx={{ m: "0 5px", p: "5px" }}
         >
           {title}
         </Typography>
       </Link>
-    </Box>
+    </Grid>
   );
 }
 
