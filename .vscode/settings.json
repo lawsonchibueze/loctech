@@ -3,14 +3,14 @@
         "localstorage"
     ],
     "launch": {
-
         "configurations": [],
         "compounds": []
     },
-    "editor.fontFamily": "Itim, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontFamily": "Jetbrains mono, Fira code, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": true,
     "editor.fontSize": 14,
-    "terminal.integrated.autoReplies": {
-    }
-
-    
+    "terminal.integrated.autoReplies": {},
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }

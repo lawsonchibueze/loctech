@@ -5,7 +5,10 @@ interface CourseParams {
   id?: string;
 }
 
-export const GET = async (req: Request, { params }: { params: CourseParams }) => {
+export const GET = async (
+  req: Request,
+  { params }: { params: CourseParams }
+) => {
   const { id } = params;
 
   const course = await prisma.course.findUnique({
@@ -44,7 +47,6 @@ export const PATCH = async (
     published,
     instructorId,
     Instructor,
-    relatedCoursesId,
     RelatedCourses,
   } = await req.json();
 
@@ -70,9 +72,12 @@ export const PATCH = async (
       curriculumList,
       published,
       instructorId,
-      Instructor,
-      relatedCoursesId,
-      RelatedCourses,
+      Instructor: {
+        update: Instructor,
+      },
+      RelatedCourses: {
+        update: RelatedCourses,
+      },
     },
   });
 

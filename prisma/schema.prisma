@@ -38,34 +38,34 @@ model Account {
 }
 
 model Course {
-  id               String         @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  description      String
-  image            String
-  price            Float
-  video            String?
-  category         CATEGORY
-  duration         Int?
-  learningObj      String[]
-  targetAud        String[]
-  prerequisites    String[]
-  slug             String         @unique
-  curriculum       String?
-  curriculumList   String[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  published        Boolean        @default(false)
-  instructorId     String         @db.ObjectId
-  Instructor       Instructor     @relation(fields: [instructorId], references: [id])
-  relatedCoursesId String         @db.ObjectId
-  RelatedCourses   RelatedCourses @relation(fields: [relatedCoursesId], references: [id])
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String
+  image          String
+  price          Float
+  video          String?
+  category       CATEGORY
+  duration       Int?
+  learningObj    String[]
+  targetAud      String[]
+  prerequisites  String[]
+  slug           String           @unique
+  curriculum     String?
+  curriculumList String[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  published      Boolean          @default(false)
+  instructorId   String           @db.ObjectId
+  Instructor     Instructor       @relation(fields: [instructorId], references: [id])
+  RelatedCourses RelatedCourses[]
 }
 
 model RelatedCourses {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  courseId  String   @db.ObjectId
   name      String?
   category  CATEGORY
-  course    Course[]
+  course    Course?  @relation(fields: [courseId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -140,9 +140,9 @@ model About {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   title      String
   subtitle   String
-  coverImage String
-  image1     String
-  image2     String
+  coverImage String?
+  image1     String?
+  image2     String?
   image3     String?
   content    String
   mission    String

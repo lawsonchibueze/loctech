@@ -20,8 +20,6 @@ export const GET = async (req: Request, { params }: { params: CIParams }) => {
   return new Response(JSON.stringify(course), { status: 200 });
 };
 
-
-
 export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
   await checkCurrentUser();
 
@@ -55,7 +53,9 @@ export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
       bio,
       rating,
       reviews,
-      Course,
+      Course: {
+        update: Course,
+      },
       facebook,
       twitter,
       instagram,
