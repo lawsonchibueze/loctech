@@ -1,29 +1,34 @@
 "use client";
-import React from "react";
+import React,{ChangeEvent, ChangeEventHandler, RefObject, forwardRef} from "react";
 import { MuiFileInput } from "mui-file-input";
 
 interface FileInputProps{
     placeholder: string
     accept : string
+    name?: string
+    value?: string|null
+    register:any
+    onChangeFileInput?: (file: File) => void;
+
 }
 
-export default function FileInput({placeholder, accept}:FileInputProps) {
-  const [file, setFile] = React.useState<File | null | undefined>(null);
-  const handleChange = (newFile: File | null) => {
-    setFile(newFile);
-    console.log(newFile)
-    console.log(newFile?.type.startsWith("image/"));
+const  FileInput = ({placeholder, accept, onChangeFileInput,name, value,register}:FileInputProps, refVideo:React.ForwardedRef<HTMLVideoElement> ) => {
+
+
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+       onChangeFileInput!(file)!;
+    }
   };
+
+
   return (
-    <MuiFileInput
-      value={file}
-      fullWidth
-      onChange={(e: File | null) => handleChange(e)}
-      placeholder={placeholder}
-      inputProps={{
-        accept:`${accept}`,
-        multiple: false
-      }}
-    />
+  <>
+   <input type="file" onChange={ handleFileSelect}  accept={accept}  {...register}/>
+  
+  </>
   );
 }
+
+export default FileInput

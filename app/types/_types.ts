@@ -10,22 +10,28 @@ export type FeaturedCourseArrType = {
 };
 
 
-export interface CourseProps{
+export type CourseProps ={
   courseTitle: string
+
   // courseDescription:string
   courseSlug: string
   coursePrice : number
   category: string
-  isFeatured:string
-  isTrending:string
-  isOnline:string
-  prerequisites: string[]
-  learningObj:string[]
-  curriculumList: string[]
+  isFeatured:string| boolean
+  isTrending:string| boolean
+  isOnline:string| boolean
+  prerequisites:  { name: string }[] 
+  learningObj:{ name: string }[] 
+  curriculum: { name: string }[] 
+  video: string| null
+  image: string| null
+  duration: number | null
+
 }
 
 
 export interface OptionProps {
-  value: string 
+  value: string | boolean
   label: string 
 }
+

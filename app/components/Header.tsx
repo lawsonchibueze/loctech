@@ -3,13 +3,9 @@ import React from "react";
 import { Button, Grid, Typography, colors, useTheme } from "../lib/mui";
 import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
-import { CourseProps } from "../types/_types";
 
-interface HeaderProps{
-  submitHandler: () => void
-}
 
-export default function Header({submitHandler}:HeaderProps) {
+export default function Header() {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -20,7 +16,7 @@ export default function Header({submitHandler}:HeaderProps) {
       </Typography>
 
       <MotionBtn
-      onClick={submitHandler}
+      type="submit"
         whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
         variant="contained"
         size="large"
