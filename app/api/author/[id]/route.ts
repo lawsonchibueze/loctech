@@ -4,10 +4,7 @@ import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 interface AuthorParams {
   id: string;
 }
-export const GET = async (
-  req: Request,
-  { params }: { params: AuthorParams }
-) => {
+export const GET = async (req: Request, params: AuthorParams) => {
   const { id } = params;
   const response = await prisma.author.findUnique({
     where: {
@@ -17,10 +14,7 @@ export const GET = async (
   return new Response(JSON.stringify(response), { status: 200 });
 };
 
-export const PATCH = async (
-  req: Request,
-  { params }: { params: AuthorParams }
-) => {
+export const PATCH = async (req: Request, params: AuthorParams) => {
   await checkCurrentUser();
 
   const { id } = params;
@@ -45,10 +39,7 @@ export const PATCH = async (
   return new Response(JSON.stringify(updatedAuthor), { status: 200 });
 };
 
-export const DELETE = async (
-  req: Request,
-  { params }: { params: AuthorParams }
-) => {
+export const DELETE = async (req: Request, params: AuthorParams) => {
   await checkCurrentUser();
 
   const { id } = params;
