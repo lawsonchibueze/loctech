@@ -28,7 +28,6 @@ export const POST = async (req: Request) => {
     published,
     instructorId,
     Instructor,
-    relatedCoursesId,
     RelatedCourses,
   } = await req.json();
 
@@ -51,9 +50,12 @@ export const POST = async (req: Request) => {
       curriculumList,
       published,
       instructorId,
-      Instructor,
-      relatedCoursesId,
-      RelatedCourses,
+      Instructor: {
+        create: Instructor,
+      },
+      RelatedCourses: {
+        create: RelatedCourses,
+      },
     },
   });
 

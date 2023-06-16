@@ -43,7 +43,9 @@ export const POST = async (req: Request) => {
       reviews,
       facebook,
       twitter,
-      Course,
+      Course: {
+        create: Course,
+      },
       instagram,
       linkedin,
       reviewer,
