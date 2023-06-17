@@ -15,7 +15,6 @@ export const POST = async (req: Request) => {
       email,
       hashedPassword,
       name,
-    
     },
   });
 

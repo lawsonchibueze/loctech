@@ -1,3 +1,4 @@
+import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 import prisma from "@/prisma/prisma";
 
 export const GET = async () => {
@@ -7,6 +8,7 @@ export const GET = async () => {
 };
 
 export const POST = async (req: Request) => {
+  await checkCurrentUser();
   const {
     name,
     email,
@@ -41,7 +43,9 @@ export const POST = async (req: Request) => {
       reviews,
       facebook,
       twitter,
-      Course,
+      Course: {
+        create: Course,
+      },
       instagram,
       linkedin,
       reviewer,
@@ -51,68 +55,4 @@ export const POST = async (req: Request) => {
   });
 
   return new Response(JSON.stringify(newInstructor), { status: 201 });
-};
-
-export const PATCH = async (req: Request) => {
-  const {
-    id,
-    name,
-    email,
-    image,
-    bio,
-    rating,
-    reviews,
-    facebook,
-    Course,
-    twitter,
-    instagram,
-    linkedin,
-    reviewer,
-    reviewerImage,
-    reviewerComment,
-  } = await req.json();
-
-  if (!id) {
-    return new Response("No id found", { status: 400 });
-  }
-
-  const updatedInstructor = prisma.instructor.update({
-    where: {
-      id,
-    },
-    data: {
-      name,
-      email,
-      image,
-      bio,
-      rating,
-      reviews,
-      facebook,
-      twitter,
-      Course,
-      instagram,
-      linkedin,
-      reviewer,
-      reviewerImage,
-      reviewerComment,
-    },
-  });
-
-  return new Response(JSON.stringify(updatedInstructor), { status: 200 });
-};
-
-export const DELETE = async (req: Request) => {
-  const { id } = await req.json();
-
-  if (!id) {
-    return new Response("No id found", { status: 400 });
-  }
-
-  const deletedInstructor = prisma.instructor.delete({
-    where: {
-      id,
-    },
-  });
-
-  return new Response(JSON.stringify(deletedInstructor), { status: 200 });
 };
