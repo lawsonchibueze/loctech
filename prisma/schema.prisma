@@ -16,50 +16,58 @@ enum UserRole {
 }
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  email          String   @unique
-  name           String?
-  role           UserRole @default(USER)
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  email          String?   @unique
+  name           String
+  role           UserRole  @default(USER)
   image          String?
   hashedPassword String?
+  accounts       Account[]
+}
+
+model Account {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String @map("provider_account_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Course {
-  id               String         @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  description      String
-  image            String
-  price            Float
-  video            String?
-  category         CATEGORY
-  duration         Int?
-  learningObj      String[]
-  targetAud        String[]
-  prerequisites    String[]
-  slug             String         @unique
-  isFeatured       Boolean        @default(false)
-  isOnline         Boolean        @default(false)
-  isTrending       Boolean        @default(false)
-  curriculum       String?
-  curriculumList   String[]
-  metaTitle        String?
-  metaDesc         String?
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime
-  published        Boolean        @default(false)
-  instructorId     String         @db.ObjectId
-  Instructor       Instructor     @relation(fields: [instructorId], references: [id])
-  relatedCoursesId String         @db.ObjectId
-  RelatedCourses   RelatedCourses @relation(fields: [relatedCoursesId], references: [id])
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String
+  image          String
+  price          Float
+  video          String?
+  category       CATEGORY
+  duration       Int?
+  learningObj    String[]
+  targetAud      String[]
+  prerequisites  String[]
+  slug           String           @unique
+  curriculum     String?
+  curriculumList String[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  published      Boolean          @default(false)
+  instructorId   String           @db.ObjectId
+  Instructor     Instructor       @relation(fields: [instructorId], references: [id])
+  RelatedCourses RelatedCourses[]
 }
 
 model RelatedCourses {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  courseId  String   @db.ObjectId
   name      String?
   category  CATEGORY
-  course    Course[]
+  course    Course?  @relation(fields: [courseId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model Hero {
@@ -69,7 +77,7 @@ model Hero {
   button    String
   image     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model Instructor {
@@ -98,7 +106,7 @@ model Testimonial {
   image     String
   review    String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model Partners {
@@ -106,7 +114,7 @@ model Partners {
   name      String[]
   image     String[]
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 enum CATEGORY {
@@ -125,16 +133,16 @@ model CourseCategory {
   image       String
   description String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
 }
 
 model About {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   title      String
   subtitle   String
-  coverImage String
-  image1     String
-  image2     String
+  coverImage String?
+  image1     String?
+  image2     String?
   image3     String?
   content    String
   mission    String
@@ -144,7 +152,7 @@ model About {
   partners   String[]
 
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model OnlineCourse {
@@ -154,7 +162,7 @@ model OnlineCourse {
   image     String
   button    String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model OfflineCourse {
@@ -164,7 +172,7 @@ model OfflineCourse {
   image     String
   button    String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -176,7 +184,7 @@ model Post {
   content   String
   author    Author    @relation(fields: [authorId], references: [id])
   createdAt DateTime  @default(now())
-  updatedAt DateTime
+  updatedAt DateTime  @updatedAt
   authorId  String    @db.ObjectId
   comment   Comment[]
 }
@@ -186,7 +194,7 @@ model Author {
   name      String
   image     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   post      Post[]
 }
 
@@ -196,7 +204,7 @@ model Comment {
   email     String
   comment   String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    String?  @db.ObjectId
 }
@@ -208,7 +216,7 @@ model ContactUS {
   subject   String
   message   String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model Alumni {
@@ -216,7 +224,7 @@ model Alumni {
   name             String
   image            String
   createdAt        DateTime @default(now())
-  updatedAt        DateTime
+  updatedAt        DateTime @updatedAt
   currentlyWorking String
   designation      String
   courseStudied    String
@@ -228,5 +236,5 @@ model PromotionsPage {
   subtitle  String
   image     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
