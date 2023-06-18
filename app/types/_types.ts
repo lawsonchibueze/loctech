@@ -13,25 +13,25 @@ export type FeaturedCourseArrType = {
 export type CourseProps ={
   courseTitle: string
 
-  // courseDescription:string
+description:string
   courseSlug: string
   coursePrice : number
   category: string
-  isFeatured:string| boolean
-  isTrending:string| boolean
-  isOnline:string| boolean
+  isFeatured:string
+  isTrending:string
+  isOnline:string
   prerequisites:  { name: string }[] 
   learningObj:{ name: string }[] 
   curriculum: { name: string }[] 
   video: string| null
-  image: string| null
-  duration: number | null
+  image: string
+  duration: number
 
 }
 
 
 export interface OptionProps {
-  value: string | boolean
+  value: string 
   label: string 
 }
 

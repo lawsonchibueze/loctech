@@ -1,12 +1,7 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
-import AnimatedRoute from "../components/AnimatedRoute";
-import { yupResolver } from "@hookform/resolvers/yup";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useState, useRef } from "react";
 
 import {
-  Box,
-  Button,
   Grid,
   Typography,
   Select,
@@ -15,7 +10,6 @@ import {
   colors,
   useTheme,
 } from "../lib/mui";
-import * as yup from "yup";
 
 import Header from "../components/Header";
 import Input from "../components/Input";
@@ -23,78 +17,62 @@ import Draft from "../components/Draft";
 import DropDown from "../components/DropDown";
 import CourseStepper from "../components/CourseStepper";
 import DynamicField from "../components/DynamicField";
-import FileInput from "../components/FileInput";
-import draftToHtml from "draftjs-to-html";
 import { EditorState, convertToRaw } from "draft-js";
-import { MuiFileInputProps } from "mui-file-input";
 import Image from "next/image";
 import convertTime from "../utils/ConvertTime";
-import { FieldArray, Formik, useFormik } from "formik";
-import { courseSchema } from "../lib/yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { CourseProps, OptionProps } from "../types/_types";
-import { motion } from "framer-motion";
-import { tokens } from "../lib/theme";
-// import { courseSchema } from "../lib/yup";
+
+import FileInput from "../components/FileInput";
 
 export default function page() {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const [course, setCourse] = useState<CourseProps>({
-    courseTitle: "",
-    // courseDescription: "",
-    courseSlug: "",
-    coursePrice: 0,
-    category: "",
-    isFeatured: false,
-    isTrending: false,
-    isOnline: false,
-    prerequisites: [],
-    learningObj: [],
-    curriculum: [],
-    image: null,
-    video: null,
-    duration: null,
-  });
+  const [image, setImage] = useState<string>();
+  const [videoURL, setVideo] = useState<string>();
+  const [duration, setDuration] = useState(0);
 
   const {
+    //useForm Hook
     register,
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm<CourseProps>({
     // resolver:yupResolver(courseSchema) ,
 
     defaultValues: {
       courseTitle: "",
-      // courseDescription: "",
+      description: "",
       courseSlug: "",
       coursePrice: 0,
       category: "",
-      isFeatured: false,
-      isTrending: false,
-      isOnline: false,
-      prerequisites: [{ name: " " }],
-      learningObj: [{ name: " " }],
-      curriculum: [{ name: " " }],
-      image: null,
-      video: null,
-      duration: null,
+      isFeatured: "false",
+      isTrending: "false",
+      isOnline: "false",
+      image: "",
+      prerequisites: [{ name: undefined }],
+      learningObj: [{ name: undefined }],
+      curriculum: [{ name: undefined }],
+      video: "",
+      duration: 0,
     },
   });
 
-  interface PrerequisitesProps {
-    value: string;
-  }
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
+  const [editorError, setEditorError] = useState(false); //wysiwyg error state
 
-  const { fields: prerequisitesField, append: prerequisitesAppend } =
+  const {
+    fields: prerequisitesField,
+    append: prerequisitesAppend,
+  } = //dynamic array for prerequisites textfield
     useFieldArray({
       control,
       name: "prerequisites",
     });
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
+    //dynamic array for learningObjField
     {
       control,
       name: "learningObj",
@@ -102,67 +80,82 @@ export default function page() {
   );
 
   const { fields: curriculumField, append: curriculumAppend } = useFieldArray({
+    //dynamic array for curriculumfield
     control,
     name: "curriculum",
   });
 
-  // course title
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // input change handler
-    setCourse({ ...course, [e.target.name]: e.target.value });
-  };
-
-  const onSelectHandler = (event: SelectChangeEvent) => {
-    //dropdown handler
-    setCourse({ ...course, [event.target.name]: event.target.value });
-  };
-
   const onChangeDraftHandler = (value: EditorState) => {
+    //wysiwyg onChange event
     //  draft onchange handler
     setEditorState(value);
+  };
+
+  const validateEditorContent = (editorState: EditorState) => {
+    //checking is wysiwyg has text
+    const contentState = editorState.getCurrentContent();
+    const hasText = contentState.hasText();
+
+    return hasText;
   };
 
   //////////////PREREQUISTE
 
   const onAppendPrerequisitesHandler = () => {
+    //function to add an empty textfield
     prerequisitesAppend({ name: "".trim() });
   };
 
   const onAppendLearningObjHandler = () => {
+    //function to add an empty textfield
     learningObjAppend({ name: "" });
   };
 
   const onAppendCurriculumListHandler = () => {
+    //function to add an empty textfield
     curriculumAppend({ name: "" });
   };
 
   ////////FILE INPUT
 
   const onImageChangeFile = (file: File) => {
-    console.log(file);
-    const image = URL.createObjectURL(file);
-
-    setCourse({ ...course, image: image || null });
+    //change event for image file input
+    const imgURL = URL.createObjectURL(file); // converts file evemt to a string
+    setImage(imgURL);
+    // setCourse({ ...course, image: image || null });
   };
 
   const onVideoChangeFile = (file: File) => {
+    //change event for  video file input
     console.log(file);
-    const video = URL.createObjectURL(file);
+    const videoURL = URL.createObjectURL(file); // converts file evemt to a string
 
-    setCourse({ ...course, video: video || null });
-    if (video && videoRef.current) {
+    setVideo(videoURL);
+    if (videoURL && videoRef.current) {
       //  videoRef.current.play()
       videoRef.current.addEventListener("loadedmetadata", () => {
-        setCourse({
-          ...course,
-          duration: convertTime(videoRef.current?.duration),
-        });
+        setDuration(convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
       });
     }
   };
-  console.log(course.video);
   const submitHandler = (values: CourseProps) => {
-    console.log(values);
+    const isValid = validateEditorContent(editorState);
+
+    if (!isValid) {
+      setEditorError(true);
+      return null;
+    }
+
+    console.log({
+      ...values,
+      image: image,
+      isFeatured: values.isFeatured === "true", //converting the string values to boolen
+      isTrending: values.isTrending === "true", //converting the string values to boolen
+      isOnline: values.isOnline === "true", //converting the string values to boolen
+      description: editorState.getCurrentContent().getPlainText(),
+      video: videoURL,
+      duration: duration,
+    });
   };
 
   return (
@@ -175,80 +168,130 @@ export default function page() {
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={6}>
             <Input
-              error={false}
-              helperText={""}
               label="Title of course"
               id="course-title"
               type="text"
-              register={register("courseTitle")}
+              register={register("courseTitle", {
+                required: "Field is required",
+              })}
               name="courseTitle"
+              error={!!errors.courseTitle}
+              helperText={errors.courseTitle?.message}
             />
           </Grid>
           <Grid container item xs={12} md={6}>
             <Input
-              register={register("courseSlug")}
+              register={register("courseSlug", {
+                required: "Field is required",
+              })}
               label="Slug"
               id="Slug-title"
               type="text"
               name="courseSlug"
+              error={!!errors.courseSlug}
+              helperText={errors.courseSlug?.message}
             />
           </Grid>
           <Grid container item xs={12} md={6}>
             <Input
               label="Course price"
               name="coursePrice"
-              register={register("coursePrice")}
+              register={register("coursePrice", {
+                required: "Field is required",
+              })}
               id="Course-price"
               type="number"
-              error={false}
-              helperText={""}
+              error={!!errors.coursePrice}
+              helperText={errors.coursePrice?.message}
             />
           </Grid>
           <Grid container item xs={12} md={6}>
             <DropDown
-              placeholder="Select course category"
-              value={course.category}
-              options={slugOptions}
+              placeHolder="Select course category"
+              options={categoryOptions}
+              register={register("category", { required: "Field is required" })}
+              error={!!errors.category}
+              errorMessage={
+                errors.category && (
+                  <p style={{ color: "red" }}>{errors.category.message}</p>
+                )
+              }
               control={control}
+              setValue={setValue}
               name="category"
-              rules={{ required: "This field is required" }}
             />
           </Grid>
 
-          {/* <Draft initialContent={editorState} onChange={handleChange} /> */}
+          <Draft
+            initialContent={editorState}
+            name="description"
+            editorState={editorState}
+            setValue={setValue}
+            onChange={onChangeDraftHandler}
+            error={errors}
+            register={register("description")}
+          />
+          {editorError && (
+            <p style={{ color: "red" }}>This field is required</p>
+          )}
         </Grid>
         {/* Course Featured */}
         <CourseStepper title="Featured Course" number={2} />
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={4}>
             <DropDown
-              placeholder="does this course have a feature ?"
-              options={featuredOptions}
-              value={course.isFeatured}
+              placeHolder="does this course have a feature ?"
+              options={booleanOptions}
+              register={register("isFeatured", {
+                required: "Field is required",
+              })}
+              error={!!errors.isFeatured}
+              errorMessage={
+                errors.isFeatured && (
+                  <p style={{ color: "red" }}>{errors.isFeatured.message}</p>
+                )
+              }
+              // defaultValue="false"
+              setValue={setValue}
               name="isFeatured"
               control={control}
-              rules={{ required: "This field is required" }}
             />
           </Grid>
           <Grid container item xs={12} md={4}>
             <DropDown
-              placeholder="Is course online ?"
-              options={featuredOptions}
-              value={course.isOnline}
-              control={control}
-              rules={{ required: "This field is required" }}
+              placeHolder="Is course online ?"
+              options={booleanOptions}
+              register={register("isOnline", { required: "Field is required" })}
+              error={!!errors.isOnline}
+              errorMessage={
+                errors.isOnline && (
+                  <p style={{ color: "red" }}>{errors.isOnline.message}</p>
+                )
+              }
+              // defaultValue="false"
+              setValue={setValue}
               name="isOnline"
+              control={control}
             />
           </Grid>
 
           <Grid container item xs={12} md={4}>
             <DropDown
-              placeholder="Is course trending ?"
-              options={featuredOptions}
-              value={course.isTrending}
-              control={control}
-              rules={{ required: "This field is required" }}
+              placeHolder="Is course trending ?"
+              options={booleanOptions}
+              register={register("isTrending", {
+                required: "Field is required",
+              })}
+              error={!!errors.isTrending}
+              errorMessage={
+                errors.isTrending && (
+                  <p style={{ color: "red" }}>{errors.isTrending.message}</p>
+                )
+              }
+              // defaultValue="false"
+              setValue={setValue}
               name="isTrending"
+              control={control}
             />
           </Grid>
         </Grid>
@@ -256,14 +299,18 @@ export default function page() {
         {/* Course Prequisiite */}
 
         <CourseStepper title="Course Prerequisites" number={3} />
-        <DynamicField
-          label="Add Prerequisites Objectives"
-          fields={prerequisitesField}
-          registeredName="prerequisites"
-          register={register}
-          onAppendHandler={onAppendPrerequisitesHandler}
-          btnText="Add Prerequisites"
-        />
+        <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
+          <DynamicField
+            label="Add Prerequisites Objectives"
+            fields={prerequisitesField}
+            registeredName="prerequisites"
+            register={register}
+            onAppendHandler={onAppendPrerequisitesHandler}
+            btnText="Add Prerequisites"
+            error={errors.prerequisites}
+            helperText={errors.prerequisites?.message}
+          />
+        </Grid>
         {/* Learning Objectives */}
         <CourseStepper title=" Learning Objectives " number={4} />
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
@@ -274,6 +321,8 @@ export default function page() {
             register={register}
             onAppendHandler={onAppendLearningObjHandler}
             btnText="Add Learning Obj"
+            error={errors.learningObj}
+            helperText={errors.learningObj?.message}
           />
         </Grid>
         {/* curriculun=m */}
@@ -286,6 +335,8 @@ export default function page() {
             register={register}
             onAppendHandler={onAppendCurriculumListHandler}
             btnText="Add Curriculum"
+            error={errors.curriculum}
+            helperText={errors.curriculum?.message}
           />
         </Grid>
 
@@ -297,21 +348,27 @@ export default function page() {
               placeholder="Upload  Image"
               accept="image/*"
               name="image"
-              register={register("image")}
-
-              // onChangeFileInput={handleChange}
-              // value={course.image}
+              register={register("image", { required: true })}
+              error={!!errors.image}
+              onChangeFileInput={onImageChangeFile}
             />
+            {!!errors.image && (
+              <Typography color="red">This field is required</Typography>
+            )}
           </Grid>
 
-          <Grid container item xs={12} md={6}>
+          <Grid container item xs={12} md={6} direction="column">
             <FileInput
               placeholder="Upload  video"
               accept="video/*"
               name="video"
-              register={register("video")}
-              value={course.video}
+              register={register("video", { required: true })}
+              error={!!errors.video}
+              onChangeFileInput={onVideoChangeFile}
             />
+            {!!errors.video && (
+              <Typography color="red">This field is required</Typography>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -326,16 +383,9 @@ export default function page() {
           xs={12}
           md={6}
         >
-          {course.image !== null ? (
-            <Image
-              src={course.image !== null ? course.image : ""}
-              height={100}
-              width={100}
-              alt={course.image !== null ? course.image : ""}
-            />
-          ) : (
-            ""
-          )}
+          {image ? (
+            <Image src={image} width={100} height={100} alt="image" />
+          ) : null}
         </Grid>
 
         <Grid
@@ -347,19 +397,21 @@ export default function page() {
           xs={12}
           md={6}
         >
-          <video
-            src={course.video !== null ? course.video : ""}
-            height={100}
-            width={100}
-            ref={videoRef as React.RefObject<HTMLVideoElement>}
-          ></video>
+          {videoURL ? (
+            <video
+              src={videoURL}
+              height={100}
+              width={100}
+              ref={videoRef as React.RefObject<HTMLVideoElement>}
+            ></video>
+          ) : null}
         </Grid>
       </Grid>
     </form>
   );
 }
 
-const slugOptions: OptionProps[] = [
+const categoryOptions: OptionProps[] = [
   {
     label: "Data Science",
     value: "data_science",
@@ -374,13 +426,13 @@ const slugOptions: OptionProps[] = [
   },
 ];
 
-const featuredOptions: OptionProps[] = [
+const booleanOptions: OptionProps[] = [
   {
     label: "True",
-    value: true,
+    value: "true",
   },
   {
     label: "False",
-    value: false,
+    value: "false",
   },
 ];

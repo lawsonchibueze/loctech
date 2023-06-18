@@ -2,19 +2,20 @@
 import React, { useEffect } from "react";
 import { TextField, useTheme } from "../lib/mui";
 import { tokens } from "../lib/theme";
+import { FieldError, FieldErrors } from "react-hook-form";
+import { CourseProps } from "../types/_types";
 
 
 interface InputProps {
   id: string;
   label: string;
-  value?: string | number | File | undefined;
   name: string;
   type: React.HTMLInputTypeAttribute;
-  error?: boolean;
-  helperText?: string | false;
+  error?: boolean | undefined
+  helperText:string | undefined
+
   register: any;
 
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input = React.forwardRef(
@@ -23,10 +24,9 @@ const Input = React.forwardRef(
       id,
       label,
       type,
-      onChange,
       name,
       error,
-      helperText,
+     helperText,
       register,
     }: InputProps,
     ref
@@ -35,7 +35,7 @@ const Input = React.forwardRef(
     const colors = tokens(theme.palette.mode);
 
     //onchnage handler
-
+console.log("====", !!`touched.${name}` )
     return (
       <TextField
         id={id}
@@ -46,8 +46,9 @@ const Input = React.forwardRef(
         {...register}
         name={name}
         error={error}
-        // helperText={helperText}
-        onChange={onChange}
+        helperText={helperText}
+        
+        
         sx={{
           "& .MuiFormLabel-root ,.MuiFormLabel-root.Mui-focused": {
             color: colors.rose[500],
