@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { tokens } from "../lib/theme";
 import {
@@ -7,28 +7,40 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   useTheme,
 } from "../lib/mui";
-import { OptionProps } from "../types/_types";
+import { CourseProps, OptionProps } from "../types/_types";
+import { Controller, UseFormSetValue } from "react-hook-form";
 
 interface DropDownProps {
-  placeholder: string;
-  name: string;
+  placeHolder: string;
   options: OptionProps[];
-  value: string;
-  onChange: (event: SelectChangeEvent) => void;
+  register: any;
+  error: boolean;
+  errorMessage: React.JSX.Element | undefined;
+  defaultValue?: string | boolean;
+  setValue: UseFormSetValue<CourseProps>;
+  name: string;
+  control: any;
 }
 
-export default function DropDown({
-  placeholder,
+const DropDown = ({
+  placeHolder,
   options,
+  register,
+  error,
+  errorMessage,
+  defaultValue,
+  setValue,
   name,
-  onChange,
-  value,
-}: DropDownProps) {
+  control,
+}: DropDownProps) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  useEffect(() => {
+    setValue(name as unknown as any, defaultValue || "");
+  }, [defaultValue, setValue]);
 
   return (
     <FormControl
@@ -41,21 +53,29 @@ export default function DropDown({
         },
       }}
     >
-      <InputLabel>{placeholder}</InputLabel>
-      <Select
-        labelId="demo-simple-select-filled-label"
-        id="demo-simple-select-filled"
-        value={value}
+      <InputLabel>{name}</InputLabel>
+      <Controller
+        defaultValue={defaultValue}
         name={name}
-        onChange={onChange}
-      >
-        {options.map((option, index) => (
-          <MenuItem key={option.value} value={option.value}>
-            {" "}
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
+        control={control}
+        // rules={{ required: true }}
+        render={({ field }) => (
+          <Select {...field} defaultValue={defaultValue}>
+            {options.map((option, index) => (
+              <MenuItem key={index} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+      />
+      {errorMessage}
     </FormControl>
   );
+};
+
+export default DropDown;
+
+{
+  /* */
 }

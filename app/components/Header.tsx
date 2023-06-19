@@ -3,24 +3,23 @@ import React from "react";
 import { Button, Grid, Typography, colors, useTheme } from "../lib/mui";
 import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
-import { CourseProps } from "../types/_types";
 
-interface HeaderProps{
-  submitHandler: () => void
+interface HeaderProps {
+  title: string
+  btnText: string
 }
-
-export default function Header({submitHandler}:HeaderProps) {
+export default function Header({title, btnText}:HeaderProps) {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Grid container justifyContent="space-between" m="1.5rem 0">
       <Typography variant="h2" fontWeight="bold">
-        Upload New Courses
+        {title}
       </Typography>
 
       <MotionBtn
-      onClick={submitHandler}
+      type="submit"
         whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
         variant="contained"
         size="large"
@@ -33,7 +32,7 @@ export default function Header({submitHandler}:HeaderProps) {
           cursor: "pointer",
         }}
       >
-        Upload Course
+        {btnText}
       </MotionBtn>
     </Grid>
   );
