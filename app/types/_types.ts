@@ -1,4 +1,5 @@
 import { EditorState } from "draft-js";
+import { string } from "yup";
 
 export type FeaturedCourseArrType = {
   id: number;
@@ -35,3 +36,31 @@ export interface OptionProps {
   label: string 
 }
 
+
+
+export type LoginType ={
+  email : string
+  password: string
+}
+
+export type SignUpType ={
+  email : string
+  password: string
+  confirmPassword :string
+}
+
+export type InstructorType ={
+name : string,
+email: string
+image: string
+bio: string
+rating:  number
+reviews:string
+facebook:string
+twitter:string
+instagram: string
+linkedin:string
+reviewer:string
+reviewerImage:string
+reviewerComment:string
+}

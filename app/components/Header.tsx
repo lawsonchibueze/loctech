@@ -4,15 +4,18 @@ import { Button, Grid, Typography, colors, useTheme } from "../lib/mui";
 import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
 
-
-export default function Header() {
+interface HeaderProps {
+  title: string
+  btnText: string
+}
+export default function Header({title, btnText}:HeaderProps) {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Grid container justifyContent="space-between" m="1.5rem 0">
       <Typography variant="h2" fontWeight="bold">
-        Upload New Courses
+        {title}
       </Typography>
 
       <MotionBtn
@@ -29,7 +32,7 @@ export default function Header() {
           cursor: "pointer",
         }}
       >
-        Upload Course
+        {btnText}
       </MotionBtn>
     </Grid>
   );

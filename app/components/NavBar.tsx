@@ -66,7 +66,6 @@ function NavBar() {
               container
               xs={7}
               md={8}
-          
               sx={{ display: { xs: "none", sm: "none", md: "block" } }}
             >
               {/* Content for the right side */}
@@ -88,7 +87,8 @@ function NavBar() {
 
                 <NavItem title="About us" to="/" />
 
-                <NavItem title="Instructors" to="/" />
+                <NavItem title="Instructors" to="/instructor/instructors" />
+
                 <NavItem title="Upload  courses" to="/uploadcourse" />
 
                 <NavItem title="SignIn" to="/signIn" />
@@ -105,30 +105,34 @@ function NavBar() {
             flexDirection="column"
             alignItems="start"
           >
-           <Grid  container justifyContent={{xs:"flex-start", md:"flex-end"}} >
-           <IconButton>
-              <SearchIcon sx={{ fontSize: "20px" }} />
-            </IconButton>
-           </Grid>
+            <Grid
+              container
+              justifyContent={{ xs: "flex-start", md: "flex-end" }}
+            >
+              <IconButton>
+                <SearchIcon sx={{ fontSize: "20px" }} />
+              </IconButton>
+            </Grid>
 
+            <Grid
+              container
+              justifyContent={{ xs: "flex-start", md: "flex-end" }}
+            >
+              <IconButton onClick={colorMode.toggleColorMode}>
+                {theme.palette.mode === "light" ? (
+                  <LightModeOutlinedIcon />
+                ) : (
+                  <DarkModeOutlinedIcon />
+                )}
+              </IconButton>
+            </Grid>
 
-           <Grid  container justifyContent={{xs:"flex-start", md:"flex-end"}} >
-           <IconButton onClick={colorMode.toggleColorMode}>
-              {theme.palette.mode === "light" ? (
-                <LightModeOutlinedIcon />
-              ) : (
-                <DarkModeOutlinedIcon />
-              )}
-            </IconButton>
-           </Grid>
-
-            
             <NavItem title="Home" to="/" />
             <NavItem title="Courses" to="/" />
 
             <NavItem title="About us" to="/" />
 
-            <NavItem title="Instructors" to="/" />
+            <NavItem title="Instructors" to="/instructor/instructors" />
           </Box>
         </Box>
       )}
@@ -137,7 +141,7 @@ function NavBar() {
 }
 
 interface NavItemProps {
-  title: string  ;
+  title: string;
   to: string;
 }
 
@@ -145,13 +149,13 @@ function NavItem({ title, to }: NavItemProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Grid container justifyContent={{xs:"flex-start", md:"center"}}>
-      <Link href={to} style={{width:"100%", }}>
+    <Grid container justifyContent={{ xs: "flex-start", md: "center" }}>
+      <Link href={to} style={{ width: "100%" }}>
         <Typography
           variant="h5"
           fontWeight="bold"
           color={colors.rose[100]}
-          textAlign={{xs:"start", md:"center"}}
+          textAlign={{ xs: "start", md: "center" }}
           sx={{ m: "0 5px", p: "5px" }}
         >
           {title}

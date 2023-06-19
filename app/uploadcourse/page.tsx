@@ -160,7 +160,7 @@ export default function page() {
 
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
-      <Header />
+      <Header title="Add Course" btnText="Upload course" />
       <hr />
 
       <Grid container m="1rem 0">
