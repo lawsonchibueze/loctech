@@ -21,7 +21,7 @@ import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
 
-export default function page() {
+export default function Page() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -220,7 +220,8 @@ export default function page() {
 
           <Grid container justifyContent="center" m="1rem 0">
             <Typography>
-              Don't have an account?{" "}
+              {/*  eslint-disable-next-line react/no-unescaped-entities */}
+              Don't have an account?
               <Link
                 href="/signup"
                 style={{ textDecoration: "underline", color: colors.rose[500] }}

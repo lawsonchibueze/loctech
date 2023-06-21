@@ -50,5 +50,7 @@ export const DELETE = async (req: Request, params: AuthorParams) => {
     },
   });
 
-  return new Response(JSON.stringify(deletedAuthor), { status: 200 });
+  return new Response("Deleted Successfully", {
+    status: 200,
+  });
 };

@@ -57,7 +57,7 @@ export const DELETE = async (
     },
   });
 
-  return new Response(JSON.stringify(comments), {
+  return new Response("Deleted Successfully", {
     status: 200,
   });
 };

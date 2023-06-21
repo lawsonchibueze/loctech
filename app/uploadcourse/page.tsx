@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 
 import {
   Grid,
@@ -10,6 +10,9 @@ import {
   colors,
   useTheme,
 } from "../lib/mui";
+
+// Isaac working on Cloudinary
+import { CldUploadWidget } from "next-cloudinary";
 
 import Header from "../components/Header";
 import Input from "../components/Input";
@@ -25,7 +28,10 @@ import { CourseProps, OptionProps } from "../types/_types";
 
 import FileInput from "../components/FileInput";
 
-export default function page() {
+declare global {
+  var cloudinary: any;
+}
+export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [image, setImage] = useState<string>();
   const [videoURL, setVideo] = useState<string>();
@@ -61,6 +67,13 @@ export default function page() {
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
   const [editorError, setEditorError] = useState(false); //wysiwyg error state
+
+  // state for the cloudinary image by Isaac
+  const [isImage, setIsImage] = useState<string>("");
+
+  const handleUpload = (result: any) => {
+    setIsImage(result?.info?.secure_url);
+  };
 
   const {
     fields: prerequisitesField,
@@ -342,19 +355,64 @@ export default function page() {
 
         {/* Course Media */}
         <CourseStepper title=" Course Media" number={6} />
+
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={6}>
-            <FileInput
-              placeholder="Upload  Image"
-              accept="image/*"
-              name="image"
-              register={register("image", { required: true })}
-              error={!!errors.image}
-              onChangeFileInput={onImageChangeFile}
-            />
-            {!!errors.image && (
-              <Typography color="red">This field is required</Typography>
-            )}
+            <CldUploadWidget
+              onUpload={handleUpload}
+              uploadPreset="sj9mklh4"
+              options={{ maxFiles: 1, clientAllowedFormats: ["png", "jpeg"] }}
+            >
+              {({ open }) => {
+                function handleOnClick(e: any) {
+                  e.preventDefault();
+                  open();
+                }
+                return (
+                  <>
+                    {isImage ? (
+                      <Image
+                        src={isImage}
+                        alt="uploaded image"
+                        width={100}
+                        height={100}
+                        onChange={(isImage) => {
+                          register("image", { required: true });
+                        }}
+                      />
+                    ) : (
+                      <div onClick={handleOnClick}>
+                        <FileInput
+                          placeholder="Upload  Image"
+                          accept="image/*"
+                          name="image"
+                          register={register("image", { required: true })}
+                          error={!!errors.image}
+                          onChangeFileInput={onImageChangeFile}
+                        />
+                        {!!errors.image && (
+                          <Typography color="red">
+                            This field is required
+                          </Typography>
+                        )}
+                      </div>
+                    )}
+                  </>
+                );
+              }}
+
+              {/* <FileInput
+                placeholder="Upload  Image"
+                accept="image/*"
+                name="image"
+                register={register("image", { required: true })}
+                error={!!errors.image}
+                onChangeFileInput={onImageChangeFile}
+              />
+              {!!errors.image && (
+                <Typography color="red">This field is required</Typography>
+              )} */}
+            </CldUploadWidget>
           </Grid>
 
           <Grid container item xs={12} md={6} direction="column">

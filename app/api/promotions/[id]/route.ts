@@ -58,5 +58,7 @@ export const DELETE = async (
     },
   });
 
-  return new Response(JSON.stringify(deletedPromotions), { status: 200 });
+  return new Response("Deleted Successfully", {
+    status: 200,
+  });
 };

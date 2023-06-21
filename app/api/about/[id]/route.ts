@@ -12,6 +12,8 @@ export const GET = async (req: Request, params: AboutParams) => {
       id,
     },
   });
+
+  
   return new Response(JSON.stringify(about), { status: 200 });
 };
 
@@ -71,7 +73,7 @@ export const DELETE = async (req: Request, params: AboutParams) => {
     },
   });
 
-  return new Response(JSON.stringify(about), {
+  return new Response(('Deleted Successfully'), {
     status: 200,
   });
 };
