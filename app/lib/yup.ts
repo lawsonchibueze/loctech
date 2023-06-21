@@ -48,19 +48,25 @@ export const SignUpSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords does not match"),
 });
 
+export const instructorSchema = yup.object().shape({
+  name: yup.string().required("This field is required"),
+  bio: yup.string(),
+  email: yup.string().email("Invalid email"),
+  image: yup.string(),
+  rating: yup.number(),
+  reviews: yup.string(),
+  facebook: yup.string(),
+  twitter: yup.string(),
+  instagram: yup.string(),
+  linkedin: yup.string(),
+  reviewer: yup.string(),
+  reviewerImage: yup.string(),
+  reviewerComment: yup.string(),
+});
 
-export const  instructorSchema = yup.object().shape({
-name: yup.string().required("This field is required"),
-bio: yup.string(),
-email: yup.string().email("Invalid email"),
-image: yup.string(),
-rating: yup.number(),
-reviews: yup.string(),
-facebook: yup.string(),
-twitter:yup.string(),
-instagram: yup.string(),
-linkedin: yup.string(),
-reviewer: yup.string(),
-reviewerImage: yup.string(),
-reviewerComment: yup.string(),
-})
+export const heroSchema = yup.object().shape({
+  title: yup.string(),
+  subtitle: yup.string(),
+  button: yup.string(),
+  image: yup.string(),
+});

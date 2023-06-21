@@ -47,8 +47,12 @@ const FileInput = (
         accept={accept}
         name={name}
         {...register}
+        id="fileInput"
+
+
         onChange={handleFileSelect}
       />
+      
     </>
   );
 };

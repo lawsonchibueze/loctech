@@ -6,12 +6,6 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import CategoryIcon from "@mui/icons-material/Category";
 import SearchIcon from "@mui/icons-material/Search";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -86,10 +80,9 @@ function NavBar() {
                 <NavItem title="Courses" to="/courses" />
 
                 <NavItem title="About us" to="/" />
+                <NavItem title="Forms" to="/forms" />
 
                 <NavItem title="Instructors" to="/instructor/instructors" />
-
-                <NavItem title="Upload  courses" to="/uploadcourse" />
 
                 <NavItem title="SignIn" to="/signIn" />
               </Box>
