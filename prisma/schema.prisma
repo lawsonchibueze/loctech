@@ -111,10 +111,12 @@ model Testimonial {
 
 model Partners {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String[]
-  image     String[]
+  name      String
+  image     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  About     About?   @relation(fields: [aboutId], references: [id])
+  aboutId   String?  @db.ObjectId
 }
 
 enum CATEGORY {
@@ -137,7 +139,7 @@ model CourseCategory {
 }
 
 model About {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   title      String
   subtitle   String
   coverImage String?
@@ -149,7 +151,7 @@ model About {
   vision     String
   values     String
   gallery    String[]
-  partners   String[]
+  partners   Partners[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

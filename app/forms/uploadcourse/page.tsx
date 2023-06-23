@@ -9,21 +9,21 @@ import {
   TextField,
   colors,
   useTheme,
-} from "../../lib/mui";
+} from "../lib/mui";
 
-import Header from "../../components/Header";
-import Input from "../../components/Input";
-import Draft from "../../components/Draft";
-import DropDown from "../../components/DropDown";
-import CourseStepper from "../../components/CourseStepper";
-import DynamicField from "../../components/DynamicField";
+import Header from "../components/Header";
+import Input from "../components/Input";
+import Draft from "../components/Draft";
+import DropDown from "../components/DropDown";
+import CourseStepper from "../components/CourseStepper";
+import DynamicField from "../components/DynamicField";
 import { EditorState, convertToRaw } from "draft-js";
 import Image from "next/image";
-import convertTime from "../../utils/ConvertTime";
+import convertTime from "../utils/ConvertTime";
 import { useFieldArray, useForm } from "react-hook-form";
-import { CourseProps, OptionProps } from "../../types/_types";
+import { CourseProps, OptionProps } from "../types/_types";
 
-import FileInput from "../../components/FileInput";
+import FileInput from "../components/FileInput";
 
 export default function page() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -414,27 +414,15 @@ export default function page() {
 const categoryOptions: OptionProps[] = [
   {
     label: "Data Science",
-    value: "DATA_SCIENCE",
+    value: "data_science",
   },
   {
-    label: "Graphics ",
-    value: "GRAPHICS_MEDIA",
+    label: "Graphics Media",
+    value: "Graphics",
   },
   {
     label: "Cloud",
-    value: "CLOUD_COMPUTING",
-  },
-  {
-    label: "Networking",
-    value: " NETWORKING",
-  },
-  {
-    label: "Productivity",
-    value: " OFFICE_PRODUCTIVITY",
-  },
-  {
-    label: "Coding",
-    value: "CODING",
+    value: "cloud",
   },
 ];
 

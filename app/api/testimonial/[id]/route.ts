@@ -49,5 +49,7 @@ export const DELETE = async ({ params }: { params: CIParams }) => {
     },
   });
 
-  return new Response(JSON.stringify(deletedTestimonial), { status: 200 });
-}
+  return new Response("Deleted Successfully", {
+    status: 200,
+  });
+};
