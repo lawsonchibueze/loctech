@@ -20,6 +20,9 @@ export default function page() {
       <Link href="/forms/heroUpload" style={{ width: "100%" }}>
         <Header title="Upload Hero" btnText="Upload Hero" />
       </Link>
+      <Link href="/forms/testimonial" style={{ width: "100%" }}>
+        <Header title="Upload Testimonial" btnText="Upload Testimonial" />
+      </Link>
     </Grid>
   );
 }

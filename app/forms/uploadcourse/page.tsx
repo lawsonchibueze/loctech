@@ -414,15 +414,27 @@ export default function page() {
 const categoryOptions: OptionProps[] = [
   {
     label: "Data Science",
-    value: "data_science",
+    value: "DATA_SCIENCE",
   },
   {
-    label: "Graphics Media",
-    value: "Graphics",
+    label: "Graphics ",
+    value: "GRAPHICS_MEDIA",
   },
   {
     label: "Cloud",
-    value: "cloud",
+    value: "CLOUD_COMPUTING",
+  },
+  {
+    label: "Networking",
+    value: " NETWORKING",
+  },
+  {
+    label: "Productivity",
+    value: " OFFICE_PRODUCTIVITY",
+  },
+  {
+    label: "Coding",
+    value: "CODING",
   },
 ];
 

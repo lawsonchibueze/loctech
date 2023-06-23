@@ -36,6 +36,7 @@ export type LoginType = {
 };
 
 export type SignUpType = {
+  name: string
   email: string;
   password: string;
   confirmPassword: string;
@@ -61,5 +62,11 @@ export type HeroType = {
   title: string;
   subtitle: string;
   button: string;
+  image: "";
+};
+
+export type TestimonialType = {
+  name: string;
   image: string;
+  review: string;
 };

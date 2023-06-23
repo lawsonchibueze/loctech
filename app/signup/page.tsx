@@ -16,7 +16,10 @@ import {
   Google,
   FacebookRounded,
   LinkedIn,
+  Password,
 } from "@mui/icons-material";
+import axios from "axios";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "../lib/yup";
@@ -34,6 +37,7 @@ export default function page() {
   } = useForm<SignUpType>({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -41,7 +45,23 @@ export default function page() {
   });
 
   const formSubmitHandler = (value: SignUpType) => {
-    console.log(value);
+    const emailToLowerCase = value.email.toLowerCase();
+    const data = {
+      name: value.name,
+      email: emailToLowerCase,
+      password: Password,
+    };
+
+    axios
+      .post("/api/register", data)
+      .then((response) => {
+        // Request was successful
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // An error occurred
+        console.error(error);
+      });
   };
 
   return (
@@ -69,6 +89,20 @@ export default function page() {
             </Typography>
           </Box>
           <Grid container rowSpacing={4} m="2rem 0">
+            <Grid container item>
+              <TextField
+                id="name"
+                error={!!errors.name}
+                placeholder="JohnDoe"
+                label="Name"
+                helperText={errors.name?.message}
+                variant="outlined"
+                autoComplete="false"
+                fullWidth
+                {...register("name")}
+              />
+            </Grid>
+
             {/* first input */}
             <Grid container item>
               <TextField

@@ -1,6 +1,7 @@
 "use client";
 
 import * as yup from "yup";
+import { HeroType } from "../types/_types";
 
 const passwordRegex = `^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-=_+{};':\"\\|,.<>/?]).{8,}$`;
 
@@ -40,6 +41,7 @@ export const loginSchema = yup.object().shape({
 });
 
 export const SignUpSchema = yup.object().shape({
+  name: yup.string().required("This field is required"),
   email: yup.string().email("Invalid email").required("Enter your email"),
   password: yup.string().min(8).max(32).required("Enter your password"),
   confirmPassword: yup
@@ -65,8 +67,17 @@ export const instructorSchema = yup.object().shape({
 });
 
 export const heroSchema = yup.object().shape({
-  title: yup.string(),
-  subtitle: yup.string(),
-  button: yup.string(),
-  image: yup.string(),
+  title: yup.string().required("This field is required"),
+  subtitle: yup.string().required("This field is required"),
+  button: yup.string().required("This field is required"),
+image : yup.string().required()
+
+});
+
+
+export const testimonialSchema = yup.object().shape({
+  name: yup.string().required("This field is required"),
+ image: yup.string().required("This field is required"),
+ review: yup.string().required("This field is required"),
+
 });
