@@ -1,29 +1,19 @@
 "use client";
-import React, { useState, useRef } from "react";
 
-import {
-  Grid,
-  Typography,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  colors,
-  useTheme,
-} from "../lib/mui";
-
-import Header from "../components/Header";
-import Input from "../components/Input";
-import Draft from "../components/Draft";
-import DropDown from "../components/DropDown";
-import CourseStepper from "../components/CourseStepper";
-import DynamicField from "../components/DynamicField";
-import { EditorState, convertToRaw } from "draft-js";
+import CourseStepper from "@/app/components/CourseStepper";
+import DropDown from "@/app/components/DropDown";
+import DynamicField from "@/app/components/DynamicField";
+import FileInput from "@/app/components/FileInput";
+import Header from "@/app/components/Header";
+import Input from "@/app/components/Input";
+import Draft from "@/app/components/Draft";
+import { CourseProps, OptionProps } from "@/app/types/_types";
+import convertTime from "@/app/utils/ConvertTime";
+import { Grid, Typography } from "@mui/material";
+import   { EditorState } from "draft-js";
+import { useRef, useState } from "react";
+import {useFieldArray, useForm} from "react-hook-form"
 import Image from "next/image";
-import convertTime from "../utils/ConvertTime";
-import { useFieldArray, useForm } from "react-hook-form";
-import { CourseProps, OptionProps } from "../types/_types";
-
-import FileInput from "../components/FileInput";
 
 export default function page() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,7 +40,7 @@ export default function page() {
       isFeatured: "false",
       isTrending: "false",
       isOnline: "false",
-      image: "",
+      imageSrc: "",
       prerequisites: [{ name: undefined }],
       learningObj: [{ name: undefined }],
       curriculum: [{ name: undefined }],
@@ -348,11 +338,11 @@ export default function page() {
               placeholder="Upload  Image"
               accept="image/*"
               name="image"
-              register={register("image", { required: true })}
-              error={!!errors.image}
+              register={register("imageSrc", { required: true })}
+              error={!!errors.imageSrc}
               onChangeFileInput={onImageChangeFile}
             />
-            {!!errors.image && (
+            {!!errors.imageSrc && (
               <Typography color="red">This field is required</Typography>
             )}
           </Grid>
