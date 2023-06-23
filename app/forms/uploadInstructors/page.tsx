@@ -4,9 +4,13 @@ import { Grid, TextField } from "@/app/lib/mui";
 import { instructorSchema } from "@/app/lib/yup";
 import { InstructorType } from "@/app/types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
-import { useForm } from "react-hook-form";
-export default function Page() {
+import { MuiFileInput } from "mui-file-input";
+import React, { ChangeEvent, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+export default function page() {
+  const [instructorImage, setInstructorImage] = useState<File>();
+  const [reviewerImage, setReviewerImage] = useState<File>();
+
   const {
     register,
     handleSubmit,
@@ -17,7 +21,6 @@ export default function Page() {
       name: "",
       bio: "",
       email: "",
-      image: "",
       rating: 3.5,
       reviews: "",
       facebook: "",
@@ -31,7 +34,21 @@ export default function Page() {
   });
 
   const onSubmitHandler = (values: InstructorType) => {
-    console.log(values);
+    console.log({ ...values, image: instructorImage, reviewerImage });
+  };
+
+  const onSelectInstructorsImageHandler = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    setInstructorImage(file);
+  };
+
+  const onSelectReviewersImageHandler = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    setReviewerImage(file);
   };
 
   return (
@@ -70,16 +87,21 @@ export default function Page() {
         </Grid>
 
         <Grid container item xs={12} md={4}>
-          <TextField
-            id="email"
-            // error={!!errors.email}
-            placeholder="JohnDoe @gmail.com"
-            label="Email"
-            // helperText={errors.email?.message}
-            variant="outlined"
-            autoComplete="false"
-            fullWidth
+          <input
+            type="file"
+            {...register("image")}
+            id="fileInput"
+            accept="image"
+            className="custom-file-input"
+            onChange={onSelectInstructorsImageHandler}
           />
+          <label htmlFor="fileInput" className="custom-file-label">
+            {instructorImage ? (
+              <p>{instructorImage.name} </p>
+            ) : (
+              "Instructors Image"
+            )}
+          </label>
         </Grid>
 
         <Grid container item xs={12}>
@@ -151,16 +173,17 @@ export default function Page() {
         </Grid>
 
         <Grid container item xs={12} md={6}>
-          <TextField
-            id="reviewerImage"
-            // error={!!errors.email}
-            placeholder="4.5"
-            label="ReviewerImage"
-            // helperText={errors.email?.message}
-            variant="outlined"
-            autoComplete="false"
-            fullWidth
+          <input
+            type="file"
+            {...register("reviewerImage")}
+            id="ReviewerImage"
+            accept="image"
+            className="custom-file-input"
+            onChange={onSelectReviewersImageHandler}
           />
+          <label htmlFor="ReviewerImage" className="custom-file-label">
+            {reviewerImage ? <p>{reviewerImage.name} </p> : "Reviewer Image"}
+          </label>
         </Grid>
 
         <Grid container item xs={12} md={6}>

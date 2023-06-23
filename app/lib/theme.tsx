@@ -151,6 +151,7 @@ export const themeSettings = (mode: PaletteMode) => {
         fontSize: 14,
       },
     },
+    
   };
 };
 

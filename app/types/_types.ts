@@ -1,6 +1,3 @@
-import { EditorState } from "draft-js";
-import { string } from "yup";
-
 export type FeaturedCourseArrType = {
   id: number;
   img: string;
@@ -9,6 +6,7 @@ export type FeaturedCourseArrType = {
   author: string;
   price: string;
 };
+
 
 
 export type CourseProps ={
@@ -32,35 +30,47 @@ description:string
 
 
 export interface OptionProps {
-  value: string 
-  label: string 
+  value: string;
+  label: string;
 }
 
+export type LoginType = {
+  email: string;
+  password: string;
+};
 
+export type SignUpType = {
+  name: string
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
-export type LoginType ={
-  email : string
-  password: string
-}
+export type InstructorType = {
+  name: string;
+  email: string;
+  image: string;
+  bio: string;
+  rating: number;
+  reviews: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
+  reviewer: string;
+  reviewerImage: string;
+  reviewerComment: string;
+};
 
-export type SignUpType ={
-  email : string
-  password: string
-  confirmPassword :string
-}
+export type HeroType = {
+  title: string;
+  subtitle: string;
+  button: string;
+  image: "";
+};
 
-export type InstructorType ={
-name : string,
-email: string
-image: string
-bio: string
-rating:  number
-reviews:string
-facebook:string
-twitter:string
-instagram: string
-linkedin:string
-reviewer:string
-reviewerImage:string
-reviewerComment:string
-}
+export type TestimonialType = {
+  name: string;
+  image: string;
+  review: string;
+};

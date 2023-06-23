@@ -11,12 +11,7 @@ export default function page() {
           <Typography variant="h3" fontWeight="bold">
             Your Instructors
           </Typography>
-          <Link href="/instructor/uploadInstructors">
-            {" "}
-            <Typography variant="h6" fontWeight="bold">
-              Upload Instructors
-            </Typography>
-          </Link>
+       
         </Grid>
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }} m="10px 0">
           <InstructorCard />

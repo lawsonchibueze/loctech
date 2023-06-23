@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 
 import {
   Grid,
@@ -11,8 +11,6 @@ import {
   useTheme,
 } from "../lib/mui";
 
-// Isaac working on Cloudinary
-import { ImageUpload } from "../utils/ImageAndVideoUpload";
 import Header from "../components/Header";
 import Input from "../components/Input";
 import Draft from "../components/Draft";
@@ -27,11 +25,9 @@ import { CourseProps, OptionProps } from "../types/_types";
 
 import FileInput from "../components/FileInput";
 
-declare global {
-  var cloudinary: any;
-}
-export default function Page() {
+export default function page() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [image, setImage] = useState<string>();
   const [videoURL, setVideo] = useState<string>();
   const [duration, setDuration] = useState(0);
 
@@ -41,7 +37,6 @@ export default function Page() {
     handleSubmit,
     formState: { errors },
     control,
-    watch,
     setValue,
   } = useForm<CourseProps>({
     // resolver:yupResolver(courseSchema) ,
@@ -55,7 +50,7 @@ export default function Page() {
       isFeatured: "false",
       isTrending: "false",
       isOnline: "false",
-      imageSrc: "",
+      image: "",
       prerequisites: [{ name: undefined }],
       learningObj: [{ name: undefined }],
       curriculum: [{ name: undefined }],
@@ -66,16 +61,6 @@ export default function Page() {
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
   const [editorError, setEditorError] = useState(false); //wysiwyg error state
-
-  // state for the cloudinary image by Isaac
-  const imageSrc = watch("imageSrc");
-  const setCustomValue = (id: any, value: any) => {
-    setValue(id, value, {
-      shouldDirty: true,
-      shouldTouch: true,
-      shouldValidate: true,
-    });
-  };
 
   const {
     fields: prerequisitesField,
@@ -133,6 +118,13 @@ export default function Page() {
 
   ////////FILE INPUT
 
+  const onImageChangeFile = (file: File) => {
+    //change event for image file input
+    const imgURL = URL.createObjectURL(file); // converts file evemt to a string
+    setImage(imgURL);
+    // setCourse({ ...course, image: image || null });
+  };
+
   const onVideoChangeFile = (file: File) => {
     //change event for  video file input
     console.log(file);
@@ -156,7 +148,7 @@ export default function Page() {
 
     console.log({
       ...values,
-      imageSrc: imageSrc,
+      image: image,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
@@ -350,13 +342,19 @@ export default function Page() {
 
         {/* Course Media */}
         <CourseStepper title=" Course Media" number={6} />
-
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={6}>
-            <ImageUpload
-              onChange={(value) => setCustomValue("imageSrc", value)}
-              value={imageSrc}
+            <FileInput
+              placeholder="Upload  Image"
+              accept="image/*"
+              name="image"
+              register={register("image", { required: true })}
+              error={!!errors.image}
+              onChangeFileInput={onImageChangeFile}
             />
+            {!!errors.image && (
+              <Typography color="red">This field is required</Typography>
+            )}
           </Grid>
 
           <Grid container item xs={12} md={6} direction="column">
@@ -376,6 +374,20 @@ export default function Page() {
       </Grid>
 
       <Grid container>
+        <Grid
+          height="100px"
+          width="100px"
+          container
+          item
+          justifyContent="flex-start"
+          xs={12}
+          md={6}
+        >
+          {image ? (
+            <Image src={image} width={100} height={100} alt="image" />
+          ) : null}
+        </Grid>
+
         <Grid
           height="100px"
           width="100px"
