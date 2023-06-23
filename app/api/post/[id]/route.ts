@@ -76,7 +76,7 @@ export const DELETE = async (
     },
   });
 
-  return new Response(JSON.stringify(deletedPost), {
+  return new Response("Deleted Successfully", {
     status: 200,
   });
 };

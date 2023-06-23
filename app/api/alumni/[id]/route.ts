@@ -58,5 +58,7 @@ export const DELETE = async (req: Request, params: AlumniParams) => {
     },
   });
 
-  return new Response(JSON.stringify(deletedAlumni), { status: 200 });
+  return new Response("Deleted Successfully", {
+    status: 200,
+  });
 };

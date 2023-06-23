@@ -25,7 +25,7 @@ description:string
   learningObj:{ name: string }[] 
   curriculum: { name: string }[] 
   video: string| null
-  image: string
+  imageSrc: string
   duration: number
 
 }
