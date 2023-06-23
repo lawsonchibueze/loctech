@@ -22,7 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "../lib/yup";
 import { SignUpType } from "../types/_types";
 
-export default function page() {
+export default function Page() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -42,6 +42,7 @@ export default function page() {
 
   const formSubmitHandler = (value: SignUpType) => {
     console.log(value);
+  
   };
 
   return (
