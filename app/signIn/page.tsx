@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   const theme = useTheme();
@@ -40,6 +41,19 @@ export default function Page() {
 
   const formSubmitHandler = (value: LoginType) => {
     console.log(value);
+    signIn("credentials", {
+      ...value,
+      redirect: false,
+    }).then((callback) => {
+      if (callback?.ok) {
+        console.log(callback);
+        console.log("Logged in Successfully");
+      }
+
+      if (callback?.error) {
+        console.log(callback.error);
+      }
+    });
   };
 
   return (

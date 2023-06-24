@@ -13,6 +13,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Link from "next/link";
 import { Grid, useTheme, Box, Typography } from "../lib/mui";
 import { ColorModeContext, tokens } from "../lib/theme";
+import { getSession, useSession } from "next-auth/react";
 
 function NavBar() {
   const theme = useTheme();
@@ -20,10 +21,12 @@ function NavBar() {
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
 
+  const { data: session } = useSession();
+
   const handleDrawer = () => {
     setToggle(!toggle);
   };
-
+  console.log(session);
   console.log(theme.palette.mode);
   return (
     <AppBar

@@ -49,8 +49,10 @@ export default function Page() {
     const data = {
       name: value.name,
       email: emailToLowerCase,
-      password: Password,
+      password: value.password,
     };
+
+    console.log(data);
 
     axios
       .post("/api/register", data)
