@@ -51,6 +51,7 @@ export default function Page() {
       email: emailToLowerCase,
       password: value.password,
     };
+    console.log(data)
 
     console.log(data);
 

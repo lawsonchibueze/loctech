@@ -20,7 +20,6 @@ import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
-import { signIn } from "next-auth/react";
 
 export default function Page() {
   const theme = useTheme();

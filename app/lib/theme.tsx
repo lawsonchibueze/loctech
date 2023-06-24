@@ -166,6 +166,7 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 });
 
 export const useMode = (): [Theme, ColorModeContextType] => {
+ 
   const [mode, setMode] = useState<PaletteMode>(() => {
     const storedMode = localStorage.getItem("colorMode"); //get mode from localstorage
     return (storedMode as PaletteMode) || "light";
