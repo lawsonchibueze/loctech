@@ -1,3 +1,4 @@
+
 import getCurrentUser from "../actions/getCurrentUser";
 
 export const checkCurrentUser = async () => {

@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
-
+import { signIn } from "next-auth/react";
 export default function Page() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -38,8 +38,19 @@ export default function Page() {
     },
   });
 
-  const formSubmitHandler = (value: LoginType) => {
-    console.log(value);
+  const formSubmitHandler = async (value: LoginType) => {
+    try {
+      const { email, password } = value;
+      const emailToLowerCase = email.toLowerCase();
+      const data = await signIn("credentials", {
+        redirect: false,
+        email: emailToLowerCase,
+        password: password,
+      });
+      console.log( "signIn data", data)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

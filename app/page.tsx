@@ -1,3 +1,4 @@
+"use  server"
 import Image from "next/image";
 import { Box, Grid } from "./lib/mui";
 import Hero from "./components/Hero";
@@ -9,7 +10,12 @@ import PathCard from "./components/PathCard";
 import SubjectCard from "./components/Subjects/SubjectCard";
 import Newsletter from "./components/Newsletter";
 import AnimatedRoute from "./components/AnimatedRoute";
-export default function Home() {
+import getCurrentUser from "./actions/getCurrentUser";
+ export default async function Home() {
+  const currentUser = await getCurrentUser();
+
+   console.log(currentUser)
+
   return (
     <AnimatedRoute>
       <Hero />

@@ -1,5 +1,4 @@
 "use client";
-import React, { useState, useRef } from "react";
 
 import {
   Grid,
@@ -25,6 +24,7 @@ import { CourseProps, OptionProps } from "../../types/_types";
 
 import FileInput from "../../components/FileInput";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
+import { useRef, useState } from "react";
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
