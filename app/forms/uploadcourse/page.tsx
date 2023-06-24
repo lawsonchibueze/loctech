@@ -1,23 +1,33 @@
 "use client";
 
-import CourseStepper from "@/app/components/CourseStepper";
-import DropDown from "@/app/components/DropDown";
-import DynamicField from "@/app/components/DynamicField";
-import FileInput from "@/app/components/FileInput";
-import Header from "@/app/components/Header";
-import Input from "@/app/components/Input";
-import Draft from "@/app/components/Draft";
-import { CourseProps, OptionProps } from "@/app/types/_types";
-import convertTime from "@/app/utils/ConvertTime";
-import { Grid, Typography } from "@mui/material";
-import   { EditorState } from "draft-js";
-import { useRef, useState } from "react";
-import {useFieldArray, useForm} from "react-hook-form"
-import Image from "next/image";
+import {
+  Grid,
+  Typography,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  colors,
+  useTheme,
+} from "../../lib/mui";
 
-export default function page() {
+import Header from "../../components/Header";
+import Input from "../../components/Input";
+import Draft from "../../components/Draft";
+import DropDown from "../../components/DropDown";
+import CourseStepper from "../../components/CourseStepper";
+import DynamicField from "../../components/DynamicField";
+import { EditorState, convertToRaw } from "draft-js";
+import Image from "next/image";
+import convertTime from "../../utils/ConvertTime";
+import { useFieldArray, useForm } from "react-hook-form";
+import { CourseProps, OptionProps } from "../../types/_types";
+
+import FileInput from "../../components/FileInput";
+import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
+import { useRef, useState } from "react";
+
+export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [image, setImage] = useState<string>();
   const [videoURL, setVideo] = useState<string>();
   const [duration, setDuration] = useState(0);
 
@@ -27,6 +37,7 @@ export default function page() {
     handleSubmit,
     formState: { errors },
     control,
+    watch,
     setValue,
   } = useForm<CourseProps>({
     // resolver:yupResolver(courseSchema) ,
@@ -60,6 +71,15 @@ export default function page() {
       control,
       name: "prerequisites",
     });
+
+  const imageSrc = watch("imageSrc");
+  const setCustomValue = (id: any, value: any) => {
+    setValue(id, value, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+  };
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
     //dynamic array for learningObjField
@@ -108,13 +128,6 @@ export default function page() {
 
   ////////FILE INPUT
 
-  const onImageChangeFile = (file: File) => {
-    //change event for image file input
-    const imgURL = URL.createObjectURL(file); // converts file evemt to a string
-    setImage(imgURL);
-    // setCourse({ ...course, image: image || null });
-  };
-
   const onVideoChangeFile = (file: File) => {
     //change event for  video file input
     console.log(file);
@@ -138,7 +151,7 @@ export default function page() {
 
     console.log({
       ...values,
-      image: image,
+      imageSrc: imageSrc,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
@@ -334,17 +347,10 @@ export default function page() {
         <CourseStepper title=" Course Media" number={6} />
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={6}>
-            <FileInput
-              placeholder="Upload  Image"
-              accept="image/*"
-              name="image"
-              register={register("imageSrc", { required: true })}
-              error={!!errors.imageSrc}
-              onChangeFileInput={onImageChangeFile}
+            <ImageUpload
+              onChange={(value) => setCustomValue("imageSrc", value)}
+              value={imageSrc}
             />
-            {!!errors.imageSrc && (
-              <Typography color="red">This field is required</Typography>
-            )}
           </Grid>
 
           <Grid container item xs={12} md={6} direction="column">
@@ -364,20 +370,6 @@ export default function page() {
       </Grid>
 
       <Grid container>
-        <Grid
-          height="100px"
-          width="100px"
-          container
-          item
-          justifyContent="flex-start"
-          xs={12}
-          md={6}
-        >
-          {image ? (
-            <Image src={image} width={100} height={100} alt="image" />
-          ) : null}
-        </Grid>
-
         <Grid
           height="100px"
           width="100px"
