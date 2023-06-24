@@ -1,25 +1,36 @@
-"use client"
-import { Box, Container, Grid, IconButton, Toolbar, useTheme } from '@/app/lib/mui'
+"use client";
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  Toolbar,
+  useTheme,
+} from "@/app/lib/mui";
 import React, { useContext, useState } from "react";
-import NavItem from './NavItem'
+import NavItem from "./NavItem";
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ColorModeContext, tokens } from '@/app/lib/theme';
+import { ColorModeContext, tokens } from "@/app/lib/theme";
+import { useSession } from "next-auth/react";
 export default function NavContent() {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const colorMode = useContext(ColorModeContext);
-    const [toggle, setToggle] = useState<Boolean>(false);
-  
-    const handleDrawer = () => {
-        setToggle(!toggle);
-      };
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const colorMode = useContext(ColorModeContext);
+  const [toggle, setToggle] = useState<Boolean>(false);
+
+  const { data: session } = useSession();
+  console.log(session);
+
+  const handleDrawer = () => {
+    setToggle(!toggle);
+  };
   return (
-   <>
-    <Container maxWidth="xl">
+    <>
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Grid
             container
@@ -115,6 +126,6 @@ export default function NavContent() {
           </Box>
         </Box>
       )}
-   </>
-  )
+    </>
+  );
 }

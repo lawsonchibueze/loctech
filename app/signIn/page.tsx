@@ -21,6 +21,7 @@ import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
 import { signIn } from "next-auth/react";
+
 export default function Page() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -39,6 +40,21 @@ export default function Page() {
   });
 
   const formSubmitHandler = async (value: LoginType) => {
+    // console.log(value);
+    // signIn("credentials", {
+    //   ...value,
+    //   redirect: false,
+    // }).then((callback) => {
+    //   if (callback?.ok) {
+    //     console.log(callback);
+    //     console.log("Logged in Successfully");
+    //   }
+
+    //   if (callback?.error) {
+    //     console.log(callback.error);
+    //   }
+    // });
+
     try {
       const { email, password } = value;
       const emailToLowerCase = email.toLowerCase();
@@ -47,9 +63,9 @@ export default function Page() {
         email: emailToLowerCase,
         password: password,
       });
-      console.log( "signIn data", data)
+      console.log("signIn data", data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
