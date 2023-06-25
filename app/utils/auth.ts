@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
 import prisma from "@/prisma/prisma";
-import { User, UserRole } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -13,6 +13,32 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+
+      // profile(profile, tokens) {
+      //   return {
+      //     id: profile.id,
+      //     name: profile.name,
+      //     email: profile.email,
+      //     image: profile.picture,
+      //     then: () => {
+      //       console.log(profile);
+      //       return {
+      //         name: profile.name,
+      //         email: profile.email,
+      //         image: profile.picture,
+      //         accessToken: tokens.access_token,
+      //         refreshToken: tokens.refresh_token,
+      //       };
+      //     },
+      //   };
+      // },
     }),
     CredentialsProvider({
       name: "credentials",
@@ -49,13 +75,35 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user, profile }) => {
+      console.log('token', token);
       const sessUser = user as User;
 
       return { ...token, ...sessUser };
     },
 
-    session: ({ session, token, user }) => {
+    signIn: async ({ user, account, profile, email, credentials }) => {
+      const checkedUser = await prisma.user.findUnique({
+        where: {
+          email: user.email as string,
+        },
+      });
+
+      if (!checkedUser) {
+        await prisma.user.create({
+          data: {
+            email: user.email as string,
+            name: user.name as string,
+            image: user.image as string,
+            role: "USER",
+          },
+        });
+      }
+
+      return true;
+    },
+
+    session: async ({ session, token, user }) => {
       return {
         ...session,
         user: {

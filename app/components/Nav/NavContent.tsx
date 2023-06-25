@@ -24,6 +24,7 @@ export default function NavContent() {
 
   const { data: session } = useSession();
   console.log(session);
+  
 
   const handleDrawer = () => {
     setToggle(!toggle);
