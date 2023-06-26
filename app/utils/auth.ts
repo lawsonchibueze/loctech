@@ -5,10 +5,27 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
 import prisma from "@/prisma/prisma";
-import { User, UserRole } from "@prisma/client";
+import { User } from "@prisma/client";
+
+import { randomUUID } from "crypto";
+import { encode, decode } from "next-auth/jwt";
+
+// helper function that will generate session token ids
+const generateSessionToken = () => {
+  return randomUUID();
+};
+
+// helper  function that will calculate the maxAge for a cookie
+const fromDate = () => {
+  const maxAge = 30 * 24 * 60 * 60; // 30 days
+
+  return new Date(Date.now() + maxAge * 1000);
+};
+
+const adapter = PrismaAdapter(prisma);
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -49,13 +66,63 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: ({ token, user }) => {
+    signIn: async ({ user, account, profile, email, credentials }) => {
+      if (user) {
+        const checkedUser = await prisma.user.findUnique({
+          where: {
+            email: user.email as string,
+          },
+        });
+
+        if (!checkedUser) {
+          const newUser = await prisma.user.create({
+            data: {
+              email: user.email as string,
+              name: user.name as string,
+              image: user.image as string,
+            },
+          });
+
+          await prisma.account.create({
+            data: {
+              userId: newUser.id,
+              type: account?.type as string,
+              provider: account?.provider as string,
+              providerAccountId: account?.providerAccountId as string,
+              access_token: account?.accessToken as string,
+              refresh_token: account?.refreshToken as string,
+              expires_at: account?.expires_at as number,
+              scope: account?.scope as string,
+              token_type: account?.token_type as string,
+              id_token: account?.id_token as string,
+            },
+          });
+        }
+
+        // const sessionToken = generateSessionToken();
+        // const sessionExpiry = fromDate();
+
+        // await adapter.createSession({
+        //   sessionToken: sessionToken,
+        //   userId: user.id,
+        //   expires: sessionExpiry,
+        // });
+
+        // setCookie("next-auth.session-token", sessionToken, {
+        //   expires: sessionExpiry,
+        // });
+      }
+
+      return true;
+    },
+
+    jwt: ({ token, user, profile, account }) => {
       const sessUser = user as User;
 
       return { ...token, ...sessUser };
     },
 
-    session: ({ session, token, user }) => {
+    session: async ({ session, token, user }) => {
       return {
         ...session,
         user: {
@@ -75,5 +142,16 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+
+  jwt: {
+    encode: async ({ secret, token, maxAge }) => {
+      return encode({ secret, token, maxAge });
+    },
+
+    decode: async ({ secret, token }) => {
+      return decode({ secret, token });
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };

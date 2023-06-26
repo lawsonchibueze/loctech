@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@/app/lib/mui";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import NavItem from "./NavItem";
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";

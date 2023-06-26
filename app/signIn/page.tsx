@@ -193,6 +193,8 @@ export default function Page() {
                     backgroundColor: colors.rose[600],
                   },
                 }}
+                onClick={() => signIn("google")}
+                // onClick={() => signOut()}
               >
                 {" "}
                 <Google />
