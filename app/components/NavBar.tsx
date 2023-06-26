@@ -1,13 +1,7 @@
 import AppBar from "@mui/material/AppBar";
 import NavContent from "./Nav/NavContent";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
- function NavBar() {
-
-
-
-  console.log("user",);
-
+function NavBar() {
   return (
     <AppBar position="sticky">
       <NavContent />
