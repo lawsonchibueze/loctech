@@ -5,6 +5,7 @@ import {
   Grid,
   IconButton,
   Toolbar,
+  Typography,
   useTheme,
 } from "@/app/lib/mui";
 import React, { useContext, useState, useEffect } from "react";
@@ -15,15 +16,26 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ColorModeContext, tokens } from "@/app/lib/theme";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+
+
 export default function NavContent() {
   const theme = useTheme();
+  const router = useRouter()
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
+  const { data: session } = useSession() as unknown as any;
+  console.log(session?.user.role );
 
-  const { data: session } = useSession();
-  console.log(session);
+
+const SignOutHandler = () =>{
+  signOut()
+  // router.push("/")
+}
+
 
   const handleDrawer = () => {
     setToggle(!toggle);
@@ -77,11 +89,25 @@ export default function NavContent() {
                 <NavItem title="Courses" to="/courses" />
 
                 <NavItem title="About us" to="/" />
-                <NavItem title="Forms" to="/forms" />
+             { session?.user.role === "ADMIN" && <NavItem title="Forms" to="/forms" />}
 
                 <NavItem title="Instructors" to="/instructor/instructors" />
 
-                <NavItem title="SignIn" to="/signIn" />
+                {session !== null  ? (
+                  <div onClick={SignOutHandler}>
+                    <Typography
+                      variant="h5"
+                      fontWeight="bold"
+                      color={colors.rose[100]}
+                      textAlign={{ xs: "start", md: "center" }}
+                      sx={{ m: "0 5px", p: "5px", cursor: "pointer" }}
+                    >
+                      SignOut
+                    </Typography>
+                  </div>
+                ) : (
+                  <NavItem title="SignIn" to="/signIn" />
+                )}
               </Box>
             </Grid>
           </Grid>
@@ -129,3 +155,4 @@ export default function NavContent() {
     </>
   );
 }
+
