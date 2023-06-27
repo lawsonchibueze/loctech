@@ -41,6 +41,12 @@ export default function Page() {
     },
   });
 
+
+const googleAuthSignIn  =  async() => {
+  const data   =  await signIn("google")
+  console.log("signin with google",data)
+}
+
   const formSubmitHandler = async (value: LoginType) => {
     try {
       const { email, password } = value;
@@ -63,7 +69,7 @@ export default function Page() {
   };
 
   return (
-    <form onSubmit={handleSubmit(formSubmitHandler)}>
+    <>
       <Grid container item md={12} justifyContent="center" m="2rem 0">
         <Grid
           item
@@ -76,6 +82,7 @@ export default function Page() {
           borderRadius="8px"
           sx={{ backgroundColor: colors.primary[100] }}
         >
+    <form onSubmit={handleSubmit(formSubmitHandler)} style={{width:"100%"}}>
           <Box m="1.5rem 0">
             <Typography variant="h3" fontWeight="bold">
               Welcome Back!
@@ -164,8 +171,73 @@ export default function Page() {
             <Typography color="red">{error}</Typography>
           </Grid>
 
-          {/*  */}
+ 
+    </form>
+             {/*  */}
+ {/* buttons */}
+ <Grid container rowSpacing={2} columnSpacing={2}>
+     <Grid container item md={4} sm={12}>
+       <Button
+       onClick={googleAuthSignIn  }
+         variant="contained"
+         fullWidth
+         sx={{
+           textTransform: "none",
+           fontWeight: "bold",
+           color: "#fff",
+           backgroundColor: colors.rose[500],
+           "&:hover": {
+             backgroundColor: colors.rose[600],
+           },
+         }}
+       >
+         {" "}
+         <Google />
+         Google{" "}
+       </Button>
+     </Grid>
 
+     {/*  */}
+     <Grid container item md={4} sm={12}>
+       <Button
+         variant="contained"
+         fullWidth
+         sx={{
+           textTransform: "none",
+           fontWeight: "bold",
+           color: "#fff",
+           backgroundColor: colors.rose[500],
+           "&:hover": {
+             backgroundColor: colors.rose[600],
+           },
+         }}
+       >
+         {" "}
+         <FacebookRounded />
+         Facebook{" "}
+       </Button>
+     </Grid>
+     {/*  */}
+     <Grid container item md={4} sm={12}>
+       <Button
+         variant="contained"
+         fullWidth
+         sx={{
+           textTransform: "none",
+           fontWeight: "bold",
+           color: "#fff",
+           backgroundColor: colors.rose[500],
+           "&:hover": {
+             backgroundColor: colors.rose[600],
+           },
+         }}
+       >
+         {" "}
+         <LinkedIn />
+         LinkedIn{" "}
+       </Button>
+     </Grid>
+   </Grid>
           <Grid
             container
             item
@@ -178,69 +250,7 @@ export default function Page() {
             <hr style={{ border: "1px solid black", width: "20px" }} />
           </Grid>
 
-          {/* buttons */}
-          <Grid container rowSpacing={2} columnSpacing={2}>
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <Google />
-                Google{" "}
-              </Button>
-            </Grid>
-
-            {/*  */}
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <FacebookRounded />
-                Facebook{" "}
-              </Button>
-            </Grid>
-            {/*  */}
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <LinkedIn />
-                LinkedIn{" "}
-              </Button>
-            </Grid>
-          </Grid>
+         
 
           <Grid container justifyContent="center" m="1rem 0">
             <Typography>
@@ -255,7 +265,9 @@ export default function Page() {
             </Typography>
           </Grid>
         </Grid>
+    
       </Grid>
-    </form>
+    
+    </>
   );
 }

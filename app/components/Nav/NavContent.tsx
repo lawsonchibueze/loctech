@@ -28,7 +28,7 @@ export default function NavContent() {
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
   const { data: session } = useSession() as unknown as any;
-  console.log(session?.user.role );
+  console.log("session",session?.user.role );
 
 
 const SignOutHandler = () =>{
