@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,10 +24,22 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpSchema } from "../lib/yup";
 import { SignUpType } from "../types/_types";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Page() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const router = useRouter();
+  const [error, setError] = React.useState("");
+  const { data: session, status } = useSession() as unknown as any;
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/"); // Redirect to homepage if logged in
+    }
+  }, [status, router]);
+
 
   const {
     register,
@@ -51,7 +63,7 @@ export default function Page() {
       email: emailToLowerCase,
       password: value.password,
     };
-    console.log(data)
+    console.log(data);
 
     console.log(data);
 
@@ -59,10 +71,13 @@ export default function Page() {
       .post("/api/register", data)
       .then((response) => {
         // Request was successful
-        console.log(response.data);
+        if (response.data) {
+          router.push("/signIn");
+        }
       })
       .catch((error) => {
         // An error occurred
+        setError("An error occurred");
         console.error(error);
       });
   };
@@ -189,6 +204,9 @@ export default function Page() {
               Sign Up
             </Button>
           </Grid>
+          <Grid container justifyContent="center">
+            <Typography color="red">{error}</Typography>
+          </Grid>
           {/*  */}
 
           <Grid
@@ -208,6 +226,7 @@ export default function Page() {
             <Grid container item md={4} sm={12}>
               <Button
                 variant="contained"
+                onClick={() => signIn("google")}
                 fullWidth
                 sx={{
                   textTransform: "none",

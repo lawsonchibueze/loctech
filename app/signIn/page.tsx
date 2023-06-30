@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../lib/yup";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 
 export default function Page() {
@@ -28,6 +28,8 @@ export default function Page() {
   const colors = tokens(theme.palette.mode);
   const router = useRouter();
   const [error, setError] = React.useState("");
+  const { data: session, status } = useSession() as unknown as any;
+
   const {
     register,
     handleSubmit,
@@ -41,10 +43,11 @@ export default function Page() {
     },
   });
 
-  const googleAuthSignIn = async () => {
-    const data  = await signIn("google");
-    console.log("signin with google");
-  };
+  useEffect(() => {
+    if (status === "authenticated") {
+     redirect("/"); // Redirect to homepage if logged in
+    }
+  }, [status, router]);
 
   const formSubmitHandler = async (value: LoginType) => {
     try {
@@ -55,11 +58,7 @@ export default function Page() {
         email: emailToLowerCase,
         password: password,
       });
-      console.log("signIn data", data);
-      if (data?.error === null) {
-        console.log("yes, theres, data");
-        router.push("/");
-      } else {
+      if (status !== "authenticated") {
         setError("Invalid credential");
       }
     } catch (error) {
@@ -69,22 +68,22 @@ export default function Page() {
 
   return (
     <>
-        <Grid container item md={12} justifyContent="center" m="2rem 0">
-          <Grid
-            item
-            container
-            // justifyContent="center"
-            direction="column"
-            alignItems="center"
-            md={4}
-            padding="2rem"
-            borderRadius="8px"
-            sx={{ backgroundColor: colors.primary[100] }}
+      <Grid container item md={12} justifyContent="center" m="2rem 0">
+        <Grid
+          item
+          container
+          // justifyContent="center"
+          direction="column"
+          alignItems="center"
+          md={4}
+          padding="2rem"
+          borderRadius="8px"
+          sx={{ backgroundColor: colors.primary[100] }}
+        >
+          <form
+            onSubmit={handleSubmit(formSubmitHandler)}
+            style={{ width: "100%" }}
           >
-      <form
-        onSubmit={handleSubmit(formSubmitHandler)}
-        style={{ width: "100%" }}
-      >
             <Box m="1.5rem 0">
               <Typography variant="h3" fontWeight="bold">
                 Welcome Back!
@@ -165,6 +164,7 @@ export default function Page() {
                     backgroundColor: colors.rose[600],
                   },
                 }}
+                // onClick={() => signIn("google")}
               >
                 Sign In
               </Button>
@@ -174,104 +174,101 @@ export default function Page() {
             </Grid>
 
             {/*  */}
+          </form>
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="center"
+            m="1rem 0"
+          >
+            <hr style={{ border: "1px solid black", width: "20px" }} />
+            <Typography m="5px"> Or Sign in with</Typography>{" "}
+            <hr style={{ border: "1px solid black", width: "20px" }} />
+          </Grid>
 
-          
-      </form>
-      <Grid
-              container
-              item
-              alignItems="center"
-              justifyContent="center"
-              m="1rem 0"
-            >
-              <hr style={{ border: "1px solid black", width: "20px" }} />
-              <Typography m="5px"> Or Sign in with</Typography>{" "}
-              <hr style={{ border: "1px solid black", width: "20px" }} />
+          {/* buttons */}
+          <Grid container rowSpacing={2} columnSpacing={2}>
+            <Grid container item md={4} sm={12}>
+              <Button
+                onClick={() => signIn("google")}
+                variant="contained"
+                fullWidth
+                sx={{
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  color: "#fff",
+                  backgroundColor: colors.rose[500],
+                  "&:hover": {
+                    backgroundColor: colors.rose[600],
+                  },
+                }}
+              >
+                {" "}
+                <Google />
+                Google{" "}
+              </Button>
             </Grid>
 
-            {/* buttons */}
-            <Grid container rowSpacing={2} columnSpacing={2}>
-              <Grid container item md={4} sm={12}>
-                <button
-                  onClick={googleAuthSignIn}
-                  //  variant="contained"
-                  //  fullWidth
-                  //  sx={{
-                  //    textTransform: "none",
-                  //    fontWeight: "bold",
-                  //    color: "#fff",
-                  //    backgroundColor: colors.rose[500],
-                  //    "&:hover": {
-                  //      backgroundColor: colors.rose[600],
-                  //    },
-                  //  }}
-                >
-                  {" "}
-                  <Google />
-                  Google{" "}
-                </button>
-              </Grid>
-
-              {/*  */}
-              <Grid container item md={4} sm={12}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    textTransform: "none",
-                    fontWeight: "bold",
-                    color: "#fff",
-                    backgroundColor: colors.rose[500],
-                    "&:hover": {
-                      backgroundColor: colors.rose[600],
-                    },
-                  }}
-                >
-                  {" "}
-                  <FacebookRounded />
-                  Facebook{" "}
-                </Button>
-              </Grid>
-              {/*  */}
-              <Grid container item md={4} sm={12}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    textTransform: "none",
-                    fontWeight: "bold",
-                    color: "#fff",
-                    backgroundColor: colors.rose[500],
-                    "&:hover": {
-                      backgroundColor: colors.rose[600],
-                    },
-                  }}
-                >
-                  {" "}
-                  <LinkedIn />
-                  LinkedIn{" "}
-                </Button>
-              </Grid>
+            {/*  */}
+            <Grid container item md={4} sm={12}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  color: "#fff",
+                  backgroundColor: colors.rose[500],
+                  "&:hover": {
+                    backgroundColor: colors.rose[600],
+                  },
+                }}
+              >
+                {" "}
+                <FacebookRounded />
+                Facebook{" "}
+              </Button>
             </Grid>
-
-            <Grid container justifyContent="center" m="1rem 0">
-              <Typography>
-                {/*  eslint-disable-next-line react/no-unescaped-entities */}
-                Don't have an account?
-                <Link
-                  href="/signup"
-                  style={{
-                    textDecoration: "underline",
-                    color: colors.rose[500],
-                  }}
-                >
-                  Create one
-                </Link>
-              </Typography>
+            {/*  */}
+            <Grid container item md={4} sm={12}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  color: "#fff",
+                  backgroundColor: colors.rose[500],
+                  "&:hover": {
+                    backgroundColor: colors.rose[600],
+                  },
+                }}
+              >
+                {" "}
+                <LinkedIn />
+                LinkedIn{" "}
+              </Button>
             </Grid>
           </Grid>
 
+          <Grid container justifyContent="center" m="1rem 0">
+            <Typography>
+              {/*  eslint-disable-next-line react/no-unescaped-entities */}
+              Don't have an account?
+              <Link
+                href="/signup"
+                style={{
+                  textDecoration: "underline",
+                  color: colors.rose[500],
+                }}
+              >
+                Create one
+              </Link>
+            </Typography>
+          </Grid>
         </Grid>
+      </Grid>
     </>
   );
 }

@@ -21,11 +21,12 @@ description:string
   isOnline:string
   prerequisites:  { name: string }[] 
   learningObj:{ name: string }[] 
-  curriculum: { name: string }[] 
+  curriculumList: { name: string }[] 
+  targetAud : { name: string }[] 
   video: string| null
   imageSrc: string
   duration: number
-
+  curriculum: string
 }
 
 
@@ -47,26 +48,27 @@ export type SignUpType = {
 };
 
 export type InstructorType = {
-  name: string;
-  email: string;
-  image: string;
-  bio: string;
-  rating: number;
-  reviews: string;
-  facebook: string;
-  twitter: string;
-  instagram: string;
-  linkedin: string;
-  reviewer: string;
-  reviewerImage: string;
-  reviewerComment: string;
+ 
+  name: string
+  email: string | undefined
+  instructorImage: string | undefined
+  bio: string | undefined
+  rating: number | undefined
+  reviews: string | undefined
+  facebook: string | undefined
+  twitter: string | undefined
+  instagram: string | undefined
+  linkedin: string | undefined
+  reviewer: string | undefined
+  reviewerImage: string | undefined
+  reviewerComment: string | undefined
 };
 
 export type HeroType = {
   title: string;
   subtitle: string;
   button: string;
-  image: "";
+  image: string;
 };
 
 export type TestimonialType = {
