@@ -25,9 +25,9 @@ export default function NavContent() {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
-  const { data: session } = useSession() as unknown as any;
-  console.log(session?.user.role);
-  
+  const { data: session, status } = useSession() as unknown as any;
+  console.log("session", session);
+
   const SignOutHandler = () => {
     signOut();
     // router.push("/")
@@ -91,7 +91,7 @@ export default function NavContent() {
 
                 <NavItem title="Instructors" to="/instructor/instructors" />
 
-                {session !== null ? (
+                {status === "authenticated" ? (
                   <div onClick={SignOutHandler}>
                     <Typography
                       variant="h5"

@@ -23,13 +23,17 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { CourseProps, OptionProps } from "../../types/_types";
 
 import FileInput from "../../components/FileInput";
-import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
-import { useRef, useState } from "react";
+import { ImageUpload, VideoUpload } from "@/app/utils/ImageAndVideoUpload";
+import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { courseSchema } from "@/app/lib/yup";
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoURL, setVideo] = useState<string>();
-  const [duration, setDuration] = useState(0);
+  const { data: session } = useSession() as unknown as any;
+  const [error, setError] = useState("");
 
   const {
     //useForm Hook
@@ -39,6 +43,7 @@ export default function Page() {
     control,
     watch,
     setValue,
+    reset,
   } = useForm<CourseProps>({
     // resolver:yupResolver(courseSchema) ,
 
@@ -54,9 +59,11 @@ export default function Page() {
       imageSrc: "",
       prerequisites: [{ name: undefined }],
       learningObj: [{ name: undefined }],
-      curriculum: [{ name: undefined }],
+      curriculumList: [{ name: undefined }],
       video: "",
       duration: 0,
+      curriculum: "",
+      targetAud: [{ name: undefined }],
     },
   });
 
@@ -73,6 +80,8 @@ export default function Page() {
     });
 
   const imageSrc = watch("imageSrc");
+  const videoSrc = watch("video");
+  const duration = watch("duration");
   const setCustomValue = (id: any, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
@@ -80,6 +89,14 @@ export default function Page() {
       shouldValidate: true,
     });
   };
+
+  useEffect(() => {
+    if (videoSrc && videoRef.current) {
+      videoRef.current.addEventListener("loadedmetadata", () => {
+        setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
+      });
+    }
+  }, [videoRef, videoSrc]);
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
     //dynamic array for learningObjField
@@ -92,7 +109,13 @@ export default function Page() {
   const { fields: curriculumField, append: curriculumAppend } = useFieldArray({
     //dynamic array for curriculumfield
     control,
-    name: "curriculum",
+    name: "curriculumList",
+  });
+
+  const { fields: targetAudField, append: targetAudAppend } = useFieldArray({
+    //dynamic array for targetAudField
+    control,
+    name: "targetAud",
   });
 
   const onChangeDraftHandler = (value: EditorState) => {
@@ -126,21 +149,13 @@ export default function Page() {
     curriculumAppend({ name: "" });
   };
 
+  const onAppendTargetAudHandler = () => {
+    //function to add an empty textfield
+    targetAudAppend({ name: "" });
+  };
+
   ////////FILE INPUT
 
-  const onVideoChangeFile = (file: File) => {
-    //change event for  video file input
-    console.log(file);
-    const videoURL = URL.createObjectURL(file); // converts file evemt to a string
-
-    setVideo(videoURL);
-    if (videoURL && videoRef.current) {
-      //  videoRef.current.play()
-      videoRef.current.addEventListener("loadedmetadata", () => {
-        setDuration(convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
-      });
-    }
-  };
   const submitHandler = (values: CourseProps) => {
     const isValid = validateEditorContent(editorState);
 
@@ -149,16 +164,39 @@ export default function Page() {
       return null;
     }
 
-    console.log({
+    const data = {
       ...values,
       imageSrc: imageSrc,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
       description: editorState.getCurrentContent().getPlainText(),
-      video: videoURL,
+      prerequisites: values.prerequisites.map(({ name }) => name.trim()), // converting   prerequisites from array of objects to array of strings
+      curriculumList: values.curriculumList.map(({ name }) => name.trim()),
+      learningObj: values.learningObj.map(({ name }) => name.trim()),
+      targetAud: values.targetAud.map(({ name }) => name.trim()),
+      video: imageSrc,
       duration: duration,
-    });
+    };
+    console.log(data);
+
+    // if (session.user.role === "ADMIN") {
+    //   axios
+    //     .post("/api/course", data)
+    //     .then((response) => {
+    //       // Request was successful
+    //       if (response.data) {
+    //         console.log("Updated Seuccesfully");
+    //         console.log(response.data);
+    //         reset();
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       // An error occurred
+    //       setError("An error occurred");
+    //       console.error("An error occured");
+    //     });
+    // }
   };
 
   return (
@@ -328,65 +366,76 @@ export default function Page() {
             helperText={errors.learningObj?.message}
           />
         </Grid>
-        {/* curriculun=m */}
+        {/* curriculum List */}
         <CourseStepper title=" Course Curriculum" number={5} />
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <DynamicField
-            label="Add Course Curriculum"
+            label="Add Course Curriculum List"
             fields={curriculumField}
-            registeredName="curriculum"
+            registeredName="curriculumList"
             register={register}
             onAppendHandler={onAppendCurriculumListHandler}
-            btnText="Add Curriculum"
-            error={errors.curriculum}
+            btnText="Add Curriculum List"
+            error={errors.curriculumList}
+            helperText={errors.curriculumList?.message}
+          />
+        </Grid>
+
+        {/* Target audience */}
+        <CourseStepper title=" Target audience" number={6} />
+        <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
+          <DynamicField
+            label="Add Target Audience"
+            fields={targetAudField}
+            registeredName="targetAud"
+            register={register}
+            onAppendHandler={onAppendTargetAudHandler}
+            btnText="Add Target Audience"
+            error={errors.targetAud}
+            helperText={errors.targetAud?.message}
+          />
+        </Grid>
+
+        {/* Curriculum */}
+        <CourseStepper title="Add Curriculm" number={7} />
+        <Grid container item xs={12} md={12}>
+          <Input
+            register={register("curriculum", {
+              required: "Field is required",
+            })}
+            label="Curriculum"
+            id="curriculum"
+            type="text"
+            name="curriculum"
+            error={!!errors.curriculum}
             helperText={errors.curriculum?.message}
           />
         </Grid>
 
         {/* Course Media */}
-        <CourseStepper title=" Course Media" number={6} />
+        <CourseStepper title=" Course Media" number={8} />
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
           <Grid container item xs={12} md={6}>
             <ImageUpload
               onChange={(value) => setCustomValue("imageSrc", value)}
               value={imageSrc}
+              register={register}
+              error={errors}
+              placeholder="Course Image"
             />
           </Grid>
 
-          <Grid container item xs={12} md={6} direction="column">
-            <FileInput
-              placeholder="Upload  video"
-              accept="video/*"
-              name="video"
-              register={register("video", { required: true })}
-              error={!!errors.video}
-              onChangeFileInput={onVideoChangeFile}
+          <Grid container item xs={12} md={12} direction="column">
+            <VideoUpload
+              onChange={(value: string) => setCustomValue("video", value)}
+              duration={(value: number) => setCustomValue("duration", value)}
+              value={videoSrc}
+              register={register}
+              error={errors}
+              ref={videoRef as unknown as any}
+              placeholder="Course Video"
             />
-            {!!errors.video && (
-              <Typography color="red">This field is required</Typography>
-            )}
           </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid container>
-        <Grid
-          height="100px"
-          width="100px"
-          container
-          item
-          justifyContent="flex-start"
-          xs={12}
-          md={6}
-        >
-          {videoURL ? (
-            <video
-              src={videoURL}
-              height={100}
-              width={100}
-              ref={videoRef as React.RefObject<HTMLVideoElement>}
-            ></video>
-          ) : null}
         </Grid>
       </Grid>
     </form>
@@ -395,16 +444,22 @@ export default function Page() {
 
 const categoryOptions: OptionProps[] = [
   {
-    label: "Data Science",
-    value: "data_science",
+    label: "DATA SCIENCE",
+    value: "DATA_SCIENCE",
   },
   {
-    label: "Graphics Media",
-    value: "Graphics",
+    label: "GRAPHICS ",
+    value: "GRAPHICS_MEDIA",
   },
   {
-    label: "Cloud",
-    value: "cloud",
+    label: "CLOUD",
+    value: "CLOUD COMPUTING",
+  },
+  { label: "CODING", value: "CODING" },
+  { label: "OFFICE_PRODUCTIVITY", value: "OFFICE PRODUCTIVITY" },
+  {
+    label: "NETWORKING",
+    value: "NETWORKING",
   },
 ];
 

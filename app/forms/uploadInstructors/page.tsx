@@ -1,20 +1,26 @@
 "use client";
 import Header from "@/app/components/Header";
-import { Grid, TextField } from "@/app/lib/mui";
+import { Grid, TextField, Typography } from "@/app/lib/mui";
 import { instructorSchema } from "@/app/lib/yup";
 import { InstructorType } from "@/app/types/_types";
+import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import { MuiFileInput } from "mui-file-input";
+import { useSession } from "next-auth/react";
 import React, { ChangeEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 export default function page() {
-  const [instructorImage, setInstructorImage] = useState<File>();
-  const [reviewerImage, setReviewerImage] = useState<File>();
+  const { data: session } = useSession() as unknown as any;
+  const [error, setError] = React.useState("");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
+    reset,
   } = useForm<InstructorType>({
     resolver: yupResolver(instructorSchema),
     defaultValues: {
@@ -30,30 +36,49 @@ export default function page() {
       reviewer: "",
       reviewerImage: "",
       reviewerComment: "",
+      instructorImage: "",
     },
   });
 
+  const instructorImageSrc = watch("instructorImage");
+  const reviewerImageSrc = watch("reviewerImage");
+
+  const setCustomValue = (id: any, value: any) => {
+    setValue(id, value, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+  };
   const onSubmitHandler = (values: InstructorType) => {
-    console.log({ ...values, image: instructorImage, reviewerImage });
-  };
-
-  const onSelectInstructorsImageHandler = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    setInstructorImage(file);
-  };
-
-  const onSelectReviewersImageHandler = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    setReviewerImage(file);
+    const data = {
+      ...values,
+      image: instructorImageSrc,
+      reviewerImage: reviewerImageSrc,
+    };
+console.log(data)
+    if (session.user.role === "ADMIN") {
+      axios
+        .post("/api/instructors", data)
+        .then((response) => {
+          // Request was successful
+          if (response.data) {
+            console.log("Updated Seuccesfully");
+            console.log(response.data);
+            reset();
+          }
+        })
+        .catch((error) => {
+          // An error occurred
+          setError("An error occurred");
+          console.error("An error occured");
+        });
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <Grid container rowSpacing={3} columnSpacing={3}>
+      <Grid container rowSpacing={3} columnSpacing={3} mb="2rem">
         <Grid container item>
           <Header title="Add Instructor" btnText="Upload Instructor" />
           <hr />
@@ -87,21 +112,15 @@ export default function page() {
         </Grid>
 
         <Grid container item xs={12} md={4}>
-          <input
-            type="file"
-            {...register("image")}
-            id="fileInput"
-            accept="image"
-            className="custom-file-input"
-            onChange={onSelectInstructorsImageHandler}
+          <TextField
+            id="reviewer"
+            placeholder="John"
+            label="Reviewer"
+            variant="outlined"
+            autoComplete="false"
+            fullWidth
+            {...register("reviewer")}
           />
-          <label htmlFor="fileInput" className="custom-file-label">
-            {instructorImage ? (
-              <p>{instructorImage.name} </p>
-            ) : (
-              "Instructors Image"
-            )}
-          </label>
         </Grid>
 
         <Grid container item xs={12}>
@@ -171,32 +190,53 @@ export default function page() {
             {...register("reviews")}
           />
         </Grid>
-
-        <Grid container item xs={12} md={6}>
-          <input
-            type="file"
-            {...register("reviewerImage")}
-            id="ReviewerImage"
-            accept="image"
-            className="custom-file-input"
-            onChange={onSelectReviewersImageHandler}
+        <Grid container item xs={12} md={12}>
+          <TextField
+            id="linkedin"
+            label="Linkedin"
+            placeholder="Linkedin"
+            fullWidth
+            {...register("linkedin")}
           />
-          <label htmlFor="ReviewerImage" className="custom-file-label">
-            {reviewerImage ? <p>{reviewerImage.name} </p> : "Reviewer Image"}
-          </label>
         </Grid>
 
-        <Grid container item xs={12} md={6}>
+        <Grid container item xs={12} md={12}>
           <TextField
-            id="reviewerComment"
-            // error={!!errors.email}
-            placeholder="4.5"
-            label="ReviewerComment"
-            // helperText={errors.email?.message}
-            variant="outlined"
-            autoComplete="false"
+            id="outlined-multiline-static"
+            label="Reviewer Comment"
+            multiline
+            placeholder="ReviewerComment"
+            rows={10}
             fullWidth
+            {...register("reviewerComment")}
           />
+        </Grid>
+
+        <Grid
+          container
+          item
+          rowSpacing={3}
+          columnSpacing={{ xs: 0, md: 3 }}
+          direction="row"
+        >
+          <Grid item container xs={12} md={6}>
+            <ImageUpload
+              onChange={(value) => setCustomValue("reviewerImage", value)}
+              value={reviewerImageSrc!}
+              register={register}
+              error={errors}
+              placeholder="Reviewer Image"
+            />
+          </Grid>
+          <Grid item container xs={12} md={6}>
+            <ImageUpload
+              onChange={(value) => setCustomValue("instructorImage", value)}
+              value={instructorImageSrc!}
+              register={register}
+              error={errors}
+              placeholder="Instructor Image"
+            />
+          </Grid>
         </Grid>
       </Grid>
     </form>

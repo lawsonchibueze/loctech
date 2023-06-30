@@ -16,7 +16,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.2",
     "@next-auth/prisma-adapter": "^1.0.6",
-    "@prisma/client": "^4.14.1",
+    "@prisma/client": "^4.16.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/node": "20.2.3",
     "@types/react": "18.2.7",

@@ -13,7 +13,6 @@ export const courseSchema = yup.object().shape({
   coursePrice: yup.number().required("This field is required"),
   category: yup.string().required("This field is required"),
   isFeatured: yup.boolean().required("This field is required"),
-  description: yup.string().required("This field is required"),
 
   isTrending: yup.boolean().required("This field is required"),
 
@@ -27,12 +26,17 @@ export const courseSchema = yup.object().shape({
   learningObj: yup.object().shape({
     name: yup.string().required("field is required"),
   }),
-  curriculum: yup.object().shape({
+  curriculumList: yup.object().shape({
+    name: yup.string().required("field is required"),
+  }),
+
+  targetAud: yup.object().shape({
     name: yup.string().required("field is required"),
   }),
   video: yup.string().required("Video is required"),
   image: yup.string().required("Image is required"),
   duration: yup.string().required("Image is required"),
+  curriculum: yup.string().required("field is required"),
 });
 
 export const loginSchema = yup.object().shape({
@@ -54,7 +58,7 @@ export const instructorSchema = yup.object().shape({
   name: yup.string().required("This field is required"),
   bio: yup.string(),
   email: yup.string().email("Invalid email"),
-  image: yup.string(),
+  instructorImage: yup.string(),
   rating: yup.number(),
   reviews: yup.string(),
   facebook: yup.string(),
@@ -70,14 +74,11 @@ export const heroSchema = yup.object().shape({
   title: yup.string().required("This field is required"),
   subtitle: yup.string().required("This field is required"),
   button: yup.string().required("This field is required"),
-image : yup.string().required()
-
+  image: yup.string().required(),
 });
-
 
 export const testimonialSchema = yup.object().shape({
   name: yup.string().required("This field is required"),
- image: yup.string().required("This field is required"),
- review: yup.string().required("This field is required"),
-
+  image: yup.string().required("This field is required"),
+  review: yup.string().required("This field is required"),
 });
