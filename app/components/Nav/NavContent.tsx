@@ -19,23 +19,19 @@ import { ColorModeContext, tokens } from "@/app/lib/theme";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
-
 export default function NavContent() {
   const theme = useTheme();
-  const router = useRouter()
+  const router = useRouter();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
   const { data: session } = useSession() as unknown as any;
-  console.log(session?.user.role );
+  console.log(session?.user.role);
 
-
-const SignOutHandler = () =>{
-  signOut()
-  // router.push("/")
-}
-
+  const SignOutHandler = () => {
+    signOut();
+    // router.push("/")
+  };
 
   const handleDrawer = () => {
     setToggle(!toggle);
@@ -89,11 +85,13 @@ const SignOutHandler = () =>{
                 <NavItem title="Courses" to="/courses" />
 
                 <NavItem title="About us" to="/" />
-             { session?.user.role === "ADMIN" && <NavItem title="Forms" to="/forms" />}
+                {session?.user.role === "ADMIN" && (
+                  <NavItem title="Forms" to="/forms" />
+                )}
 
                 <NavItem title="Instructors" to="/instructor/instructors" />
 
-                {session !== null  ? (
+                {session !== null ? (
                   <div onClick={SignOutHandler}>
                     <Typography
                       variant="h5"
@@ -155,4 +153,3 @@ const SignOutHandler = () =>{
     </>
   );
 }
-
