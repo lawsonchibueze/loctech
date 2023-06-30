@@ -1,10 +1,11 @@
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useCallback } from "react";
+import { LegacyRef, Ref, RefObject, forwardRef, useCallback } from "react";
 import FileInput from "../components/FileInput";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { CourseProps, OptionProps } from "../types/_types";
 import Typography from "@mui/material/Typography";
+import convertTime from "./ConvertTime";
 
 declare global {
   var cloudinary: any;
@@ -14,39 +15,20 @@ const uploadPreset = "sj9mklh4";
 
 interface FileProps {
   onChange: (value: string) => void;
-  value: string;
+  duration?: (value: number) => void;
+  value?: string | null;
+  register?: any;
+  error?: FieldErrors<CourseProps>;
+  placeholder: string;
 }
 
-export function ImageUpload({ onChange, value }: FileProps) {
-  const {
-    //useForm Hook
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-    watch,
-    setValue,
-  } = useForm<CourseProps>({
-    // resolver:yupResolver(courseSchema) ,
-
-    defaultValues: {
-      courseTitle: "",
-      description: "",
-      courseSlug: "",
-      coursePrice: 0,
-      category: "",
-      isFeatured: "false",
-      isTrending: "false",
-      isOnline: "false",
-      imageSrc: "",
-      prerequisites: [{ name: undefined }],
-      learningObj: [{ name: undefined }],
-      curriculum: [{ name: undefined }],
-      video: "",
-      duration: 0,
-    },
-  });
-
+export function ImageUpload({
+  onChange,
+  value,
+  register,
+  error,
+  placeholder,
+}: FileProps) {
   const handleUpload = useCallback(
     (result: any) => {
       onChange(result.info.secure_url);
@@ -66,21 +48,21 @@ export function ImageUpload({ onChange, value }: FileProps) {
           open();
         }
         return (
-          <div onClick={handleOnClick}>
+          <div onClick={handleOnClick} >
             {value ? (
               <div>
-                <Image width={100} height={100} src={value} alt="House" />
+                <Image width={100} height={100} src={value} alt="courseImage" />
               </div>
             ) : (
               <div onClick={handleOnClick}>
                 <FileInput
-                  placeholder="Upload  Image"
+                  placeholder={placeholder}
                   accept="image/*"
                   name="image"
                   register={register("imageSrc", { required: true })}
-                  error={!!errors.imageSrc}
+                  error={!!error?.imageSrc}
                 />
-                {!!errors.imageSrc && (
+                {!!error?.imageSrc && (
                   <Typography color="red">This field is required</Typography>
                 )}
               </div>
@@ -91,3 +73,57 @@ export function ImageUpload({ onChange, value }: FileProps) {
     </CldUploadWidget>
   );
 }
+
+export const VideoUpload = forwardRef<RefObject<HTMLVideoElement>, FileProps>(
+  ({ onChange, value, register, duration, error, placeholder }, ref) => {
+    const handleUpload = useCallback(
+      (result: any) => {
+        onChange(result.info.secure_url);
+      },
+      [onChange]
+    );
+    console.log(ref);
+
+    return (
+      <CldUploadWidget
+        onUpload={handleUpload}
+        uploadPreset={uploadPreset}
+        options={{ maxFiles: 1, clientAllowedFormats: ["mp4", "mov"] }}
+      >
+        {({ open }) => {
+          function handleOnClick(e: any) {
+            e.preventDefault();
+            open();
+          }
+          return (
+            <div onClick={handleOnClick}>
+              {value ? (
+                <div>
+                  <video
+                    width={100}
+                    height={100}
+                    src={value as unknown as undefined}
+                    ref={ref as React.RefObject<HTMLVideoElement>}
+                  />
+                </div>
+              ) : (
+                <div onClick={handleOnClick}>
+                  <FileInput
+                    placeholder={placeholder}
+                    accept="video/*"
+                    name="video"
+                    register={register("video", { required: true })}
+                    error={!!error?.video}
+                  />
+                  {!!error?.video && (
+                    <Typography color="red">This field is required</Typography>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        }}
+      </CldUploadWidget>
+    );
+  }
+);

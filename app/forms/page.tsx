@@ -1,14 +1,25 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Button, useTheme } from "../lib/mui";
 import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
 import Header from "../components/Header";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 export default function page() {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const router = useRouter();
+  const { data: session } = useSession() as unknown as any;
+
+  useEffect(() => {
+    if (session?.user.role !== "ADMIN") {
+      redirect("/"); //redirect if role is not ADMIN
+    }
+  },[session]);
+
   return (
     <Grid container item>
       <Link href="/forms/uploadcourse" style={{ width: "100%" }}>

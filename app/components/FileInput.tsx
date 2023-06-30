@@ -1,11 +1,10 @@
 "use client";
 import React, {
   ChangeEvent,
-  ChangeEventHandler,
-  RefObject,
-  forwardRef,
+  
 } from "react";
-import { MuiFileInput } from "mui-file-input";
+import { useTheme } from "../lib/mui";
+import { tokens } from "../lib/theme";
 
 interface FileInputProps {
   placeholder: string;
@@ -29,7 +28,9 @@ const FileInput = (
   }: FileInputProps,
   refVideo: React.ForwardedRef<HTMLVideoElement>
 ) => {
-  console.log("=====err", error);
+
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -37,7 +38,6 @@ const FileInput = (
     }
   };
 
-  console.log(error);
 
   return (
     <>
@@ -48,11 +48,12 @@ const FileInput = (
         name={name}
         {...register}
         id="fileInput"
-
-
+        className="custom-file-input"
         onChange={handleFileSelect}
       />
-      
+      <label htmlFor="fileInput" className="custom-file-label" style={{color: colors.primary[300]}}>
+        {value ? <p>{value} </p> : placeholder}
+      </label>
     </>
   );
 };
