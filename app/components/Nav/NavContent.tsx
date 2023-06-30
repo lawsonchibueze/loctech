@@ -27,7 +27,7 @@ export default function NavContent() {
   const [toggle, setToggle] = useState<Boolean>(false);
   const { data: session } = useSession() as unknown as any;
   console.log(session?.user.role);
-
+  
   const SignOutHandler = () => {
     signOut();
     // router.push("/")
