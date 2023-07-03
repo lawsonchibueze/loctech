@@ -51,6 +51,7 @@ export default function Page() {
       courseTitle: "",
       description: "",
       courseSlug: "",
+      Instructor:"",
       coursePrice: 0,
       category: "",
       isFeatured: "false",
@@ -167,6 +168,7 @@ export default function Page() {
     const data = {
       ...values,
       imageSrc: imageSrc,
+      coursePrice: +values.coursePrice,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
@@ -177,26 +179,29 @@ export default function Page() {
       targetAud: values.targetAud.map(({ name }) => name.trim()),
       video: imageSrc,
       duration: duration,
+      Instructor:{
+        name : values.Instructor
+      }
     };
     console.log(data);
 
-    // if (session.user.role === "ADMIN") {
-    //   axios
-    //     .post("/api/course", data)
-    //     .then((response) => {
-    //       // Request was successful
-    //       if (response.data) {
-    //         console.log("Updated Seuccesfully");
-    //         console.log(response.data);
-    //         reset();
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       // An error occurred
-    //       setError("An error occurred");
-    //       console.error("An error occured");
-    //     });
-    // }
+    if (session.user.role === "ADMIN") {
+      axios
+        .post("/api/course", data)
+        .then((response) => {
+          // Request was successful
+          if (response.data) {
+            console.log("Updated Seuccesfully");
+            console.log(response.data);
+            reset();
+          }
+        })
+        .catch((error) => {
+          // An error occurred
+          setError("An error occurred");
+          // console.error("An error occured");
+        });
+    }
   };
 
   return (
@@ -398,7 +403,7 @@ export default function Page() {
 
         {/* Curriculum */}
         <CourseStepper title="Add Curriculm" number={7} />
-        <Grid container item xs={12} md={12}>
+        <Grid container item xs={12} md={6}>
           <Input
             register={register("curriculum", {
               required: "Field is required",
@@ -409,6 +414,20 @@ export default function Page() {
             name="curriculum"
             error={!!errors.curriculum}
             helperText={errors.curriculum?.message}
+          />
+        </Grid>
+
+        <Grid container item xs={12} md={6}>
+          <Input
+            register={register("Instructor", {
+              required: "Field is required",
+            })}
+            label="Instructor"
+            id="Instructor"
+            type="text"
+            name="Instructor"
+            error={!!errors.Instructor}
+            helperText={errors.Instructor?.message}
           />
         </Grid>
 
@@ -456,7 +475,7 @@ const categoryOptions: OptionProps[] = [
     value: "CLOUD COMPUTING",
   },
   { label: "CODING", value: "CODING" },
-  { label: "OFFICE_PRODUCTIVITY", value: "OFFICE PRODUCTIVITY" },
+  { label: "OFFICE PRODUCTIVITY", value: "OFFICE_PRODUCTIVITY" },
   {
     label: "NETWORKING",
     value: "NETWORKING",
