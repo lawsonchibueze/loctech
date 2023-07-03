@@ -7,20 +7,7 @@ import bcrypt from "bcryptjs";
 import prisma from "@/prisma/prisma";
 import { User } from "@prisma/client";
 
-import { randomUUID } from "crypto";
 import { encode, decode } from "next-auth/jwt";
-
-// helper function that will generate session token ids
-const generateSessionToken = () => {
-  return randomUUID();
-};
-
-// helper  function that will calculate the maxAge for a cookie
-const fromDate = () => {
-  const maxAge = 30 * 24 * 60 * 60; // 30 days
-
-  return new Date(Date.now() + maxAge * 1000);
-};
 
 const adapter = PrismaAdapter(prisma);
 
@@ -98,19 +85,6 @@ export const authOptions: NextAuthOptions = {
             },
           });
         }
-
-        // const sessionToken = generateSessionToken();
-        // const sessionExpiry = fromDate();
-
-        // await adapter.createSession({
-        //   sessionToken: sessionToken,
-        //   userId: user.id,
-        //   expires: sessionExpiry,
-        // });
-
-        // setCookie("next-auth.session-token", sessionToken, {
-        //   expires: sessionExpiry,
-        // });
       }
 
       return true;
