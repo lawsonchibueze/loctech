@@ -26,7 +26,7 @@ export const POST = async (req: Request) => {
     curriculum,
     curriculumList,
     published,
-    instructorId,
+    // instructorId,
     isFeatured,
     isOnline,
     isTrending,
@@ -55,7 +55,7 @@ export const POST = async (req: Request) => {
       curriculum,
       curriculumList,
       published,
-      instructorId,
+      // instructorId,
       Instructor: {
         create: Instructor,
       },

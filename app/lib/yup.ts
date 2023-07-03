@@ -13,6 +13,7 @@ export const courseSchema = yup.object().shape({
   coursePrice: yup.number().required("This field is required"),
   category: yup.string().required("This field is required"),
   isFeatured: yup.boolean().required("This field is required"),
+  Instructor: yup.boolean().required("This field is required"),
 
   isTrending: yup.boolean().required("This field is required"),
 
