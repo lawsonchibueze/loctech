@@ -46,17 +46,17 @@ model Account {
 
 model Course {
   id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  courseTitle           String
+  courseTitle    String
   description    String
-  imageSrc          String
-  coursePrice          Float
+  imageSrc       String
+  coursePrice    Float
   video          String?
   category       CATEGORY
   duration       Int?
   learningObj    String[]
   targetAud      String[]
   prerequisites  String[]
-  courseSlug           String           @unique
+  courseSlug     String           @unique
   curriculum     String?
   curriculumList String[]
   createdAt      DateTime         @default(now())
@@ -64,9 +64,9 @@ model Course {
   published      Boolean          @default(false)
   instructorId   String           @db.ObjectId
   Instructor     Instructor       @relation(fields: [instructorId], references: [id])
-  isFeatured Boolean 
-  isTrending Boolean 
-  isOnline Boolean 
+  isFeatured     Boolean
+  isTrending     Boolean
+  isOnline       Boolean
   RelatedCourses RelatedCourses[]
 }
 
@@ -93,7 +93,7 @@ model Hero {
 model Instructor {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   name            String
-  email           String?  @unique
+  email           String?  
   image           String?
   bio             String?
   rating          Float?
