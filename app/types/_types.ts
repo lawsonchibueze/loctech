@@ -27,6 +27,7 @@ description:string
   imageSrc: string
   duration: number
   curriculum: string
+  Instructor:string
 }
 
 

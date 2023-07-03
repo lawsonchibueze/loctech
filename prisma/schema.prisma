@@ -64,9 +64,9 @@ model Course {
   published      Boolean          @default(false)
   instructorId   String           @db.ObjectId
   Instructor     Instructor       @relation(fields: [instructorId], references: [id])
-  isFeatured String
-  isTrending String
-  isOnline String
+  isFeatured Boolean 
+  isTrending Boolean 
+  isOnline Boolean 
   RelatedCourses RelatedCourses[]
 }
 
