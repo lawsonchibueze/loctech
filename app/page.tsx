@@ -1,20 +1,19 @@
-"use  server"
+"use server";
 import Image from "next/image";
 import { Box, Grid } from "./lib/mui";
 import Hero from "./components/Hero";
 import Card from "./components/Card";
 import FeatureHeader from "./components/FeatureHeader";
-import FeaturedCard from "./components/Featured/FeaturedCard";
 import FeaturedItem from "./components/Featured/FeaturedItem";
 import PathCard from "./components/PathCard";
 import SubjectCard from "./components/Subjects/SubjectCard";
 import Newsletter from "./components/Newsletter";
 import AnimatedRoute from "./components/AnimatedRoute";
 import getCurrentUser from "./actions/getCurrentUser";
- export default async function Home() {
+export default async function Home() {
   const currentUser = await getCurrentUser();
 
-   console.log(currentUser)
+  console.log("user", currentUser);
 
   return (
     <AnimatedRoute>
@@ -43,7 +42,6 @@ import getCurrentUser from "./actions/getCurrentUser";
             subtitle="New Certificate"
             btnText="Find Out More"
             initialX="100vw"
-
           />
         </Grid>
       </Grid>
@@ -71,7 +69,7 @@ import getCurrentUser from "./actions/getCurrentUser";
         <SubjectCard
           src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
           alt="courses"
-     title="Design"
+          title="Design"
         />
         <SubjectCard
           src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
