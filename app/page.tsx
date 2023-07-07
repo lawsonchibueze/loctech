@@ -3,7 +3,6 @@ import { Box, Grid } from "./lib/mui";
 import Hero from "./components/Hero";
 import Card from "./components/Card";
 import FeatureHeader from "./components/FeatureHeader";
-import FeaturedCard from "./components/Featured/FeaturedCard";
 import FeaturedItem from "./components/Featured/FeaturedItem";
 import PathCard from "./components/PathCard";
 import SubjectCard from "./components/Subjects/SubjectCard";

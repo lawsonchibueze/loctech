@@ -2,18 +2,18 @@ import prisma from "@/prisma/prisma";
 import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 
 interface CourseParams {
-  id?: string;
+  slug?: string;
 }
 
 export const GET = async (
   req: Request,
   { params }: { params: CourseParams }
 ) => {
-  const { id } = params;
+  const { slug } = params;
 
   const course = await prisma.course.findUnique({
     where: {
-      id,
+      courseSlug: slug,
     },
   });
 
@@ -26,7 +26,7 @@ export const PATCH = async (
 ) => {
   await checkCurrentUser();
 
-  const { id } = params;
+  const { slug } = params;
 
   const {
     courseTitle,
@@ -55,7 +55,7 @@ export const PATCH = async (
 
   const updatedCourse = await prisma.course.update({
     where: {
-      id,
+      courseSlug: slug,
     },
     data: {
       courseTitle,
@@ -96,11 +96,11 @@ export const DELETE = async (
 ) => {
   await checkCurrentUser();
 
-  const { id } = params;
+  const { slug } = params;
 
   const deletedCourse = await prisma.course.delete({
     where: {
-      id,
+      courseSlug: slug,
     },
   });
 
