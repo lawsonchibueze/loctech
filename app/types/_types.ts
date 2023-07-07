@@ -1,15 +1,18 @@
 export type FeaturedCourseArrType = {
-  id: number;
+  id?: string;
   img: string;
-  level: string;
+  level?: string;
   title: string;
-  author: string;
-  price: string;
+  author?: string;
+  price: number;
+  description: string
+  slug: string
 };
 
 
 
-export type CourseProps ={
+export type CourseType ={
+  id? : string
   courseTitle: string
 
 description:string
@@ -66,6 +69,7 @@ export type InstructorType = {
 };
 
 export type HeroType = {
+  id? : string
   title: string;
   subtitle: string;
   button: string;
@@ -77,3 +81,5 @@ export type TestimonialType = {
   image: string;
   review: string;
 };
+
+

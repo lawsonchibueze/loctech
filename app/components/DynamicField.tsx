@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
 import AddIcon from "@mui/icons-material/Add";
 import { Label } from "@mui/icons-material";
-import { CourseProps } from "../types/_types";
+import { CourseType } from "../types/_types";
 import {
   Control,
   FieldArrayWithId,
@@ -25,13 +25,13 @@ import {
 } from "react-hook-form";
 
 interface DynamicFieldProps {
-  fields: FieldArrayWithId<CourseProps, "prerequisites", "id">[];
+  fields: FieldArrayWithId<CourseType, "prerequisites", "id">[];
   registeredName: string;
-  register: UseFormRegister<CourseProps>;
+  register: UseFormRegister<CourseType>;
   onAppendHandler: () => void;
   label: string;
   btnText: string;
-  error?: FieldErrors<CourseProps>
+  error?: FieldErrors<CourseType>
   helperText:string | undefined
 }
 

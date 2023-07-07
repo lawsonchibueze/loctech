@@ -10,7 +10,14 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
-export default function page() {
+interface PageProps {
+  searchParams : {
+    id: string
+  }
+}
+
+export default function page({searchParams}:PageProps) {
+  const heroID = searchParams.id
   const [error, setError] = React.useState("");
   const { data: session } = useSession() as unknown as any;
 
@@ -51,15 +58,17 @@ export default function page() {
 
   const onSubmitHandler = (values: HeroType) => {
     const data = { ...values, image: imageSrc };
+    console.log(data)
     if (session.user.role === "ADMIN") {
       axios
-        .post("/api/hero", data)
+        .patch(`/api/hero/${heroID}`, data)
         .then((response) => {
           // Request was successful
           if (response.data) {
             console.log("Updated Seuccesfully");
             console.log(response.data);
             reset();
+            redirect("/");
           }
         })
         .catch((error) => {
@@ -75,7 +84,18 @@ export default function page() {
       <Header title="Add Hero" btnText="Add Hero Text" />
       <Grid container m="1rem 0">
         <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
-          <Grid container item xs={12} md={6}>
+        <Grid container item xs={12} >
+            <TextField
+              fullWidth
+              value={heroID}
+              label="Id"
+              {...register("id")}
+              error={!!errors.title}
+              helperText={errors.title?.message}
+            />
+          </Grid>
+        
+          <Grid container item xs={12} >
             <TextField
               fullWidth
               label="Title"
@@ -85,7 +105,7 @@ export default function page() {
             />
           </Grid>
           {/* subtitle */}
-          <Grid container item xs={12} md={6}>
+          <Grid container item xs={12} >
             <TextField
               fullWidth
               label="Subtitle"

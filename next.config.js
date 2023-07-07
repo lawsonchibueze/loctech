@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["loctech-web-app-sandy.vercel.app", "res.cloudinary.com"],
+    domains: ["loctech-web-app-sandy.vercel.app", "res.cloudinary.com", "loctech-web-app.vercel.app"],
   },
 };
 
