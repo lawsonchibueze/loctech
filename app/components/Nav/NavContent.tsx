@@ -17,7 +17,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ColorModeContext, tokens } from "@/app/lib/theme";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function NavContent() {
   const theme = useTheme();
@@ -26,10 +26,16 @@ export default function NavContent() {
   const colorMode = useContext(ColorModeContext);
   const [toggle, setToggle] = useState<Boolean>(false);
   const { data: session, status } = useSession() as unknown as any;
+  console.log("session", status);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/signIn");
+     }
+  },[status]);
 
   const SignOutHandler = () => {
     signOut();
-    // router.push("/")
   };
 
   const handleDrawer = () => {

@@ -8,6 +8,11 @@ import {
   TextField,
   colors,
   useTheme,
+  Alert,
+  AlertTitle,
+  Modal,
+  Box,
+  Button,
 } from "../../lib/mui";
 
 import Header from "../../components/Header";
@@ -20,8 +25,9 @@ import { EditorState, convertToRaw } from "draft-js";
 import Image from "next/image";
 import convertTime from "../../utils/ConvertTime";
 import { useFieldArray, useForm } from "react-hook-form";
-import { CourseProps, OptionProps } from "../../types/_types";
-
+import {  CourseType, OptionProps } from "../../types/_types";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import FileInput from "../../components/FileInput";
 import { ImageUpload, VideoUpload } from "@/app/utils/ImageAndVideoUpload";
 import { useEffect, useRef, useState } from "react";
@@ -29,11 +35,25 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { courseSchema } from "@/app/lib/yup";
+import BasicModal from "@/app/components/Modal";
+import { redirect } from "next/navigation";
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { data: session } = useSession() as unknown as any;
-  const [error, setError] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+
+
+
+  useEffect(() => {
+    if (session?.user.role !== "ADMIN") {
+     redirect("/"); //redirect if role is not ADMIN
+    }
+  },[session?.user.role]);
+
+
 
   const {
     //useForm Hook
@@ -44,14 +64,14 @@ export default function Page() {
     watch,
     setValue,
     reset,
-  } = useForm<CourseProps>({
+  } = useForm<CourseType>({
     // resolver:yupResolver(courseSchema) ,
 
     defaultValues: {
       courseTitle: "",
       description: "",
       courseSlug: "",
-      Instructor:"",
+      Instructor: "",
       coursePrice: 0,
       category: "",
       isFeatured: "false",
@@ -157,7 +177,7 @@ export default function Page() {
 
   ////////FILE INPUT
 
-  const submitHandler = (values: CourseProps) => {
+  const submitHandler = (values: CourseType) => {
     const isValid = validateEditorContent(editorState);
 
     if (!isValid) {
@@ -169,9 +189,9 @@ export default function Page() {
       ...values,
       imageSrc: imageSrc,
       coursePrice: +values.coursePrice,
-      isFeatured: values.isFeatured === "true", //converting the string values to boolen
-      isTrending: values.isTrending === "true", //converting the string values to boolen
-      isOnline: values.isOnline === "true", //converting the string values to boolen
+      isFeatured: values.isFeatured  === "true", //converting the string values to boolen
+      isTrending: values.isTrending === "true" , //converting the string values to boolen
+      isOnline: values.isOnline === "true" , //converting the string values to boolen
       description: editorState.getCurrentContent().getPlainText(),
       prerequisites: values.prerequisites.map(({ name }) => name.trim()), // converting   prerequisites from array of objects to array of strings
       curriculumList: values.curriculumList.map(({ name }) => name.trim()),
@@ -191,15 +211,17 @@ export default function Page() {
         .then((response) => {
           // Request was successful
           if (response.data) {
-            console.log("Updated Seuccesfully");
+            setIsError(false);
+            setOpen(true)
             console.log(response.data);
             reset();
           }
         })
         .catch((error) => {
           // An error occurred
-          setError("An error occurred");
-          // console.error("An error occured");
+          setIsError(true);
+          setOpen(true)
+          console.error("An error occured");
         });
     }
   };
@@ -208,6 +230,26 @@ export default function Page() {
     <form onSubmit={handleSubmit(submitHandler)}>
       <Header title="Add Course" btnText="Upload course" />
       <hr />
+
+      {isError ?  (
+        <BasicModal
+          color="red"
+          icon={<ErrorOutlineIcon sx={{ color: "red", fontSize: "30px" }} />}
+          title="Course did not upload !"
+          description="An error occurred. Try again"
+          open={open}
+          handleClose={handleClose}
+        />
+      ) : (
+        <BasicModal
+          color="green"
+          icon={<CheckCircleOutlineIcon sx={{ color: "green", fontSize: "30px" }} />}
+          title="Course uploaded successful!"
+          description="congratulations !. Your course have been uploaded"
+          open={open}
+          handleClose={handleClose}
+        />
+      )}
 
       <Grid container m="1rem 0">
         <CourseStepper title="Course Information" number={1} />
@@ -402,33 +444,35 @@ export default function Page() {
         </Grid>
 
         {/* Curriculum */}
-        <CourseStepper title="Add Curriculm" number={7} />
-        <Grid container item xs={12} md={6}>
-          <Input
-            register={register("curriculum", {
-              required: "Field is required",
-            })}
-            label="Curriculum"
-            id="curriculum"
-            type="text"
-            name="curriculum"
-            error={!!errors.curriculum}
-            helperText={errors.curriculum?.message}
-          />
-        </Grid>
+        <CourseStepper title="Add Curriculm & Instructor" number={7} />
+        <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
+          <Grid container item xs={12} md={6}>
+            <Input
+              register={register("curriculum", {
+                required: "Field is required",
+              })}
+              label="Curriculum"
+              id="curriculum"
+              type="text"
+              name="curriculum"
+              error={!!errors.curriculum}
+              helperText={errors.curriculum?.message}
+            />
+          </Grid>
 
-        <Grid container item xs={12} md={6}>
-          <Input
-            register={register("Instructor", {
-              required: "Field is required",
-            })}
-            label="Instructor"
-            id="Instructor"
-            type="text"
-            name="Instructor"
-            error={!!errors.Instructor}
-            helperText={errors.Instructor?.message}
-          />
+          <Grid container item xs={12} md={6}>
+            <Input
+              register={register("Instructor", {
+                required: "Field is required",
+              })}
+              label="Instructor name"
+              id="Instructor"
+              type="text"
+              name="Instructor"
+              error={!!errors.Instructor}
+              helperText={errors.Instructor?.message}
+            />
+          </Grid>
         </Grid>
 
         {/* Course Media */}

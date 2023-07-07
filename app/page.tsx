@@ -1,4 +1,3 @@
-"use server";
 import Image from "next/image";
 import { Box, Grid } from "./lib/mui";
 import Hero from "./components/Hero";
@@ -10,14 +9,41 @@ import SubjectCard from "./components/Subjects/SubjectCard";
 import Newsletter from "./components/Newsletter";
 import AnimatedRoute from "./components/AnimatedRoute";
 import getCurrentUser from "./actions/getCurrentUser";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+
+async function getHero() {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_DEVELOPMENT_URL + "/api/hero",
+    { method: "GET", cache: "no-cache" }
+  );
+  if (!res.ok) {
+    throw new Error("Something occured");
+  }
+  return await res.json();
+}
+
+async function getCourses() {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_DEVELOPMENT_URL + "/api/course",
+    { method: "GET", cache: "no-store" }
+  );
+  if (!res.ok) {
+    throw new Error("Something occured");
+  }
+  return await res.json();
+}
+
 export default async function Home() {
-  const currentUser = await getCurrentUser();
+  const heroData = await getHero();
+  const coursesData = await getCourses();
 
-  console.log("user", currentUser);
+  const [hero, courses] = await Promise.all([heroData, coursesData]);
 
+  // console.log(courses)
   return (
     <AnimatedRoute>
-      <Hero />
+      <Hero data={hero} />
       <Grid
         container
         rowSpacing={3}
@@ -30,16 +56,16 @@ export default async function Home() {
       >
         <Grid xs={12} md={6} item>
           <Card
-            title="Online Courses from Loctech IT Training Institite"
-            subtitle="New Certificate"
-            btnText="Find Out More"
+            title="Visit our classroom courses"
+            subtitle="New Certificates"
+            btnText="View More courses"
             initialX="-100vw"
           />
         </Grid>
         <Grid xs={12} md={6} item>
           <Card
-            title="Online Courses from Loctech IT Training Institite"
-            subtitle="New Certificate"
+            title="Visit our online courses"
+            subtitle="New Certificates"
             btnText="Find Out More"
             initialX="100vw"
           />
@@ -53,7 +79,7 @@ export default async function Home() {
         spacing={{ xs: 2, md: 3 }}
         // columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <FeaturedItem />
+        <FeaturedItem courses={courses} />
       </Grid>
 
       <Grid container justifyContent="center" m="3rem 0">
@@ -67,29 +93,29 @@ export default async function Home() {
         rowSpacing={{ xs: 1, sm: 2 }}
       >
         <SubjectCard
-          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FsoftwareEngineer.jpg&w=640&q=75"
           alt="courses"
-          title="Design"
+          title="Software Engineering"
         />
         <SubjectCard
-          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FDesignSpecialist.jpg&w=640&q=75"
           alt="courses"
-          title="Desgn"
+          title="Computer Aided Design - Graphics"
         />
         <SubjectCard
-          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FofficeProductivity.jpg&w=640&q=75"
           alt="courses"
-          title="Desgn"
+          title="Office Productivity"
         />
         <SubjectCard
-          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          src="	https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FDataScientist.jpg&w=640&q=75"
           alt="courses"
-          title="Desgn"
+          title="Data Science"
         />
         <SubjectCard
-          src="/smiling-young-african-college-student-doing-KYGJVRW (1).png"
+          src="	https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FcloudComputing.jpg&w=640&q=75"
           alt="courses"
-          title="Desgn"
+          title="Cloud Computing"
         />
       </Grid>
       <Newsletter />
