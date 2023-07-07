@@ -12,6 +12,8 @@ export default function FeaturedCard({
   title,
   author,
   price,
+  slug,
+  description
 }: FeaturedCourseArrType) {
   const MotionGrid = motion(Grid);
 
@@ -26,7 +28,7 @@ export default function FeaturedCard({
       md={3}
       gridAutoColumns={5}
     >
-      <Link href={`/courseDetail/${id}`} style={{ width: "100%" }}>
+      <Link href={`/courseDetail/${slug}`} style={{ width: "100%" }}>
         <Image
           src={img}
           width={500}
@@ -42,9 +44,9 @@ export default function FeaturedCard({
         <Typography variant="h4" fontWeight="bold" mt="8px">
           {title}
         </Typography>
-        <Typography variant="h6" m="8px 0">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum q
-        </Typography>
+      <p className="line-clamp-2">
+        {description}
+      </p>
         <Grid
           container
           direction="row"

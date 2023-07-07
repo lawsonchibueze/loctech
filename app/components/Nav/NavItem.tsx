@@ -10,7 +10,7 @@ interface NavItemProps {
 export default function NavItem({ title, to }: NavItemProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  console.log(process.env.GOOGLE_CLIENT_ID)
   return (
     <Grid container justifyContent={{ xs: "flex-start", md: "center" }}>
       <Link href={to} style={{ width: "100%" }}>

@@ -16,9 +16,9 @@ export default function page() {
 
   useEffect(() => {
     if (session?.user.role !== "ADMIN") {
-      redirect("/"); //redirect if role is not ADMIN
+     redirect("/"); //redirect if role is not ADMIN
     }
-  },[session]);
+  },[session?.user.role, router]);
 
   return (
     <Grid container item>

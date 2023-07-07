@@ -25,7 +25,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import Image from "next/image";
 import convertTime from "../../utils/ConvertTime";
 import { useFieldArray, useForm } from "react-hook-form";
-import { CourseProps, OptionProps } from "../../types/_types";
+import {  CourseType, OptionProps } from "../../types/_types";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import FileInput from "../../components/FileInput";
@@ -36,6 +36,7 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { courseSchema } from "@/app/lib/yup";
 import BasicModal from "@/app/components/Modal";
+import { redirect } from "next/navigation";
 
 export default function Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -43,6 +44,16 @@ export default function Page() {
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+
+
+
+  useEffect(() => {
+    if (session?.user.role !== "ADMIN") {
+     redirect("/"); //redirect if role is not ADMIN
+    }
+  },[session?.user.role]);
+
+
 
   const {
     //useForm Hook
@@ -53,7 +64,7 @@ export default function Page() {
     watch,
     setValue,
     reset,
-  } = useForm<CourseProps>({
+  } = useForm<CourseType>({
     // resolver:yupResolver(courseSchema) ,
 
     defaultValues: {
@@ -166,7 +177,7 @@ export default function Page() {
 
   ////////FILE INPUT
 
-  const submitHandler = (values: CourseProps) => {
+  const submitHandler = (values: CourseType) => {
     const isValid = validateEditorContent(editorState);
 
     if (!isValid) {
@@ -178,9 +189,9 @@ export default function Page() {
       ...values,
       imageSrc: imageSrc,
       coursePrice: +values.coursePrice,
-      isFeatured: values.isFeatured === "true", //converting the string values to boolen
-      isTrending: values.isTrending === "true", //converting the string values to boolen
-      isOnline: values.isOnline === "true", //converting the string values to boolen
+      isFeatured: values.isFeatured  === "true", //converting the string values to boolen
+      isTrending: values.isTrending === "true" , //converting the string values to boolen
+      isOnline: values.isOnline === "true" , //converting the string values to boolen
       description: editorState.getCurrentContent().getPlainText(),
       prerequisites: values.prerequisites.map(({ name }) => name.trim()), // converting   prerequisites from array of objects to array of strings
       curriculumList: values.curriculumList.map(({ name }) => name.trim()),

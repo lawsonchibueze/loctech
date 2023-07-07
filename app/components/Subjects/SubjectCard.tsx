@@ -45,18 +45,21 @@ export default function SubjectCard({ src, alt, title }: SubjectCardProps) {
           backgroundImage: "linear-gradient(to top, black, transparent)",
         }}
       ></Box>
-      <Typography
+     <Grid container justifyContent="center"  >
+     <Typography
         variant="h4"
         sx={{
           position: "absolute",
           bottom: "10%",
-          left: "40%",
+      padding:"0 10px",
+          textAlign:"center",
           fontWeight: "bold",
           color: "#fff",
         }}
       >
         {title}
       </Typography>
+     </Grid>
     </MotionGrid>
   );
 }
