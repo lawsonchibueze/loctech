@@ -19,7 +19,6 @@ export const POST = async (req: Request) => {
       createdAt,
       updatedAt,
       comment,
-
       Post: {
         create: post,
       },

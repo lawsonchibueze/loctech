@@ -13,7 +13,7 @@ export const POST = async (req: Request) => {
   const {
     title,
     subtitle,
-    slug,
+    postSlug,
     image,
     content,
     createdAt,
@@ -26,7 +26,7 @@ export const POST = async (req: Request) => {
     data: {
       title,
       subtitle,
-      slug,
+      postSlug,
       image,
       content,
       createdAt,
