@@ -34,7 +34,7 @@ export const courseSchema = yup.object().shape({
   targetAud: yup.object().shape({
     name: yup.string().required("field is required"),
   }),
-  video: yup.string().required("Video is required"),
+  video: yup.string(),
   image: yup.string().required("Image is required"),
   duration: yup.string().required("Image is required"),
   curriculum: yup.string().required("field is required"),
@@ -83,3 +83,13 @@ export const testimonialSchema = yup.object().shape({
   image: yup.string().required("This field is required"),
   review: yup.string().required("This field is required"),
 });
+
+
+export const postSchema = yup.object().shape({
+  title : yup.string().required("This field is required"),
+  subtitle : yup.string().required("This field is required"),
+  slug: yup.string().required("This field is required"),
+  image: yup.string().required("This field is required"),
+  content :yup.string().required("This field is required"),
+  author: yup.string().required("This field is required"),
+})

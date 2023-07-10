@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/app/components/Header";
-import { Grid, TextField, Typography } from "@/app/lib/mui";
+import { Box, Grid, TextField, Typography } from "@/app/lib/mui";
 import { instructorSchema } from "@/app/lib/yup";
 import { InstructorType } from "@/app/types/_types";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
@@ -77,6 +77,7 @@ console.log(data)
   };
 
   return (
+    <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <form onSubmit={handleSubmit(onSubmitHandler)}>
       <Grid container rowSpacing={3} columnSpacing={3} mb="2rem">
         <Grid container item>
@@ -240,5 +241,6 @@ console.log(data)
         </Grid>
       </Grid>
     </form>
+    </Box>
   );
 }
