@@ -1,6 +1,6 @@
 "use client";
 import React, { ChangeEvent, useEffect } from "react";
-import { Grid, TextField, Typography } from "../../lib/mui";
+import { Box, Grid, TextField, Typography } from "../../lib/mui";
 import Header from "@/app/components/Header";
 import { Controller, useForm } from "react-hook-form";
 import { HeroType } from "@/app/types/_types";
@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
+import { revalidateTag } from "next/cache";
 interface PageProps {
   searchParams : {
     id: string
@@ -80,6 +81,7 @@ export default function page({searchParams}:PageProps) {
   };
 
   return (
+    <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <form onSubmit={handleSubmit(onSubmitHandler)}>
       <Header title="Add Hero" btnText="Add Hero Text" />
       <Grid container m="1rem 0">
@@ -144,5 +146,6 @@ export default function page({searchParams}:PageProps) {
         <Grid></Grid>
       </Grid>
     </form>
+    </Box>
   );
 }

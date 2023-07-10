@@ -188,6 +188,7 @@ export default function Page() {
     const data = {
       ...values,
       imageSrc: imageSrc,
+      courseSlug: values.courseSlug.trim(),
       coursePrice: +values.coursePrice,
       isFeatured: values.isFeatured  === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true" , //converting the string values to boolen
@@ -227,6 +228,7 @@ export default function Page() {
   };
 
   return (
+    <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <form onSubmit={handleSubmit(submitHandler)}>
       <Header title="Add Course" btnText="Upload course" />
       <hr />
@@ -502,6 +504,7 @@ export default function Page() {
         </Grid>
       </Grid>
     </form>
+    </Box>
   );
 }
 

@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { Box, Grid, Typography, useTheme, Button } from "../lib/mui";
 import Image from "next/image";
 import { tokens } from "../lib/theme";
-import Card from "./Card";
 import { HeroType } from "../types/_types";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 
 interface HeroProps {
   data: HeroType[];
@@ -85,8 +85,10 @@ export default function Hero({ data }: HeroProps) {
                       fontSize: "18px",
                       color: colors.primary[900],
                       cursor: "pointer",
+                      mt:"10px"
                     }}
                   >
+                    <ModeEditOutlineOutlinedIcon/>
                     Update Hero
                   </MotionBtn>
                 </Link>

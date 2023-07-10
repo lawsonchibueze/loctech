@@ -3,7 +3,7 @@ import Image from "next/image";
 import { LegacyRef, Ref, RefObject, forwardRef, useCallback } from "react";
 import FileInput from "../components/FileInput";
 import { FieldErrors, useForm } from "react-hook-form";
-import { CourseProps, OptionProps } from "../types/_types";
+import { CourseType, OptionProps } from "../types/_types";
 import Typography from "@mui/material/Typography";
 import convertTime from "./ConvertTime";
 
@@ -18,7 +18,7 @@ interface FileProps {
   duration?: (value: number) => void;
   value?: string | null;
   register?: any;
-  error?: FieldErrors<CourseProps>;
+  error?: FieldErrors<CourseType>;
   placeholder: string;
 }
 
@@ -51,7 +51,7 @@ export function ImageUpload({
           <div onClick={handleOnClick} >
             {value ? (
               <div>
-                <Image width={100} height={100} src={value} alt="courseImage" />
+                <Image width={100} height={100} src={value} alt="courseImage"  blurDataURL="spinner.svg"/>
               </div>
             ) : (
               <div onClick={handleOnClick}>
@@ -112,7 +112,7 @@ export const VideoUpload = forwardRef<RefObject<HTMLVideoElement>, FileProps>(
                     placeholder={placeholder}
                     accept="video/*"
                     name="video"
-                    register={register("video", { required: true })}
+                    register={register("video")}
                     error={!!error?.video}
                   />
                   {!!error?.video && (

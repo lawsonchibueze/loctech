@@ -4,36 +4,39 @@ export type FeaturedCourseArrType = {
   level?: string;
   title: string;
   author?: string;
-  price: number;
-  description: string
-  slug: string
+  price: string;
+  description: string;
+  slug: string;
 };
 
+export type CourseType = {
+  id?: string;
+  courseTitle: string;
 
+  description: string;
+  courseSlug: string;
+  coursePrice: number;
+  category: string;
+  isFeatured: string;
+  isTrending: string;
+  isOnline: string;
+  prerequisites: { name: string }[];
+  learningObj: { name: string }[];
+  curriculumList: { name: string }[];
+  targetAud: { name: string }[];
+  video: string | null;
+  imageSrc: string;
+  duration: number;
+  curriculum: string;
+  Instructor?: string;
+};
 
-export type CourseType ={
-  id? : string
-  courseTitle: string
-
-description:string
-  courseSlug: string
-  coursePrice : number
-  category: string
-  isFeatured:string
-  isTrending:string
-  isOnline:string
-  prerequisites:  { name: string }[] 
-  learningObj:{ name: string }[] 
-  curriculumList: { name: string }[] 
-  targetAud : { name: string }[] 
-  video: string| null
-  imageSrc: string
-  duration: number
-  curriculum: string
-  Instructor:string
-}
-
-
+// Define a type that transforms 'learningObj' to an array of strings
+export type TransformedCourseType = CourseType & {
+   learningObj: string[] ; 
+   prerequisites: string[]
+   targetAud: string[]
+};
 export interface OptionProps {
   value: string;
   label: string;
@@ -45,31 +48,30 @@ export type LoginType = {
 };
 
 export type SignUpType = {
-  name: string
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
 };
 
 export type InstructorType = {
- 
-  name: string
-  email: string | undefined
-  instructorImage: string | undefined
-  bio: string | undefined
-  rating: number | undefined
-  reviews: string | undefined
-  facebook: string | undefined
-  twitter: string | undefined
-  instagram: string | undefined
-  linkedin: string | undefined
-  reviewer: string | undefined
-  reviewerImage: string | undefined
-  reviewerComment: string | undefined
+  name: string;
+  email: string | undefined;
+  instructorImage: string | undefined;
+  bio: string | undefined;
+  rating: number | undefined;
+  reviews: string | undefined;
+  facebook: string | undefined;
+  twitter: string | undefined;
+  instagram: string | undefined;
+  linkedin: string | undefined;
+  reviewer: string | undefined;
+  reviewerImage: string | undefined;
+  reviewerComment: string | undefined;
 };
 
 export type HeroType = {
-  id? : string
+  id?: string;
   title: string;
   subtitle: string;
   button: string;
@@ -83,3 +85,11 @@ export type TestimonialType = {
 };
 
 
+export  type PostType ={
+title: string
+subtitle: string
+slug: string
+image : string
+content: string
+author: string
+}
