@@ -31,10 +31,8 @@ export default  function RootLayout({
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <NavBar />
-              <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
                 {children}
                 <Footer />
-              </Box>
             </ThemeProvider>
           </ColorModeContext.Provider>
         </NextAuthSessionsProvider>

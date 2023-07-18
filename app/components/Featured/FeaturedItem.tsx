@@ -1,32 +1,39 @@
 import { featuredCourseArr } from "@/app/utils/Data";
 import React from "react";
 import FeaturedCard from "./FeaturedCard";
-import Link from "next/link"
+import Link from "next/link";
 import { CourseType } from "@/app/types/_types";
+import { formatPrice } from "@/app/utils/formatPrice";
+import { Grid, Typography } from "@/app/lib/mui";
 
-interface FeaturedItemProps{
-  courses : CourseType[]
+
+interface FeaturedItemProps {
+  courses: CourseType[];
 }
 
-
-export default function FeaturedItem({courses}:FeaturedItemProps) {
-  const filteredCourses = courses.filter(course =>  Boolean(course.isFeatured) === true)
-  console.log("filterd course", filteredCourses)
+export default function FeaturedItem({ courses }: FeaturedItemProps) {
   return (
     <>
-      {filteredCourses.map((course) => (
-        <FeaturedCard
-          key={course.id}
-          id={course?.id}
-          img={course.imageSrc}
-          description={course.description}
-          // level={course.level}
-          title={course.courseTitle}
-          slug={course.courseSlug}
-          // author={course.Instructor.}
-          price={course.coursePrice}
-        />
-      ))}
+      {courses.length === 0 ? (
+        <Grid container item justifyContent="center">
+          {" "}
+          <Typography variant="h3"> Empty course </Typography>
+        </Grid>
+      ) : (
+        courses.map((course) => (
+          <FeaturedCard
+            key={course.id}
+            id={course?.id}
+            img={course?.imageSrc}
+            description={course?.description}
+            // level={course.level}
+            title={course?.courseTitle}
+            slug={course?.courseSlug}
+            // author={course.Instructor.}
+            price={formatPrice(course?.coursePrice)}
+          />
+        ))
+      )}
     </>
   );
 }

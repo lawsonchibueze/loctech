@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Grid, Button, useTheme } from "../lib/mui";
+import { Grid, Button, useTheme, Box } from "../lib/mui";
 import { motion } from "framer-motion";
 import { tokens } from "../lib/theme";
 import Header from "../components/Header";
@@ -21,6 +21,8 @@ export default function page() {
   },[session?.user.role, router]);
 
   return (
+
+    <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <Grid container item>
       <Link href="/forms/uploadcourse" style={{ width: "100%" }}>
         <Header title="Upload Course" btnText="Upload Course" />
@@ -34,6 +36,10 @@ export default function page() {
       <Link href="/forms/testimonial" style={{ width: "100%" }}>
         <Header title="Upload Testimonial" btnText="Upload Testimonial" />
       </Link>
+      <Link href="/forms/blog" style={{ width: "100%" }}>
+        <Header title="Upload Blog" btnText="Upload  Blog" />
+      </Link>
     </Grid>
+    </Box>
   );
 }

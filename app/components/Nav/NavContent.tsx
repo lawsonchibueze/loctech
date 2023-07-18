@@ -88,7 +88,7 @@ export default function NavContent() {
                 </IconButton>
                 <NavItem title="Home" to="/" />
                 <NavItem title="Courses" to="/courses" />
-
+                <NavItem title="Blog" to="/blog" />
                 <NavItem title="About us" to="/" />
                 {session?.user.role === "ADMIN" && (
                   <NavItem title="Forms" to="/forms" />

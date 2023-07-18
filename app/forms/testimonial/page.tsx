@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/app/components/Header";
-import { Grid, TextField, Typography } from "@/app/lib/mui";
+import { Box, Grid, TextField, Typography } from "@/app/lib/mui";
 import { testimonialSchema } from "@/app/lib/yup";
 import { TestimonialType } from "@/app/types/_types";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -31,6 +31,7 @@ export default function page() {
   };
 
   return (
+    <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <form onSubmit={handleSubmit(onSubmitHandler)}>
       <Header title="Add Testimonial" btnText="Add Testimonial" />
       <Grid container m="1rem 0">
@@ -86,5 +87,6 @@ export default function page() {
         <Grid></Grid>
       </Grid>
     </form>
+    </Box>
   );
 }

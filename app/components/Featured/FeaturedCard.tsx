@@ -54,7 +54,7 @@ export default function FeaturedCard({
           alignItems="flex-end"
         >
           <Typography fontWeight="bold" variant="h5">
-            {price}
+           N {price}
           </Typography>
           <Typography fontWeight="normal">12 weeks</Typography>
         </Grid>
