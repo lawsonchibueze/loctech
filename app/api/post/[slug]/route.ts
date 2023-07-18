@@ -2,13 +2,13 @@ import prisma from "@/prisma/prisma";
 import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 
 interface PostParams {
-  id: string;
+  slug: string;
 }
 export const GET = async (req: Request, { params }: { params: PostParams }) => {
-  const { id } = params;
+  const { slug } = params;
   const post = await prisma.post.findUnique({
     where: {
-      id,
+      postSlug: slug,
     },
   });
   return new Response(JSON.stringify(post), { status: 200 });
@@ -20,11 +20,11 @@ export const PATCH = async (
 ) => {
   await checkCurrentUser();
 
-  const { id } = params;
+  const { slug } = params;
   const {
     title,
     subtitle,
-    slug,
+    postSlug,
     image,
     content,
     createdAt,
@@ -35,14 +35,13 @@ export const PATCH = async (
 
   const updatedPost = await prisma.post.update({
     where: {
-      id,
+      postSlug: slug,
     },
     data: {
       title,
       subtitle,
-      slug,
+      postSlug,
       image,
-
       content,
       createdAt,
       updatedAt,
@@ -68,11 +67,11 @@ export const DELETE = async (
 ) => {
   await checkCurrentUser();
 
-  const { id } = params;
+  const { slug } = params;
 
   const deletedPost = await prisma.post.delete({
     where: {
-      id,
+      postSlug: slug,
     },
   });
 
