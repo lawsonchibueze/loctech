@@ -95,13 +95,13 @@ export default async function Home() {
           src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FsoftwareEngineer.jpg&w=640&q=75"
           alt="courses"
           title="Software Engineering"
-          params="coding"
+          params="CODING"
         />
         <SubjectCard
           src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FDesignSpecialist.jpg&w=640&q=75"
           alt="courses"
           title="Computer Aided Design - Graphics"
-          params="graphics"
+          params="GRAPHICS"
         />
         <SubjectCard
           src="https://loctech-web-app.vercel.app/_next/image?url=%2Fcategory%2FofficeProductivity.jpg&w=640&q=75"
