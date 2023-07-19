@@ -45,7 +45,7 @@ export default function Page() {
 
   useEffect(() => {
     if (status === "authenticated") {
-     redirect("/"); // Redirect to homepage if logged in
+      redirect("/"); // Redirect to homepage if logged in
     }
   }, [status, router]);
 
@@ -213,6 +213,7 @@ export default function Page() {
             {/*  */}
             <Grid container item md={4} sm={12}>
               <Button
+                onClick={() => signIn("github")}
                 variant="contained"
                 fullWidth
                 sx={{
