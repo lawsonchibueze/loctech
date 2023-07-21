@@ -166,14 +166,17 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 });
 
 export const useMode = (): [Theme, ColorModeContextType] => {
- 
   const [mode, setMode] = useState<PaletteMode>(() => {
-    const storedMode = localStorage.getItem("colorMode"); //get mode from localstorage
+    const isBrowser = typeof window !== 'undefined';
+    const storedMode = isBrowser ? localStorage.getItem("colorMode") : null;
     return (storedMode as PaletteMode) || "light";
   });
 
   useEffect(() => {
-    localStorage.setItem("colorMode", mode); //set mode to localStorage
+    const isBrowser = typeof window !== 'undefined';
+    if (isBrowser) {
+      localStorage.setItem("colorMode", mode);
+    }
   }, [mode]);
 
   const colorMode = useMemo<ColorModeContextType>(

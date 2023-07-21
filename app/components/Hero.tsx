@@ -21,6 +21,8 @@ export default function Hero({ data }: HeroProps) {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  console.log("color =========", colors.rose , "theme=========", theme)
   return (
     <>
       {data.map((hero) => (
