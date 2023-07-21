@@ -30,7 +30,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import FileInput from "../../components/FileInput";
 import { ImageUpload, VideoUpload } from "@/app/utils/ImageAndVideoUpload";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -103,13 +103,13 @@ export default function Page() {
   const imageSrc = watch("imageSrc");
   const videoSrc = watch("video");
   const duration = watch("duration");
-  const setCustomValue = (id: any, value: any) => {
+  const setCustomValue = useCallback((id: any, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
       shouldTouch: true,
       shouldValidate: true,
     });
-  };
+  },[setValue]);
 
   useEffect(() => {
     if (videoSrc && videoRef.current) {
