@@ -1,4 +1,3 @@
-import { featuredCourseArr } from "@/app/utils/Data";
 import React from "react";
 import FeaturedCard from "./FeaturedCard";
 import Link from "next/link";
