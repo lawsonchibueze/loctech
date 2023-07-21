@@ -14,7 +14,7 @@ import {
   FieldErrors,
   UseFormSetValue,
 } from "react-hook-form";
-import { CourseProps } from "../types/_types";
+import { CourseType} from "../types/_types";
 import draftToHtml from "draftjs-to-html";
 
 interface DraftProps {
@@ -22,8 +22,8 @@ interface DraftProps {
   name: string;
   register: any;
   editorState: EditorState;
-  error: FieldErrors<CourseProps>;
-  setValue: UseFormSetValue<CourseProps>;
+  error: FieldErrors<CourseType>;
+  setValue: UseFormSetValue<CourseType>;
   onChange: (editorState: any) => void;
 }
 
