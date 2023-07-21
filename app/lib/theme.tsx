@@ -173,7 +173,9 @@ export const useMode = (): [Theme, ColorModeContextType] => {
   });
 
   useEffect(() => {
-    localStorage.setItem("colorMode", mode);
+    if (typeof window !== undefined) {
+      localStorage.setItem("colorMode", mode);
+    }
   }, [mode]);
 
   const colorMode = useMemo<ColorModeContextType>(
