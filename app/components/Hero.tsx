@@ -22,7 +22,7 @@ export default function Hero({ data }: HeroProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("color =========", colors.rose , "theme=========", theme)
+  // console.log("color =========", colors.rose , "theme=========", theme)
   return (
     <>
       {data.map((hero) => (
@@ -59,8 +59,9 @@ export default function Hero({ data }: HeroProps) {
                 whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
                 variant="contained"
                 size="large"
+                
                 sx={{
-                  backgroundColor: colors.rose[500],
+                  backgroundColor: colors.rose[600] ,
                   fontWeight: "bold",
                   fontSize: "18px",
                   color: colors.primary[900],

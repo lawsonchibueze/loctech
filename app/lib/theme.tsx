@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { createContext, useState, useMemo, useEffect } from "react";
 import { Nunito } from "next/font/google";
-import { PaletteMode} from "./mui";
+import { PaletteMode } from "./mui";
 import { createTheme, Theme } from "@mui/material/styles";
 
 const nunito = Nunito({ subsets: ["latin"] });
@@ -151,7 +151,6 @@ export const themeSettings = (mode: PaletteMode) => {
         fontSize: 14,
       },
     },
-    
   };
 };
 
@@ -167,16 +166,14 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 
 export const useMode = (): [Theme, ColorModeContextType] => {
   const [mode, setMode] = useState<PaletteMode>(() => {
-    const isBrowser = typeof window !== 'undefined';
-    const storedMode = isBrowser ? localStorage.getItem("colorMode") : null;
-    return (storedMode as PaletteMode) || "light";
+    const storedMode =
+      typeof window !== undefined ? localStorage.getItem("colorMode") : null;
+    // console.log(typeof window !== undefined ? localStorage.getItem("colorMode") : null, "storedmode from localstorage")
+    return (storedMode as PaletteMode) || ("light" as PaletteMode);
   });
 
   useEffect(() => {
-    const isBrowser = typeof window !== 'undefined';
-    if (isBrowser) {
-      localStorage.setItem("colorMode", mode);
-    }
+    localStorage.setItem("colorMode", mode);
   }, [mode]);
 
   const colorMode = useMemo<ColorModeContextType>(
