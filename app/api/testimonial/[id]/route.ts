@@ -5,7 +5,7 @@ interface CIParams {
   id?: string;
 }
 
-export const GET = async (req: Request, { params }: { params: CIParams }) => {
+export const GET = async (req: Request, params: CIParams) => {
   const { id } = params;
 
   const testimonial = await prisma.testimonial.findUnique({
@@ -17,7 +17,7 @@ export const GET = async (req: Request, { params }: { params: CIParams }) => {
   return new Response(JSON.stringify(testimonial), { status: 200 });
 };
 
-export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
+export const PATCH = async (req: Request, params: CIParams) => {
   await checkCurrentUser();
 
   const { id } = params;
@@ -38,7 +38,7 @@ export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
   return new Response(JSON.stringify(updatedTestimonial), { status: 200 });
 };
 
-export const DELETE = async ({ params }: { params: CIParams }) => {
+export const DELETE = async (req: Request, params: CIParams) => {
   await checkCurrentUser();
 
   const { id } = params;
