@@ -14,7 +14,7 @@ import Google from "@mui/icons-material/Google";
 import FacebookRounded from "@mui/icons-material/FacebookRounded";
 import LinkedIn from "@mui/icons-material/LinkedIn";
 import { tokens } from "../lib/theme";
-import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { AccountCircle, GitHub, Visibility, VisibilityOff } from "@mui/icons-material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
@@ -189,7 +189,7 @@ export default function Page() {
 
           {/* buttons */}
           <Grid container rowSpacing={2} columnSpacing={2}>
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 onClick={() => signIn("google")}
                 variant="contained"
@@ -211,7 +211,7 @@ export default function Page() {
             </Grid>
 
             {/*  */}
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 onClick={() => signIn("github")}
                 variant="contained"
@@ -227,30 +227,12 @@ export default function Page() {
                 }}
               >
                 {" "}
-                <FacebookRounded />
-                Facebook{" "}
+                <GitHub/>
+               Github{" "}
               </Button>
             </Grid>
             {/*  */}
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <LinkedIn />
-                LinkedIn{" "}
-              </Button>
-            </Grid>
+     
           </Grid>
 
           <Grid container justifyContent="center" m="1rem 0">

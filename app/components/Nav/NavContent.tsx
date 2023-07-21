@@ -32,7 +32,7 @@ export default function NavContent() {
     if (status === "unauthenticated") {
       router.push("/signIn");
      }
-  },[status]);
+  },[status. router]);
 
   const SignOutHandler = () => {
     signOut();

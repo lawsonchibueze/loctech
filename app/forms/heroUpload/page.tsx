@@ -17,7 +17,7 @@ interface PageProps {
   }
 }
 
-export default function page({searchParams}:PageProps) {
+export default function Page({searchParams}:PageProps) {
   const heroID = searchParams.id
   const [error, setError] = React.useState("");
   const { data: session } = useSession() as unknown as any;

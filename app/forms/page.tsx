@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-export default function page() {
+export default function Page() {
   const MotionBtn = motion(Button);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

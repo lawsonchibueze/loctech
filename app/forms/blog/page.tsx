@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-export default function page() {
+export default function Page() {
   const {
     register,
     handleSubmit,

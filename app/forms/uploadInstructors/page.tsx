@@ -10,7 +10,7 @@ import { MuiFileInput } from "mui-file-input";
 import { useSession } from "next-auth/react";
 import React, { ChangeEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-export default function page() {
+export default function Page() {
   const { data: session } = useSession() as unknown as any;
   const [error, setError] = React.useState("");
 

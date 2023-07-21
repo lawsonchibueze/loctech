@@ -117,7 +117,7 @@ export default function Page() {
         setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
       });
     }
-  }, [videoRef, videoSrc]);
+  }, [videoRef, videoSrc, setCustomValue]);
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
     //dynamic array for learningObjField

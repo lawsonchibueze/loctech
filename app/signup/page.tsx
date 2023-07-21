@@ -17,6 +17,7 @@ import {
   FacebookRounded,
   LinkedIn,
   Password,
+  GitHub,
 } from "@mui/icons-material";
 import axios from "axios";
 
@@ -223,7 +224,7 @@ export default function Page() {
 
           {/* buttons */}
           <Grid container rowSpacing={2} columnSpacing={2}>
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 variant="contained"
                 onClick={() => signIn("google")}
@@ -245,9 +246,10 @@ export default function Page() {
             </Grid>
 
             {/*  */}
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 variant="contained"
+                onClick={()=>signIn("github")}
                 fullWidth
                 sx={{
                   textTransform: "none",
@@ -260,30 +262,12 @@ export default function Page() {
                 }}
               >
                 {" "}
-                <FacebookRounded />
-                Facebook{" "}
+                <GitHub/>
+               Github{" "}
               </Button>
             </Grid>
             {/*  */}
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <LinkedIn />
-                LinkedIn{" "}
-              </Button>
-            </Grid>
+
           </Grid>
 
           <Grid container justifyContent="center" m="1rem 0">
