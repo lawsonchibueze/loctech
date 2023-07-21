@@ -17,7 +17,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ColorModeContext, tokens } from "@/app/lib/theme";
 import { useSession, signOut } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 
 export default function NavContent() {
   const theme = useTheme();
