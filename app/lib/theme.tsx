@@ -187,7 +187,6 @@ return  "light" as PaletteMode
 
   useEffect(() => {
     
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
       localStorage.setItem("colorMode",  JSON.stringify(mode));
     
   }, [mode]);
