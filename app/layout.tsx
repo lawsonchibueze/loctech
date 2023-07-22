@@ -3,7 +3,7 @@
 import "./globals.css";
 import { Nunito } from "next/font/google";
 import { ColorModeContext, useMode } from "./lib/theme";
-import { CssBaseline, ThemeProvider } from "./lib/mui";
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { Box } from "./lib/mui";

@@ -2,7 +2,7 @@
 import { createContext, useState, useMemo, useEffect } from "react";
 import { Nunito } from "next/font/google";
 import { PaletteMode } from "./mui";
-import { createTheme, Theme } from "@mui/material/styles";
+import { createTheme, Theme } from "@mui/material";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -167,27 +167,28 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 
 export const useMode = (): [Theme, ColorModeContextType] => {
 
-  const [mode, setMode] = useState<PaletteMode>(() => {
+  const [mode, setMode] = useState(() => {
  
     if (typeof window !== 'undefined') {
-      const storedMode = localStorage.getItem("colorMode")!
-      const initial = JSON.parse(storedMode);
-      return (initial as PaletteMode || ("light" as PaletteMode)) 
+      const storedMode = window.localStorage.getItem("colorMode")
+      if (storedMode === null || storedMode === undefined){
+        return 'light'
+      }
+      return storedMode
 
     }  
 
-      //Perform localStorage action
-  //  const initialValue = JSON.parse(storedMode);
+
 
   //  console.log(storedMode, "-==========================parsedvalue")
-return  "light" as PaletteMode
+return  ""
   });
 
 
 
   useEffect(() => {
     
-      localStorage.setItem("colorMode",  JSON.stringify(mode));
+      localStorage.setItem("colorMode",  mode);
     
   }, [mode]);
 
@@ -199,7 +200,7 @@ return  "light" as PaletteMode
     []
   );
 
-  const theme = useMemo<Theme>(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo<Theme>(() => createTheme(themeSettings(mode as PaletteMode)), [mode]);
 
   return [theme, colorMode];
 };
