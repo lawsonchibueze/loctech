@@ -28,7 +28,6 @@ export default async function page({ searchParams }: PageProps) {
   const [course] = await Promise.all([courseData]);
 
   const filterCourse = course.filter((item) => item.category === category);
-  console.log("wertyuiopbnm", filterCourse);
   return (
     <AnimatedRoute>
       <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>

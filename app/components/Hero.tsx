@@ -3,11 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Box, Grid, Typography, useTheme, Button } from "../lib/mui";
 import Image from "next/image";
-import { tokens } from "../lib/theme";
 import { HeroType } from "../types/_types";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import { tokens } from "../lib/theme";
 
 interface HeroProps {
   data: HeroType[];

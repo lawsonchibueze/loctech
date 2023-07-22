@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { createContext, useState, useMemo, useEffect } from "react";
 import { Nunito } from "next/font/google";
 import { PaletteMode } from "./mui";
@@ -86,6 +86,7 @@ export const tokens = (mode: PaletteMode) => ({
 
 export const themeSettings = (mode: PaletteMode) => {
   const colors = tokens(mode);
+
   return {
     palette: {
       mode: mode,
@@ -165,17 +166,30 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 });
 
 export const useMode = (): [Theme, ColorModeContextType] => {
+
   const [mode, setMode] = useState<PaletteMode>(() => {
-    const storedMode =
-      typeof window !== undefined ? localStorage.getItem("colorMode") : null;
-    // console.log(typeof window !== undefined ? localStorage.getItem("colorMode") : null, "storedmode from localstorage")
-    return (storedMode as PaletteMode) || ("light" as PaletteMode);
+ 
+    if (typeof window !== 'undefined') {
+      const storedMode = localStorage.getItem("colorMode")!
+      const initial = JSON.parse(storedMode);
+      return (initial as PaletteMode || ("light" as PaletteMode)) 
+
+    }  
+
+      //Perform localStorage action
+  //  const initialValue = JSON.parse(storedMode);
+
+  //  console.log(storedMode, "-==========================parsedvalue")
+return  "light" as PaletteMode
   });
 
+
+
   useEffect(() => {
-    if (typeof window !== undefined) {
-      localStorage.setItem("colorMode", mode);
-    }
+    
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      localStorage.setItem("colorMode",  JSON.stringify(mode));
+    
   }, [mode]);
 
   const colorMode = useMemo<ColorModeContextType>(
