@@ -2,19 +2,17 @@ import React from "react";
 import AnimatedRoute from "../components/AnimatedRoute";
 import { Box, Grid } from "../lib/mui";
 import FeaturedItem from "../components/Featured/FeaturedItem";
-import { CourseType } from "../types/_types";
-import { notFound } from "next/navigation";
 import prisma from "@/prisma/prisma";
+import { CourseType } from "../types/_types";
 
 async function getCourses() {
   const courses = await prisma.course.findMany();
   return courses;
 }
 
-export default async function page() {
-  const courseData = await getCourses();
-  console.log(courseData);
-
+export default async function Page() {
+  const courses = await getCourses();
+  const onlineCourses = courses.filter((course) => course.isOnline === false);
   return (
     <AnimatedRoute>
       <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
@@ -24,7 +22,7 @@ export default async function page() {
           rowSpacing={3}
           p="2rem 0"
         >
-          <FeaturedItem courses={courseData as unknown as CourseType[]} />
+          <FeaturedItem courses={onlineCourses as unknown as CourseType[]} />
         </Grid>
       </Box>
     </AnimatedRoute>

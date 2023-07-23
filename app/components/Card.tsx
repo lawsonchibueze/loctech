@@ -5,12 +5,14 @@ tokens;
 import Image from "next/image";
 import { tokens } from "../lib/theme";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface CardProps {
   title: string;
   subtitle: string;
   btnText: string;
   initialX: string;
+  link : string
 }
 
 export default function Card({
@@ -18,6 +20,7 @@ export default function Card({
   subtitle,
   btnText,
   initialX,
+  link
 }: CardProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -47,7 +50,8 @@ export default function Card({
             </Typography>
           </Box>
 
-          <Box>
+         <Link href={link}>
+         <Box>
             <MotionBtn
               whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
               variant="contained"
@@ -62,6 +66,7 @@ export default function Card({
               {btnText}
             </MotionBtn>
           </Box>
+         </Link>
         </Box>
       </Grid>
 

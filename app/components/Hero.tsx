@@ -17,7 +17,7 @@ export default function Hero({ data }: HeroProps) {
   const MotionBtn = motion(Button);
   const { data: session } = useSession() as unknown as any;
 
-  console.log(process.env.NEXT_PUBLIC_DEVELOPMENT_URL);
+  // console.log(process.env.NEXT_PUBLIC_DEVELOPMENT_URL);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

@@ -10,6 +10,7 @@ import CourseTag from "@/app/components/CourseTag";
 import AnimatedRoute from "@/app/components/AnimatedRoute";
 import { CourseType, TransformedCourseType } from "@/app/types/_types";
 import { notFound } from "next/navigation";
+import prisma from "@/prisma/prisma";
 type PageProps = {
   params: {
     slug: string;
@@ -17,24 +18,25 @@ type PageProps = {
 };
 
 async function getCourseDetail(slug: string) {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_DEVELOPMENT_URL + "/api/course/" + slug,
-    { method: "GET", cache: "no-cache" }
-  );
-  if (!res.ok) {
-    throw new Error("Something went wrong");
+  const course = await prisma.course.findUnique({
+    where: {
+    courseSlug: slug
+    },
+  });
+
+  if (!course) {
+    return null;
   }
 
-
-  return await res.json();
+  return course;
 }
 
 export default async function page({ params }: PageProps) {
   const courseSlug = params?.slug;
-  const courseData: TransformedCourseType = await getCourseDetail(courseSlug);
-  const [course] = await Promise.all([courseData]);
+  const courseData= await getCourseDetail(courseSlug);
+  // const [course] = await Promise.all([courseData]);
 
-  if (!course) {
+  if (!courseData) {
    notFound()
   }
 
@@ -52,7 +54,7 @@ export default async function page({ params }: PageProps) {
           <Box>
             <Typography variant="h3" fontWeight="bold">
               {" "}
-              {course?.courseTitle}
+              {courseData?.courseTitle}
             </Typography>
           </Box>
           <Grid
@@ -64,19 +66,19 @@ export default async function page({ params }: PageProps) {
             sx={{ display: { xs: "flex", md: "none" }, mt: "20px" }}
           >
             <CourseTag
-              coursePrice={course?.coursePrice}
-              duration={course?.duration}
-              method={course?.isOnline}
-              category={course?.category}
-              img={course?.imageSrc}
+              coursePrice={courseData?.coursePrice}
+              duration={courseData?.duration!}
+              method={courseData?.isOnline as unknown as string}
+              category={courseData?.category}
+              img={courseData?.imageSrc}
             />
           </Grid>
 
           {/* course description */}
-          <CourseDesc description={course?.description} />
-          <Objectives objectives={course?.learningObj} />
-          <Perquisite prerequisites={course?.prerequisites} />
-          <Audience target={course?.targetAud} />
+          <CourseDesc description={courseData?.description} />
+          <Objectives objectives={courseData?.learningObj} />
+          <Perquisite prerequisites={courseData?.prerequisites} />
+          <Audience target={courseData?.targetAud} />
           <Curriculum />
         </Grid>
 
@@ -89,11 +91,11 @@ export default async function page({ params }: PageProps) {
           sx={{ display: { xs: "none", md: "flex" } }}
         >
           <CourseTag
-            coursePrice={course?.coursePrice}
-            duration={course?.duration}
-            method={course?.isOnline}
-            category={course?.category}
-            img={course?.imageSrc}
+            coursePrice={courseData?.coursePrice}
+            duration={courseData?.duration !}
+            method={courseData?.isOnline as unknown as string}
+            category={courseData?.category}
+            img={courseData?.imageSrc}
           />
         </Grid>
       </Grid>
