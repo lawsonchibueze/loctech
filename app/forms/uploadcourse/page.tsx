@@ -1,14 +1,12 @@
 "use client";
-
 import { Grid, Box } from "../../lib/mui";
-
 import Header from "../../components/Header";
 import Input from "../../components/Input";
 import Draft from "../../components/Draft";
 import DropDown from "../../components/DropDown";
 import CourseStepper from "../../components/CourseStepper";
 import DynamicField from "../../components/DynamicField";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import convertTime from "../../utils/ConvertTime";
 import { useFieldArray, useForm } from "react-hook-form";
 import { CourseType, OptionProps } from "../../types/_types";
@@ -18,7 +16,6 @@ import { ImageUpload, VideoUpload } from "@/app/utils/ImageAndVideoUpload";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-
 import BasicModal from "@/app/components/Modal";
 import { redirect } from "next/navigation";
 
@@ -30,8 +27,10 @@ export default function Page() {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (session?.user.role !== "ADMIN") {
-      redirect("/"); //redirect if role is not ADMIN
+    if (typeof window !== "undefined") {
+      if (session?.user.role !== "ADMIN") {
+        redirect("/"); //redirect if role is not ADMIN
+      }
     }
   }, [session?.user.role]);
 
@@ -187,7 +186,6 @@ export default function Page() {
         name: values.Instructor,
       },
     };
-    console.log(data);
 
     if (session.user.role === "ADMIN") {
       axios
@@ -197,7 +195,6 @@ export default function Page() {
           if (response.data) {
             setIsError(false);
             setOpen(true);
-            console.log(response.data);
             reset();
           }
         })
@@ -205,7 +202,6 @@ export default function Page() {
           // An error occurred
           setIsError(true);
           setOpen(true);
-          console.error("An error occured");
         });
     }
   };
