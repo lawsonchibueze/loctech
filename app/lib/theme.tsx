@@ -1,8 +1,8 @@
 "use client"
 import { createContext, useState, useMemo, useEffect } from "react";
 import { Nunito } from "next/font/google";
-import { PaletteMode } from "./mui";
-import { createTheme, Theme } from "@mui/material";
+import { PaletteMode} from "./mui";
+import { createTheme, Theme } from "@mui/material/styles";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -86,7 +86,6 @@ export const tokens = (mode: PaletteMode) => ({
 
 export const themeSettings = (mode: PaletteMode) => {
   const colors = tokens(mode);
-
   return {
     palette: {
       mode: mode,
@@ -152,6 +151,7 @@ export const themeSettings = (mode: PaletteMode) => {
         fontSize: 14,
       },
     },
+    
   };
 };
 
@@ -166,30 +166,19 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 });
 
 export const useMode = (): [Theme, ColorModeContextType] => {
-
-  const [mode, setMode] = useState(() => {
  
-    if (typeof window !== 'undefined') {
-      const storedMode = window.localStorage.getItem("colorMode")
-      if (storedMode === null || storedMode === undefined){
-        return 'light'
-      }
-      return storedMode
+const [getLs, setLs] = useState<PaletteMode>("light")
 
-    }  
+useEffect(()=>{
+  const storedMode = localStorage.getItem("colorMode") as PaletteMode; //get mode from localstorage
+  console.log(localStorage === window.localStorage,"==============local storage");
 
+  setLs(storedMode) 
+})
 
-
-  //  console.log(storedMode, "-==========================parsedvalue")
-return  ""
-  });
-
-
-
+  const [mode, setMode] = useState<PaletteMode>(getLs);
   useEffect(() => {
-    
-      localStorage.setItem("colorMode",  mode);
-    
+    localStorage.setItem("colorMode", mode); //set mode to localStorage
   }, [mode]);
 
   const colorMode = useMemo<ColorModeContextType>(
@@ -200,7 +189,7 @@ return  ""
     []
   );
 
-  const theme = useMemo<Theme>(() => createTheme(themeSettings(mode as PaletteMode)), [mode]);
-
+  const theme = useMemo<Theme>(() => createTheme(themeSettings(mode)), [mode]);
+  // console.log(localStorage === window.localStorage,"==============local storage");
   return [theme, colorMode];
 };
