@@ -171,7 +171,7 @@ const [getLs, setLs] = useState<PaletteMode>("light")
 
 useEffect(()=>{
   const storedMode = localStorage.getItem("colorMode") as PaletteMode; //get mode from localstorage
-  console.log(localStorage === window.localStorage,"==============local storage");
+  // console.log(localStorage === window.localStorage,"==============local storage");
 
   setLs(storedMode) 
 })
