@@ -188,6 +188,5 @@ useEffect(()=>{
   );
 
   const theme = useMemo<Theme>(() => createTheme(themeSettings(mode)), [mode]);
-  // console.log(localStorage === window.localStorage,"==============local storage");
   return [theme, colorMode];
 };
