@@ -96,7 +96,16 @@ export default function  Page() {
     [setValue]
   );
 
- 
+  useEffect(() => {
+    if (window !== undefined) {
+      console.log(window, "window======")
+      if (videoSrc && videoRef.current) {
+        videoRef.current.addEventListener("loadedmetadata", () => {
+          setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
+        });
+      }
+    }
+  }, [videoRef, videoSrc, setCustomValue]);
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
     //dynamic array for learningObjField
@@ -304,15 +313,7 @@ export default function  Page() {
                   />
                 </Grid>
 
-                <Draft
-                  initialContent={editorState}
-                  name="description"
-                  editorState={editorState}
-                  setValue={setValue}
-                  onChange={onChangeDraftHandler}
-                  error={errors}
-                  register={register("description")}
-                />
+       
                 {editorError && (
                   <p style={{ color: "red" }}>This field is required</p>
                 )}
