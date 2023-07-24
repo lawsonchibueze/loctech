@@ -19,7 +19,7 @@ import axios from "axios";
 import BasicModal from "@/app/components/Modal";
 import { redirect } from "next/navigation";
 
-export default function Page() {
+export default function  Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mount, setMount] = useState(false);
   const { data: session } = useSession() as unknown as any;
@@ -28,10 +28,8 @@ export default function Page() {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (session?.user.role !== "ADMIN") {
-        redirect("/"); //redirect if role is not ADMIN
-      }
+    if (session?.user.role !== "ADMIN") {
+      redirect("/"); //redirect if role is not ADMIN
     }
   }, [session?.user.role]);
 
@@ -98,10 +96,12 @@ export default function Page() {
   );
 
   useEffect(() => {
-    if (videoSrc && videoRef.current) {
-      videoRef.current.addEventListener("loadedmetadata", () => {
-        setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
-      });
+    if (window !== undefined) {
+      if (videoSrc && videoRef.current) {
+        videoRef.current.addEventListener("loadedmetadata", () => {
+          setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
+        });
+      }
     }
   }, [videoRef, videoSrc, setCustomValue]);
 
@@ -135,7 +135,6 @@ export default function Page() {
     //checking is wysiwyg has text
     const contentState = editorState.getCurrentContent();
     const hasText = contentState.hasText();
-
     return hasText;
   };
 
