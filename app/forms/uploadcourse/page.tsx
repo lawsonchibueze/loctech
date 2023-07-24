@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import BasicModal from "@/app/components/Modal";
 import { redirect } from "next/navigation";
+import { booleanOptions, categoryOptions } from "@/app/utils/data";
 
 export default function  Page() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -95,16 +96,7 @@ export default function  Page() {
     [setValue]
   );
 
-  useEffect(() => {
-    if (window !== undefined) {
-      console.log(window, "window======")
-      if (videoSrc && videoRef.current) {
-        videoRef.current.addEventListener("loadedmetadata", () => {
-          setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
-        });
-      }
-    }
-  }, [videoRef, videoSrc, setCustomValue]);
+ 
 
   const { fields: learningObjField, append: learningObjAppend } = useFieldArray(
     //dynamic array for learningObjField
@@ -554,35 +546,3 @@ export default function  Page() {
     </>
   );
 }
-
-const categoryOptions: OptionProps[] = [
-  {
-    label: "DATA SCIENCE",
-    value: "DATA_SCIENCE",
-  },
-  {
-    label: "GRAPHICS ",
-    value: "GRAPHICS_MEDIA",
-  },
-  {
-    label: "CLOUD",
-    value: "CLOUD_COMPUTING",
-  },
-  { label: "CODING", value: "CODING" },
-  { label: "OFFICE PRODUCTIVITY", value: "OFFICE_PRODUCTIVITY" },
-  {
-    label: "NETWORKING",
-    value: "NETWORKING",
-  },
-];
-
-const booleanOptions: OptionProps[] = [
-  {
-    label: "True",
-    value: "true",
-  },
-  {
-    label: "False",
-    value: "false",
-  },
-];
