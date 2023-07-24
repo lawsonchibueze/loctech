@@ -313,7 +313,15 @@ export default function  Page() {
                   />
                 </Grid>
 
-       
+                <Draft
+                  initialContent={editorState}
+                  name="description"
+                  editorState={editorState}
+                  setValue={setValue}
+                  onChange={onChangeDraftHandler}
+                  error={errors}
+                  register={register("description")}
+                />
                 {editorError && (
                   <p style={{ color: "red" }}>This field is required</p>
                 )}

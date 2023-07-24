@@ -30,15 +30,12 @@ interface DraftProps {
 export default function Draft({
   initialContent,
   onChange,
-  editorState,
-  setValue,
-  name,
-  error,
-  register,
+
+
+
 }: DraftProps) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const isEditorEmpty = editorState.getCurrentContent().hasText();
 
 
   return (
