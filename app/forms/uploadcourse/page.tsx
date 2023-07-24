@@ -26,6 +26,8 @@ export default function  Page() {
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
+  const [editorError, setEditorError] = useState(false); //wysiwyg error state
 
   useEffect(() => {
     if (session?.user.role !== "ADMIN") {
@@ -59,19 +61,17 @@ export default function  Page() {
       isTrending: "false",
       isOnline: "false",
       imageSrc: "",
-      prerequisites: [{ name: undefined }],
-      learningObj: [{ name: undefined }],
-      curriculumList: [{ name: undefined }],
+      prerequisites: [{ name: null }],
+      learningObj: [{ name: null }],
+      curriculumList: [{ name: null }],
       video: "",
       duration: 0,
       curriculum: "",
-      targetAud: [{ name: undefined }],
+      targetAud: [{ name: null }],
     },
   });
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
-  const [editorError, setEditorError] = useState(false); //wysiwyg error state
-
+ 
   const {
     fields: prerequisitesField,
     append: prerequisitesAppend,
@@ -97,6 +97,7 @@ export default function  Page() {
 
   useEffect(() => {
     if (window !== undefined) {
+      console.log(window, "window======")
       if (videoSrc && videoRef.current) {
         videoRef.current.addEventListener("loadedmetadata", () => {
           setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
@@ -179,10 +180,10 @@ export default function  Page() {
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
       description: editorState.getCurrentContent().getPlainText(),
-      prerequisites: values.prerequisites.map(({ name }) => name.trim()), // converting   prerequisites from array of objects to array of strings
-      curriculumList: values.curriculumList.map(({ name }) => name.trim()),
-      learningObj: values.learningObj.map(({ name }) => name.trim()),
-      targetAud: values.targetAud.map(({ name }) => name.trim()),
+      prerequisites: values.prerequisites.map(({ name }) => name?.trim()), // converting   prerequisites from array of objects to array of strings
+      curriculumList: values.curriculumList.map(({ name }) => name?.trim()),
+      learningObj: values.learningObj.map(({ name }) => name?.trim()),
+      targetAud: values.targetAud.map(({ name }) => name?.trim()),
       video: imageSrc,
       duration: duration,
       Instructor: {
@@ -565,7 +566,7 @@ const categoryOptions: OptionProps[] = [
   },
   {
     label: "CLOUD",
-    value: "CLOUD COMPUTING",
+    value: "CLOUD_COMPUTING",
   },
   { label: "CODING", value: "CODING" },
   { label: "OFFICE PRODUCTIVITY", value: "OFFICE_PRODUCTIVITY" },
