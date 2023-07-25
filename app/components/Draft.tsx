@@ -1,21 +1,17 @@
 "use client";
-import React, { useState, useEffect, SetStateAction } from "react";
-import { ContentState, Editor } from "react-draft-wysiwyg";
+import React from "react";
+import {  Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useTheme, Grid } from "../lib/mui";
 import { EditorState, convertToRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
-import Head from "next/head";
 import { tokens } from "../lib/theme";
-import { convertToHTML } from "draft-convert";
 import {
-  Control,
-  Controller,
+
   FieldErrors,
   UseFormSetValue,
 } from "react-hook-form";
 import { CourseType} from "../types/_types";
-import draftToHtml from "draftjs-to-html";
 
 interface DraftProps {
   initialContent: any;

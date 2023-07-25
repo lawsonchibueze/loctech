@@ -8,12 +8,17 @@ import prisma from "@/prisma/prisma";
 
 async function getCourses() {
   const courses = await prisma.course.findMany();
+  if(!courses){
+    return null
+  }
   return courses;
+
+
 }
 
 export default async function page() {
   const courseData = await getCourses();
-  console.log(courseData);
+  const [course] = await Promise.all([courseData]);
 
   return (
     <AnimatedRoute>
@@ -24,7 +29,7 @@ export default async function page() {
           rowSpacing={3}
           p="2rem 0"
         >
-          <FeaturedItem courses={courseData as unknown as CourseType[]} />
+          <FeaturedItem courses={course as unknown as CourseType[]} />
         </Grid>
       </Box>
     </AnimatedRoute>

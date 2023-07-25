@@ -20,8 +20,6 @@ const Input = React.forwardRef(function Input(
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("====", !!`touched.${name}`);
-
   return (
     <TextField
       id={id}

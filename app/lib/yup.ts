@@ -1,11 +1,9 @@
 "use client";
 
 import * as yup from "yup";
-import { HeroType } from "../types/_types";
 
 const passwordRegex = `^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()-=_+{};':\"\\|,.<>/?]).{8,}$`;
 
-console.log(typeof passwordRegex);
 
 export const courseSchema = yup.object().shape({
   courseTitle: yup.string().required("This field is required"),
@@ -14,7 +12,7 @@ export const courseSchema = yup.object().shape({
   category: yup.string().required("This field is required"),
   isFeatured: yup.boolean().required("This field is required"),
   Instructor: yup.boolean().required("This field is required"),
-
+description: yup.string().required("This field is required"),
   isTrending: yup.boolean().required("This field is required"),
 
   isOnline: yup.boolean().required("This field is required"),

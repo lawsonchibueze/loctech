@@ -12,7 +12,6 @@ export type FeaturedCourseArrType = {
 export type CourseType = {
   id?: string;
   courseTitle: string;
-
   description: string;
   courseSlug: string;
   coursePrice: number;

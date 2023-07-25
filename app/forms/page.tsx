@@ -19,7 +19,7 @@ export default function Page() {
 
     <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
     <Grid container item>
-      <Link href="/forms/uploadCourse" style={{ width: "100%" }}>
+      <Link href="/forms/uploadcourse" style={{ width: "100%" }}>
         <Header title="Upload Course" btnText="Upload Course" />
       </Link>
       <Link href="/forms/uploadInstructors" style={{ width: "100%" }}>

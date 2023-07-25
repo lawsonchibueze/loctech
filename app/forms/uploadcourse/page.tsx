@@ -1,5 +1,5 @@
 "use client";
-import { Grid, Box } from "../../lib/mui";
+import { Grid, Box, TextField, useTheme } from "../../lib/mui";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
 import Draft from "../../components/Draft";
@@ -19,16 +19,19 @@ import axios from "axios";
 import BasicModal from "@/app/components/Modal";
 import { redirect } from "next/navigation";
 import { booleanOptions, categoryOptions } from "@/app/utils/data";
+import { tokens } from "@/app/lib/theme";
 
 export default function  Page() {
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mount, setMount] = useState(false);
   const { data: session } = useSession() as unknown as any;
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
-  const [editorError, setEditorError] = useState(false); //wysiwyg error state
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
+  // const [editorError, setEditorError] = useState(false); //wysiwyg error state
 
   useEffect(() => {
     if (session?.user.role !== "ADMIN") {
@@ -98,7 +101,6 @@ export default function  Page() {
 
   useEffect(() => {
     if (window !== undefined) {
-      console.log(window, "window======")
       if (videoSrc && videoRef.current) {
         videoRef.current.addEventListener("loadedmetadata", () => {
           setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
@@ -127,18 +129,18 @@ export default function  Page() {
     name: "targetAud",
   });
 
-  const onChangeDraftHandler = (value: EditorState) => {
-    //wysiwyg onChange event
-    //  draft onchange handler
-    setEditorState(value);
-  };
+  // const onChangeDraftHandler = (value: EditorState) => {
+  //   //wysiwyg onChange event
+  //   //  draft onchange handler
+  //   setEditorState(value);
+  // };
 
-  const validateEditorContent = (editorState: EditorState) => {
-    //checking is wysiwyg has text
-    const contentState = editorState.getCurrentContent();
-    const hasText = contentState.hasText();
-    return hasText;
-  };
+  // const validateEditorContent = (editorState: EditorState) => {
+  //   //checking is wysiwyg has text
+  //   const contentState = editorState.getCurrentContent();
+  //   const hasText = contentState.hasText();
+  //   return hasText;
+  // };
 
   //////////////PREREQUISTE
 
@@ -165,26 +167,28 @@ export default function  Page() {
   ////////FILE INPUT
 
   const submitHandler = (values: CourseType) => {
-    const isValid = validateEditorContent(editorState);
+    // const isValid = validateEditorContent(editorState);
 
-    if (!isValid) {
-      setEditorError(true);
-      return null;
-    }
+    // if (!isValid) {
+    //   setEditorError(true);
+    //   return null;
+    // }
 
     const data = {
       ...values,
       imageSrc: imageSrc,
       courseSlug: values.courseSlug.trim(),
+    
       coursePrice: +values.coursePrice,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
-      description: editorState.getCurrentContent().getPlainText(),
+      description: values.description,
       prerequisites: values.prerequisites.map(({ name }) => name?.trim()), // converting   prerequisites from array of objects to array of strings
       curriculumList: values.curriculumList.map(({ name }) => name?.trim()),
       learningObj: values.learningObj.map(({ name }) => name?.trim()),
       targetAud: values.targetAud.map(({ name }) => name?.trim()),
+      
       video: imageSrc,
       duration: duration,
       Instructor: {
@@ -312,8 +316,21 @@ export default function  Page() {
                     name="category"
                   />
                 </Grid>
-
-                <Draft
+           <Grid container item xs={12}>
+           <TextField
+            id="outlined-multiline-static"
+            label="description"
+            multiline
+            placeholder="Course description"
+            rows={30}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            fullWidth
+            {...register("description",{required:"This filed id required"})}
+            sx={{border: `2px solid ${colors.rose[500]}`, borderRadius:"8px"}}
+          />
+           </Grid>
+                {/* <Draft
                   initialContent={editorState}
                   name="description"
                   editorState={editorState}
@@ -324,7 +341,7 @@ export default function  Page() {
                 />
                 {editorError && (
                   <p style={{ color: "red" }}>This field is required</p>
-                )}
+                )} */}
               </Grid>
               {/* Course Featured */}
               <CourseStepper title="Featured Course" number={2} />

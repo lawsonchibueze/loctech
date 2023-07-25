@@ -12,7 +12,9 @@ async function getCourses() {
 
 export default async function Page() {
   const courses = await getCourses();
-  const onlineCourses = courses.filter((course) => course.isOnline === false);
+  const [courseArr] = await Promise.all([courses]);
+
+  const onlineCourses = courseArr.filter((course) => course.isOnline === false);
   return (
     <AnimatedRoute>
       <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
