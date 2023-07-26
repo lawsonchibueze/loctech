@@ -12,6 +12,7 @@ export type FeaturedCourseArrType = {
 export type CourseType = {
   id?: string;
   courseTitle: string;
+
   description: string;
   courseSlug: string;
   coursePrice: number;
@@ -19,10 +20,10 @@ export type CourseType = {
   isFeatured: string;
   isTrending: string;
   isOnline: string;
-  prerequisites: { name:null | string }[];
-  learningObj: { name:null | string }[];
-  curriculumList: { name:null | string }[];
-  targetAud: { name:null  | string}[];
+  prerequisites: { name: string }[];
+  learningObj: { name: string }[];
+  curriculumList: { name: string }[];
+  targetAud: { name: string }[];
   video: string | null;
   imageSrc: string;
   duration: number;
