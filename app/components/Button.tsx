@@ -6,7 +6,7 @@ import { tokens } from "../lib/theme";
 interface ButtonType {
   title: string;
   sx: SxProps;
-  onClick:  (event: React.MouseEvent<HTMLButtonElement>)=>void
+  onClick?:  (event: React.MouseEvent<HTMLButtonElement>)=>void
 }
 export default function CustomButton({ title, sx , onClick}: ButtonType) {
   const theme = useTheme();

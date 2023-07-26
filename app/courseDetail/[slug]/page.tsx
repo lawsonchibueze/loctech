@@ -10,11 +10,11 @@ import Curriculum from "@/app/components/Curriculum";
 import CourseTag from "@/app/components/CourseTag";
 import AnimatedRoute from "@/app/components/AnimatedRoute";
 import { CourseType, TransformedCourseType } from "@/app/types/_types";
-import { notFound } from "next/navigation";
-import prisma from "@/prisma/prisma";
-import { motion } from "framer-motion";
-import { tokens } from "@/app/lib/theme";
+import { notFound, redirect, useRouter } from "next/navigation";
+
 import CustomButton from "@/app/components/Button";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 type PageProps = {
   params: {
     slug: string;
@@ -35,8 +35,10 @@ async function getCourseDetail(slug: string) {
 
 export default async function Page({ params }: PageProps) {
   //theme and styles
+  const router = useRouter();
 
   const courseSlug = params?.slug;
+  const { data: session } = useSession() as unknown as any;
   const courseData: TransformedCourseType = await getCourseDetail(courseSlug);
   const [course] = await Promise.all([courseData]);
 
@@ -44,7 +46,7 @@ export default async function Page({ params }: PageProps) {
     notFound();
   }
 
-  const DeleteCourse= async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const DeleteCourse = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const res = await fetch("/api/course/" + courseSlug, {
       method: "DELETE",
       cache: "no-cache",
@@ -52,7 +54,7 @@ export default async function Page({ params }: PageProps) {
     if (!res.ok) {
       throw new Error("Something went wrong");
     }
-
+    router.back();
     console.log("Button clicked!");
   };
 
@@ -96,25 +98,30 @@ export default async function Page({ params }: PageProps) {
             <Perquisite prerequisites={courseData?.prerequisites} />
             <Audience target={courseData?.targetAud} />
             <Curriculum />
-            <Grid
-              container
-              item
-              columnSpacing={{ xs: 3, md: 5 }}
-              rowSpacing={1}
-              mt="2rem "
-            >
-              <CustomButton
-                title="Delete Course"
-                onClick={DeleteCourse}
-                sx={{
-                  backgroundColor: "#ff539c",
-                  fontWeight: "bold",
-                  fontSize: "18px",
-                  color: "#fff",
-                  m: "0 15px",
-                }}
-              />
-            </Grid>
+            {session?.user.role === "ADMIN" && (
+              <Grid
+                container
+                item
+                columnSpacing={{ xs: 3, md: 5 }}
+                rowSpacing={1}
+                mt="2rem "
+              >
+                <CustomButton
+                  title="Delete Course"
+                  onClick={DeleteCourse}
+                  sx={{
+                    backgroundColor: "#ff539c",
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    color: "#fff",
+                    m: "0 15px",
+                  }}
+                />
+
+
+
+              </Grid>
+            )}
           </Grid>
 
           <Grid

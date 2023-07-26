@@ -101,6 +101,7 @@ export default function  Page() {
 
   useEffect(() => {
     if (window !== undefined) {
+      console.log(window, "window======")
       if (videoSrc && videoRef.current) {
         videoRef.current.addEventListener("loadedmetadata", () => {
           setCustomValue("duration", convertTime(videoRef.current?.duration)!); //get duration if the file string is avaliable and theres a video ref. And also convert duration properly
