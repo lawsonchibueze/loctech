@@ -1,4 +1,5 @@
-import { promises } from "dns";
+export const dynamic = "force-dynamic"; // this is the fix
+
 import React from "react";
 import { Box, Grid } from "../lib/mui";
 import FeaturedItem from "../components/Featured/FeaturedItem";

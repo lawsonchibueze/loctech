@@ -116,6 +116,8 @@ export default function Hero({ data }: HeroProps) {
                 height: "650px",
                 objectFit: "cover",
               }}
+              placeholder="blur"
+              blurDataURL="/spinner.svg"
             />
           </MotionGrid>
         </Grid>

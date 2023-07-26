@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // this is the fix
+
 import Image from "next/image";
 import { Box, Grid } from "./lib/mui";
 import Hero from "./components/Hero";

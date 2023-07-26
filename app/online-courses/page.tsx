@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // this is the fix
+
 import React from "react";
 import AnimatedRoute from "../components/AnimatedRoute";
 import { Box, Grid } from "../lib/mui";
