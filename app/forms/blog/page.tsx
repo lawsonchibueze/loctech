@@ -5,10 +5,14 @@ import { postSchema } from "@/app/lib/yup";
 import { PostType } from "@/app/types/_types";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 
 export default function Page() {
+  const { data: session } = useSession() as unknown as any;
+
   const {
     register,
     handleSubmit,
@@ -22,7 +26,7 @@ export default function Page() {
     defaultValues: {
       title: "",
       subtitle: "",
-      slug: "",
+      postSlug: "",
       image: "",
       content: "",
       author: "",
@@ -39,7 +43,24 @@ export default function Page() {
   };
 
   const onSubmitHandler = (values: PostType) => {
-    console.log({ ...values, image: postImgSrc });
+    const data = {
+      ...values,
+      image: postImgSrc,
+      author: { name: values.author },
+    };
+    console.log(data)
+    if (session.user.role === "ADMIN") {
+      axios
+        .post(`/api/post`, data)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          // An error occurred
+          // setError("An error occurred");
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -53,8 +74,8 @@ export default function Page() {
                 fullWidth
                 label="Title"
                 {...register("title", {
-                    required: "Field is required",
-                  })}
+                  required: "Field is required",
+                })}
                 error={!!errors.title}
                 helperText={errors.title?.message}
               />
@@ -63,11 +84,11 @@ export default function Page() {
               <TextField
                 fullWidth
                 label="Slug"
-                {...register("slug", {
-                    required: "Field is required",
-                  })}
-                error={!!errors.slug}
-                helperText={errors.slug?.message}
+                {...register("postSlug", {
+                  required: "Field is required",
+                })}
+                error={!!errors.postSlug}
+                helperText={errors.postSlug?.message}
               />
             </Grid>
             <Grid container item xs={12} xl={6}>
@@ -75,8 +96,8 @@ export default function Page() {
                 fullWidth
                 label="Author"
                 {...register("author", {
-                    required: "Field is required",
-                  })}
+                  required: "Field is required",
+                })}
                 error={!!errors.author}
                 helperText={errors.author?.message}
               />
@@ -97,14 +118,14 @@ export default function Page() {
                 id="outlined-multiline-static"
                 label="subtitle"
                 multiline
-                placeholder="Instructor's bio"
+                placeholder="Subtitle"
                 rows={10}
                 fullWidth
                 {...register("subtitle", {
-                    required: "Field is required",
-                  })}
-                  error={!!errors.subtitle}
-                  helperText={errors.subtitle?.message}
+                  required: "Field is required",
+                })}
+                error={!!errors.subtitle}
+                helperText={errors.subtitle?.message}
               />
             </Grid>
 
@@ -117,10 +138,10 @@ export default function Page() {
                 rows={20}
                 fullWidth
                 {...register("content", {
-                    required: "Field is required",
-                  })}
-                  error={!!errors.content}
-                  helperText={errors.content?.message}
+                  required: "Field is required",
+                })}
+                error={!!errors.content}
+                helperText={errors.content?.message}
               />
             </Grid>
           </Grid>

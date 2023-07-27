@@ -86,8 +86,10 @@ export const testimonialSchema = yup.object().shape({
 export const postSchema = yup.object().shape({
   title : yup.string().required("This field is required"),
   subtitle : yup.string().required("This field is required"),
-  slug: yup.string().required("This field is required"),
+  postSlug: yup.string().required("This field is required"),
   image: yup.string().required("This field is required"),
   content :yup.string().required("This field is required"),
   author: yup.string().required("This field is required"),
+
+
 })

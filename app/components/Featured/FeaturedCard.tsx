@@ -22,7 +22,7 @@ export default function FeaturedCard({
   const { status } = useSession() 
   return (
     <MotionGrid
-      whileHover={{ scale: 1.1, marginBottom: "10px" }}
+      whileHover={{ scale: 1.1, margin: "10px " }}
       item
       container
       width="300px"

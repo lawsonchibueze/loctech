@@ -87,8 +87,11 @@ export type TestimonialType = {
 export  type PostType ={
 title: string
 subtitle: string
-slug: string
+postSlug: string
 image : string
 content: string
 author: string
+authorId?: string
+createdAt?: string
+
 }
