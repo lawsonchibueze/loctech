@@ -1,29 +1,28 @@
 import { PostType } from "@/app/types/_types";
 import React from "react";
 import Card from "./Card";
-import prisma from "@/prisma/prisma"
+import prisma from "@/prisma/prisma";
 interface CardItemProps {
   blogs: PostType[];
 }
 
-
-
 export default function CardItem({ blogs }: CardItemProps) {
-  
   return (
     <>
       {blogs.map((blog) => (
-        <Card blog={{
-          title: blog.title,
-          subtitle: blog.subtitle,
-          postSlug: blog.postSlug,
-          image: blog.image,
-          content: blog.content,
-          author: blog.author,
-          createdAt: blog.createdAt,
-          authorId: blog.authorId
-         
-        }}  />
+        <Card
+          key={blog.title}
+          blog={{
+            title: blog.title,
+            subtitle: blog.subtitle,
+            postSlug: blog.postSlug,
+            image: blog.image,
+            content: blog.content,
+            author: blog.author,
+            createdAt: blog.createdAt,
+            authorId: blog.authorId,
+          }}
+        />
       ))}
     </>
   );
