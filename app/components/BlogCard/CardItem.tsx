@@ -27,3 +27,6 @@ export default function CardItem({ blogs }: CardItemProps) {
     </>
   );
 }
+
+
+

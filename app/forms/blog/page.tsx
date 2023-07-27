@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/app/components/Header";
+import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
 import { postSchema } from "@/app/lib/yup";
 import { PostType } from "@/app/types/_types";
@@ -7,10 +8,15 @@ import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React,{useState} from "react";
 import { useForm } from "react-hook-form";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export default function Page() {
+  const [isError, setIsError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
   const { data: session } = useSession() as unknown as any;
 
   const {
@@ -54,17 +60,50 @@ export default function Page() {
         .post(`/api/post`, data)
         .then((response) => {
           console.log(response);
+          if (response.data) {
+            setIsError(false);
+            setOpen(true);
+            reset();
+          }
         })
         .catch((error) => {
           // An error occurred
           // setError("An error occurred");
           console.error(error);
+             // An error occurred
+             setIsError(true);
+             setOpen(true);
         });
     }
   };
 
   return (
     <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
+               {isError ? (
+              <BasicModal
+                color="red"
+                icon={
+                  <ErrorOutlineIcon sx={{ color: "red", fontSize: "30px" }} />
+                }
+                title="Post did not upload !"
+                description="An error occurred. Try again"
+                open={open}
+                handleClose={handleClose}
+              />
+            ) : (
+              <BasicModal
+                color="green"
+                icon={
+                  <CheckCircleOutlineIcon
+                    sx={{ color: "green", fontSize: "30px" }}
+                  />
+                }
+                title="Post uploaded successful!"
+                description="congratulations !. Your Post have been uploaded"
+                open={open}
+                handleClose={handleClose}
+              />
+            )}
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <Header title="Add Blog" btnText="Add  Blog" />
         <Grid container m="1rem 0">

@@ -5,6 +5,7 @@ import { PostType } from "@/app/types/_types";
 import { formatDate } from "@/app/utils/formatDate";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface CardProps {
@@ -30,7 +31,7 @@ export default function Card({ blog }: CardProps) {
           style={{ width: "100%", height: "500px", objectFit: "cover" }}
         />
       </Box>
-      <Grid m="10px 0">
+      <Grid container m="10px 0" flexDirection="column" height="200px">
         <Typography variant="h2" fontWeight="bold">
           {blog.title}
         </Typography>
@@ -39,22 +40,26 @@ export default function Card({ blog }: CardProps) {
           <span> / BLOG / {blog.postSlug}</span>
         </Typography>
 
-        <Typography variant="h5">{blog.subtitle}</Typography>
+        <Typography variant="h5" className="line-clamp-5">
+          {blog.subtitle}
+        </Typography>
       </Grid>
-      <MotionBtn
-        whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
-        variant="contained"
-        size="large"
-        sx={{
-          backgroundColor: colors.rose[500],
-          fontWeight: "bold",
-          fontSize: "18px",
-          color: colors.primary[900],
-          cursor: "pointer",
-        }}
-      >
-        Read More
-      </MotionBtn>
+      <Link href={`/blogDetail/${blog.postSlug}`}>
+        <MotionBtn
+          whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
+          variant="contained"
+          size="medium"
+          sx={{
+            backgroundColor: colors.rose[500],
+            fontWeight: "bold",
+            fontSize: "18px",
+            color: colors.primary[900],
+            cursor: "pointer",
+          }}
+        >
+          Read More
+        </MotionBtn>
+      </Link>
     </Grid>
   );
 }
