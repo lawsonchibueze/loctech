@@ -7,6 +7,7 @@ import { FeaturedCourseArrType } from "@/app/types/_types";
 import { motion } from "framer-motion";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { deleteCourse } from "@/app/actions/requests";
+import { useSession } from "next-auth/react";
 export default function FeaturedCard({
   id,
   img,
@@ -18,7 +19,7 @@ export default function FeaturedCard({
   description,
 }: FeaturedCourseArrType) {
   const MotionGrid = motion(Grid);
-
+  const { status } = useSession() 
   return (
     <MotionGrid
       whileHover={{ scale: 1.1, marginBottom: "10px" }}
@@ -30,7 +31,7 @@ export default function FeaturedCard({
       md={3}
       gridAutoColumns={5}
     >
-      <Link href={`/courseDetail/${slug}`} style={{ width: "100%" }}>
+      <Link href={ status == "unauthenticated" ? "/signIn":`/courseDetail/${slug}`} style={{ width: "100%" }}>
         <Image
           src={img}
           width={500}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,10 +11,14 @@ import {
   useTheme,
 } from ".././lib/mui";
 import Google from "@mui/icons-material/Google";
-import FacebookRounded from "@mui/icons-material/FacebookRounded";
-import LinkedIn from "@mui/icons-material/LinkedIn";
+
 import { tokens } from "../lib/theme";
-import { AccountCircle, GitHub, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  AccountCircle,
+  GitHub,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { LoginType } from "../types/_types";
@@ -28,6 +32,7 @@ export default function Page() {
   const colors = tokens(theme.palette.mode);
   const router = useRouter();
   const [error, setError] = React.useState("");
+  const [showPassword, setShowPassword] = useState(true);
   const { data: session, status } = useSession() as unknown as any;
 
   const {
@@ -117,6 +122,7 @@ export default function Page() {
                   id="password"
                   label="Password"
                   variant="outlined"
+                  type={showPassword ? "password" : "text"}
                   autoComplete="false"
                   // type="password"
                   {...register("password")}
@@ -126,7 +132,15 @@ export default function Page() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="start">
-                        <Visibility />
+                        {showPassword ? (
+                          <IconButton onClick={() => setShowPassword(false)}>
+                            <Visibility />
+                          </IconButton>
+                        ) : (
+                          <IconButton onClick={() => setShowPassword(true)}>
+                            <VisibilityOff/>
+                          </IconButton>
+                        )}
                       </InputAdornment>
                     ),
                   }}
@@ -227,12 +241,11 @@ export default function Page() {
                 }}
               >
                 {" "}
-                <GitHub/>
-               Github{" "}
+                <GitHub />
+                Github{" "}
               </Button>
             </Grid>
             {/*  */}
-     
           </Grid>
 
           <Grid container justifyContent="center" m="1rem 0">
