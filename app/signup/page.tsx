@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
   Grid,
+  IconButton,
   InputAdornment,
   Link,
   TextField,
@@ -13,10 +14,9 @@ import {
 import { tokens } from "../lib/theme";
 import {
   Visibility,
+  VisibilityOff,
   Google,
-  FacebookRounded,
-  LinkedIn,
-  Password,
+  GitHub,
 } from "@mui/icons-material";
 import axios from "axios";
 
@@ -32,6 +32,9 @@ export default function Page() {
   const colors = tokens(theme.palette.mode);
   const router = useRouter();
   const [error, setError] = React.useState("");
+  const [showPassword, setShowPassword] = useState(true);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(true);
+
   const { data: session, status } = useSession() as unknown as any;
 
   useEffect(() => {
@@ -144,7 +147,7 @@ export default function Page() {
                 label="Password"
                 variant="outlined"
                 autoComplete="false"
-                // type="password"
+                type={showPassword ? "password" : "text"}
                 {...register("password")}
                 helperText={errors.password?.message}
                 error={!!errors.password}
@@ -152,7 +155,15 @@ export default function Page() {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Visibility />
+                          {showPassword ? (
+                          <IconButton onClick={() => setShowPassword(false)}>
+                            <Visibility />
+                          </IconButton>
+                        ) : (
+                          <IconButton onClick={() => setShowPassword(true)}>
+                            <VisibilityOff/>
+                          </IconButton>
+                        )}
                     </InputAdornment>
                   ),
                 }}
@@ -166,7 +177,7 @@ export default function Page() {
                 label="Confirm password"
                 variant="outlined"
                 autoComplete="false"
-                // type="password"
+                type={showConfirmPassword ? "password" : "text"}
                 {...register("confirmPassword")}
                 helperText={errors.confirmPassword?.message}
                 error={!!errors.confirmPassword}
@@ -174,7 +185,15 @@ export default function Page() {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Visibility />
+                                 {showConfirmPassword ? (
+                          <IconButton onClick={() => setShowConfirmPassword(false)}>
+                            <Visibility />
+                          </IconButton>
+                        ) : (
+                          <IconButton onClick={() => setShowConfirmPassword(true)}>
+                            <VisibilityOff/>
+                          </IconButton>
+                        )}
                     </InputAdornment>
                   ),
                 }}
@@ -223,7 +242,7 @@ export default function Page() {
 
           {/* buttons */}
           <Grid container rowSpacing={2} columnSpacing={2}>
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 variant="contained"
                 onClick={() => signIn("google")}
@@ -245,9 +264,10 @@ export default function Page() {
             </Grid>
 
             {/*  */}
-            <Grid container item md={4} sm={12}>
+            <Grid container item md={6} sm={12}>
               <Button
                 variant="contained"
+                onClick={()=>signIn("github")}
                 fullWidth
                 sx={{
                   textTransform: "none",
@@ -260,30 +280,12 @@ export default function Page() {
                 }}
               >
                 {" "}
-                <FacebookRounded />
-                Facebook{" "}
+                <GitHub/>
+               Github{" "}
               </Button>
             </Grid>
             {/*  */}
-            <Grid container item md={4} sm={12}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  color: "#fff",
-                  backgroundColor: colors.rose[500],
-                  "&:hover": {
-                    backgroundColor: colors.rose[600],
-                  },
-                }}
-              >
-                {" "}
-                <LinkedIn />
-                LinkedIn{" "}
-              </Button>
-            </Grid>
+
           </Grid>
 
           <Grid container justifyContent="center" m="1rem 0">

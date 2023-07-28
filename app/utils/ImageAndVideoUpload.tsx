@@ -73,28 +73,35 @@ export function ImageUpload({
     </CldUploadWidget>
   );
 }
-
+// Define the VideoUpload component using React.forwardRef
 export const VideoUpload = forwardRef<RefObject<HTMLVideoElement>, FileProps>(
-  ({ onChange, value, register, duration, error, placeholder }, ref) => {
+  function VideoUpload(
+    { onChange, value, register, duration, error, placeholder },
+    ref
+  ) {
+
+
     const handleUpload = useCallback(
       (result: any) => {
         onChange(result.info.secure_url);
       },
       [onChange]
     );
+
     console.log(ref);
 
     return (
       <CldUploadWidget
         onUpload={handleUpload}
         uploadPreset={uploadPreset}
-        options={{ maxFiles: 1, clientAllowedFormats: ["mp4", "mov"] }}
+        options={{ maxFiles: 1, clientAllowedFormats: ['mp4', 'mov'] }}
       >
         {({ open }) => {
           function handleOnClick(e: any) {
             e.preventDefault();
             open();
           }
+
           return (
             <div onClick={handleOnClick}>
               {value ? (
@@ -112,7 +119,7 @@ export const VideoUpload = forwardRef<RefObject<HTMLVideoElement>, FileProps>(
                     placeholder={placeholder}
                     accept="video/*"
                     name="video"
-                    register={register("video")}
+                    register={register('video')}
                     error={!!error?.video}
                   />
                   {!!error?.video && (

@@ -1,4 +1,5 @@
-import { featuredCourseArr } from "@/app/utils/Data";
+export const dynamic = "force-dynamic"; // this is the fix
+
 import React from "react";
 import FeaturedCard from "./FeaturedCard";
 import Link from "next/link";

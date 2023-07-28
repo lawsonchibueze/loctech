@@ -9,7 +9,7 @@ import {
   Select,
   useTheme,
 } from "../lib/mui";
-import { CourseProps, OptionProps } from "../types/_types";
+import { CourseType, OptionProps } from "../types/_types";
 import { Controller, UseFormSetValue } from "react-hook-form";
 
 interface DropDownProps {
@@ -19,7 +19,7 @@ interface DropDownProps {
   error: boolean;
   errorMessage: React.JSX.Element | undefined;
   defaultValue?: string | boolean;
-  setValue: UseFormSetValue<CourseProps>;
+  setValue: UseFormSetValue<CourseType>;
   name: string;
   control: any;
 }
@@ -40,7 +40,7 @@ const DropDown = ({
 
   useEffect(() => {
     setValue(name as unknown as any, defaultValue || "");
-  }, [defaultValue, setValue]);
+  }, [defaultValue, setValue,name]);
 
   return (
     <FormControl

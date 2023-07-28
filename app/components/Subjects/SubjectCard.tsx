@@ -42,7 +42,10 @@ export default function SubjectCard({
             height: "250px",
             objectFit: "cover",
             borderRadius: "8px",
+            
           }}
+          placeholder="blur"
+          blurDataURL="/spinner.svg"
         />
         <Box
           sx={{
