@@ -1,16 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
-import { Grid, Button, useTheme, Box } from "../lib/mui";
-import { motion } from "framer-motion";
-import { tokens } from "../lib/theme";
+import { Grid, Box } from "../lib/mui";
 import Header from "../components/Header";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-export default function page() {
-  const MotionBtn = motion(Button);
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+export default function Page() {
   const router = useRouter();
   const { data: session } = useSession() as unknown as any;
 
@@ -43,3 +38,5 @@ export default function page() {
     </Box>
   );
 }
+
+

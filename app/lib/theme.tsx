@@ -167,11 +167,14 @@ export const ColorModeContext = createContext<ColorModeContextType>({
 
 export const useMode = (): [Theme, ColorModeContextType] => {
  
-  const [mode, setMode] = useState<PaletteMode>(() => {
-    const storedMode = localStorage.getItem("colorMode"); //get mode from localstorage
-    return (storedMode as PaletteMode) || "light";
-  });
+const [getLs, setLs] = useState<PaletteMode>("light")
 
+useEffect(()=>{
+  const storedMode = localStorage.getItem("colorMode") as PaletteMode; //get mode from localstorage
+  setLs(storedMode) 
+})
+
+  const [mode, setMode] = useState<PaletteMode>(getLs);
   useEffect(() => {
     localStorage.setItem("colorMode", mode); //set mode to localStorage
   }, [mode]);
@@ -185,6 +188,5 @@ export const useMode = (): [Theme, ColorModeContextType] => {
   );
 
   const theme = useMemo<Theme>(() => createTheme(themeSettings(mode)), [mode]);
-
   return [theme, colorMode];
 };

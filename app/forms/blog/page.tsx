@@ -1,14 +1,33 @@
 "use client";
 import Header from "@/app/components/Header";
+import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
 import { postSchema } from "@/app/lib/yup";
 import { PostType } from "@/app/types/_types";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
-export default function page() {
+interface PageProps {
+  searchParams: {
+    slug: string;
+  };
+}
+
+export default function Page({ searchParams }: PageProps) {
+  const postParam = searchParams.slug;
+
+  const [isError, setIsError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+  const { data: session } = useSession() as unknown as any;
+  console.log(postParam);
+
   const {
     register,
     handleSubmit,
@@ -22,7 +41,7 @@ export default function page() {
     defaultValues: {
       title: "",
       subtitle: "",
-      slug: "",
+      postSlug: postParam || "",
       image: "",
       content: "",
       author: "",
@@ -39,13 +58,84 @@ export default function page() {
   };
 
   const onSubmitHandler = (values: PostType) => {
-    console.log({ ...values, image: postImgSrc });
+    const data = {
+      ...values,
+      postSlug: postParam ? postParam : values.postSlug.trim(),
+      image: postImgSrc,
+      author: { name: values.author },
+    };
+    console.log(data);
+    if (session.user.role === "ADMIN") {
+      if (postParam) {
+        axios
+          .put(`/api/post`, data)
+          .then((response) => {
+            console.log(response);
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            // setError("An error occurred");
+            console.error(error);
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      } else {
+        axios
+          .post(`/api/post`, data)
+          .then((response) => {
+            console.log(response);
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            // setError("An error occurred");
+            console.error(error);
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      }
+    }
   };
 
   return (
     <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
+      {isError ? (
+        <BasicModal
+          color="red"
+          icon={<ErrorOutlineIcon sx={{ color: "red", fontSize: "30px" }} />}
+          title="Post did not upload !"
+          description="An error occurred. Try again"
+          open={open}
+          handleClose={handleClose}
+        />
+      ) : (
+        <BasicModal
+          color="green"
+          icon={
+            <CheckCircleOutlineIcon sx={{ color: "green", fontSize: "30px" }} />
+          }
+          title="Post uploaded successful!"
+          description="congratulations !. Your Post have been uploaded"
+          open={open}
+          handleClose={handleClose}
+        />
+      )}
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Header title="Add Blog" btnText="Add  Blog" />
+        <Header
+          title={!postParam ? "Add Blog Post" : "Update Blog Post"}
+          btnText={!postParam ? "ADD BLOG" : "UPDATE BLOG"}
+        />
         <Grid container m="1rem 0">
           <Grid container item rowSpacing={3} columnSpacing={{ xs: 0, md: 3 }}>
             <Grid container item xs={12} xl={6}>
@@ -53,8 +143,8 @@ export default function page() {
                 fullWidth
                 label="Title"
                 {...register("title", {
-                    required: "Field is required",
-                  })}
+                  required: "Field is required",
+                })}
                 error={!!errors.title}
                 helperText={errors.title?.message}
               />
@@ -63,11 +153,11 @@ export default function page() {
               <TextField
                 fullWidth
                 label="Slug"
-                {...register("slug", {
-                    required: "Field is required",
-                  })}
-                error={!!errors.slug}
-                helperText={errors.slug?.message}
+                {...register("postSlug", {
+                  required: "Field is required",
+                })}
+                error={!!errors.postSlug}
+                helperText={errors.postSlug?.message}
               />
             </Grid>
             <Grid container item xs={12} xl={6}>
@@ -75,8 +165,8 @@ export default function page() {
                 fullWidth
                 label="Author"
                 {...register("author", {
-                    required: "Field is required",
-                  })}
+                  required: "Field is required",
+                })}
                 error={!!errors.author}
                 helperText={errors.author?.message}
               />
@@ -97,14 +187,14 @@ export default function page() {
                 id="outlined-multiline-static"
                 label="subtitle"
                 multiline
-                placeholder="Instructor's bio"
+                placeholder="Subtitle"
                 rows={10}
                 fullWidth
                 {...register("subtitle", {
-                    required: "Field is required",
-                  })}
-                  error={!!errors.subtitle}
-                  helperText={errors.subtitle?.message}
+                  required: "Field is required",
+                })}
+                error={!!errors.subtitle}
+                helperText={errors.subtitle?.message}
               />
             </Grid>
 
@@ -117,10 +207,10 @@ export default function page() {
                 rows={20}
                 fullWidth
                 {...register("content", {
-                    required: "Field is required",
-                  })}
-                  error={!!errors.content}
-                  helperText={errors.content?.message}
+                  required: "Field is required",
+                })}
+                error={!!errors.content}
+                helperText={errors.content?.message}
               />
             </Grid>
           </Grid>

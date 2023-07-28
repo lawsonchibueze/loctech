@@ -3,11 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Box, Grid, Typography, useTheme, Button } from "../lib/mui";
 import Image from "next/image";
-import { tokens } from "../lib/theme";
 import { HeroType } from "../types/_types";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import { tokens } from "../lib/theme";
 
 interface HeroProps {
   data: HeroType[];
@@ -17,10 +17,12 @@ export default function Hero({ data }: HeroProps) {
   const MotionBtn = motion(Button);
   const { data: session } = useSession() as unknown as any;
 
-  console.log(process.env.NEXT_PUBLIC_DEVELOPMENT_URL);
+  // console.log(process.env.NEXT_PUBLIC_DEVELOPMENT_URL);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // console.log("color =========", colors.rose , "theme=========", theme)
   return (
     <>
       {data.map((hero) => (
@@ -54,15 +56,15 @@ export default function Hero({ data }: HeroProps) {
             </Box>
             <Box>
               <MotionBtn
-                whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
+                whileHover={{ scale: 1.1, backgroundColor: colors.rose[600]}}
                 variant="contained"
                 size="large"
                 sx={{
                   backgroundColor: colors.rose[500],
                   fontWeight: "bold",
                   fontSize: "18px",
-                  color: colors.primary[900],
-                  cursor: "pointer",
+                  color: "#fff",
+             
                 }}
               >
                 {hero.button}
@@ -80,7 +82,7 @@ export default function Hero({ data }: HeroProps) {
                     variant="contained"
                     size="large"
                     sx={{
-                      backgroundColor: colors.rose[500],
+                      bgColor: colors.rose[500],
                       fontWeight: "bold",
                       fontSize: "18px",
                       color: colors.primary[900],
@@ -114,6 +116,8 @@ export default function Hero({ data }: HeroProps) {
                 height: "650px",
                 objectFit: "cover",
               }}
+              placeholder="blur"
+              blurDataURL="/spinner.svg"
             />
           </MotionGrid>
         </Grid>

@@ -17,9 +17,8 @@ export default function PathCard() {
   return (
     <Grid
     container
-justifyContent="center"
-    ref={ref}>
-    { inView && <MotionGrid
+justifyContent="center">
+    <MotionGrid
       initial={{ x: "100vw" }}
       animate={{ x: 0 }}
       transition={{ ease: "easeOut", duration: 2 }}
@@ -82,7 +81,7 @@ justifyContent="center"
           Get Started
         </MotionBtn>
       </Grid>
-    </MotionGrid>}
+    </MotionGrid>
     </Grid>
   );
 }

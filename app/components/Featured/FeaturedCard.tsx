@@ -1,10 +1,13 @@
 "use client";
 import React from "react";
-import { Box, Typography, Grid } from "../../lib/mui";
+import { Box, Typography, Grid, IconButton } from "../../lib/mui";
 import Image from "next/image";
 import Link from "next/link";
 import { FeaturedCourseArrType } from "@/app/types/_types";
 import { motion } from "framer-motion";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { deleteCourse } from "@/app/actions/requests";
+import { useSession } from "next-auth/react";
 export default function FeaturedCard({
   id,
   img,
@@ -13,13 +16,13 @@ export default function FeaturedCard({
   author,
   price,
   slug,
-  description
+  description,
 }: FeaturedCourseArrType) {
   const MotionGrid = motion(Grid);
-
+  const { status } = useSession() 
   return (
     <MotionGrid
-      whileHover={{ scale: 1.1, marginBottom:"10px" }}
+      whileHover={{ scale: 1.1, margin: "10px " }}
       item
       container
       width="300px"
@@ -28,7 +31,7 @@ export default function FeaturedCard({
       md={3}
       gridAutoColumns={5}
     >
-      <Link href={`/courseDetail/${slug}`} style={{ width: "100%" }}>
+      <Link href={ status == "unauthenticated" ? "/signIn":`/courseDetail/${slug}`} style={{ width: "100%" }}>
         <Image
           src={img}
           width={500}
@@ -41,12 +44,14 @@ export default function FeaturedCard({
             objectFit: "cover",
           }}
         />
-        <Typography variant="h4" fontWeight="bold" mt="8px">
-          {title}
-        </Typography>
-      <p className="line-clamp-2">
-        {description}
-      </p>
+        <Grid container alignItems="flex-start">
+          <Grid container item xs={10}>
+            <Typography variant="h4" fontWeight="bold" mt="8px">
+              {title}
+            </Typography>
+          </Grid>
+        </Grid>
+        <p className="line-clamp-2">{description}</p>
         <Grid
           container
           direction="row"
@@ -54,7 +59,7 @@ export default function FeaturedCard({
           alignItems="flex-end"
         >
           <Typography fontWeight="bold" variant="h5">
-           N {price}
+            N {price}
           </Typography>
           <Typography fontWeight="normal">12 weeks</Typography>
         </Grid>
