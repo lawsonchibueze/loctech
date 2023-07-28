@@ -9,9 +9,9 @@ interface CardItemProps {
 export default function CardItem({ blogs }: CardItemProps) {
   return (
     <>
-      {blogs.map((blog) => (
+      {blogs.map((blog, index) => (
         <Card
-          key={blog.title}
+          key={`${index} + ${blog.title}`}
           blog={{
             title: blog.title,
             subtitle: blog.subtitle,
@@ -27,6 +27,3 @@ export default function CardItem({ blogs }: CardItemProps) {
     </>
   );
 }
-
-
-

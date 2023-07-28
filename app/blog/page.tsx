@@ -16,16 +16,13 @@ async function getBlog() {
   return blog;
 }
 
-
-
-
 export default async function Blog() {
   const imageURL =
     "https://a6e8z9v6.stackpathcdn.com/kingster/homepages/onlineacademy/wp-content/uploads/sites/4/2020/06/title-comscience.jpg";
 
   const blogData = await getBlog();
-  const [blog] = await Promise.all([blogData, ]);
-// console.log(blog,"=====")
+  const [blog] = await Promise.all([blogData]);
+  // console.log(blog,"=====")
   return (
     <AnimatedRoute>
       <Grid container>
