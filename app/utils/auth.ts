@@ -60,11 +60,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     signIn: async ({ user, account, profile, email, credentials }) => {
-      console.log('user', user);
-      console.log('account', account);
-      console.log('profile', profile);
-      console.log('email', email);
-      
       if (user) {
         const checkedUser = await prisma.user.findUnique({
           where: {

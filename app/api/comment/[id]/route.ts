@@ -5,7 +5,10 @@ interface CommentParams {
   id?: string;
 }
 
-export const GET = async (req: Request, params: CommentParams) => {
+export const GET = async (
+  req: Request,
+  { params }: { params: CommentParams }
+) => {
   const { id } = params;
   const comments = await prisma.comment.findUnique({
     where: {
@@ -16,7 +19,10 @@ export const GET = async (req: Request, params: CommentParams) => {
   return new Response(JSON.stringify(comments), { status: 200 });
 };
 
-export const PATCH = async (req: Request, params: CommentParams) => {
+export const PATCH = async (
+  req: Request,
+  { params }: { params: CommentParams }
+) => {
   await checkCurrentUser();
 
   const { id } = params;
@@ -46,7 +52,7 @@ export const PATCH = async (req: Request, params: CommentParams) => {
 
 export const DELETE = async (
   req: Request,
-  { params }: { params: CommentParams }
+  { params }: { params: CommentParams } 
 ) => {
   await checkCurrentUser();
 
