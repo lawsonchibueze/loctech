@@ -20,10 +20,7 @@ export const GET = async (
   return new Response(JSON.stringify(course), { status: 200 });
 };
 
-export const PATCH = async (
-  req: Request,
-  { params }: { params: CourseParams }
-) => {
+export const PATCH = async (req: Request, params: CourseParams) => {
   await checkCurrentUser();
 
   const { slug } = params;
