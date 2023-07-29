@@ -11,7 +11,11 @@ export const GET = async (req: Request, { params }: { params: PostParams }) => {
       postSlug: slug,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
   return new Response(JSON.stringify(post), { status: 200 });
