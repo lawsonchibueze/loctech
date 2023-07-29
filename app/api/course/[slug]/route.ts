@@ -11,6 +11,8 @@ export const GET = async (
 ) => {
   const { slug } = params;
 
+  console.log("slug", slug);
+
   const course = await prisma.course.findUnique({
     where: {
       courseSlug: slug,
@@ -20,10 +22,7 @@ export const GET = async (
   return new Response(JSON.stringify(course), { status: 200 });
 };
 
-export const PATCH = async (
-  req: Request,
-  { params }: { params: CourseParams }
-) => {
+export const PATCH = async (req: Request, params: CourseParams) => {
   await checkCurrentUser();
 
   const { slug } = params;

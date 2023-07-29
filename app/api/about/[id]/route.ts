@@ -5,7 +5,7 @@ interface AboutParams {
   id?: string;
 }
 
-export const GET = async (req: Request, params: AboutParams) => {
+export const GET = async (req: Request, { params }: { params: AboutParams }) => {
   const { id } = params;
   const about = await prisma.about.findUnique({
     where: {
@@ -17,7 +17,7 @@ export const GET = async (req: Request, params: AboutParams) => {
   return new Response(JSON.stringify(about), { status: 200 });
 };
 
-export const PATCH = async (req: Request, params: AboutParams) => {
+export const PATCH = async (req: Request, { params }: { params: AboutParams }) => {
   await checkCurrentUser();
 
   const { id } = params;
@@ -63,7 +63,7 @@ export const PATCH = async (req: Request, params: AboutParams) => {
   return new Response(JSON.stringify(about), { status: 201 });
 };
 
-export const DELETE = async (req: Request, params: AboutParams) => {
+export const DELETE = async (req: Request, { params }: { params: AboutParams }) => {
   await checkCurrentUser();
 
   const { id } = params;

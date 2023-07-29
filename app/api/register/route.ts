@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import prisma from "@/prisma/prisma";
 
 export const POST = async (req: Request) => {
-  const { email, name, password, role, accounts } = await req.json();
+  const { email, name, password, role } = await req.json();
 
   let newRole = role;
 
