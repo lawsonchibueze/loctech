@@ -20,7 +20,7 @@ export default function CardItem({ blogs }: CardItemProps) {
             content: blog.content,
             author: blog.author,
             createdAt: blog.createdAt,
-            authorId: blog.authorId,
+          
           }}
         />
       ))}

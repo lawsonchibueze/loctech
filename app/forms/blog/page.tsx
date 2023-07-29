@@ -1,9 +1,10 @@
+export const dynamic = "force-dynamic"; // this is the fix
 "use client";
 import Header from "@/app/components/Header";
 import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
 import { postSchema } from "@/app/lib/yup";
-import { PostType } from "@/app/types/_types";
+import { AuthorType, PostType } from "@/app/types/_types";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -19,17 +20,15 @@ interface PageProps {
   };
 }
 
-export default  function Page({ searchParams }: PageProps) {
+export default function Page({ searchParams }: PageProps) {
   const postParam = searchParams.slug;
 
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const { data: session } = useSession() as unknown as any;
-  const [fetchedBlogData, setFetchedBlogData] = useState<PostType>()
+  const [fetchedBlogData, setFetchedBlogData] = useState<PostType>();
   // console.log(fetchedBlogData);
-
-
 
   useEffect(() => {
     if (postParam) {
@@ -42,42 +41,42 @@ export default  function Page({ searchParams }: PageProps) {
         if (!res.ok) {
           throw new Error("Something went wrong");
         }
-       const data  = await res.json()
+        const data: PostType = await res.json();
 
-       for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          console.log(key as unknown as any, data[key])
+        setValue("title", data.title);
+        setValue("subtitle", data.subtitle);
+        setValue("image", data.image);
+        setValue("content", data.content);
+  // Check if the author data exists before setting the value
 
-          setValue(key as unknown as any, data[key]);
-        }
-      }
-       setFetchedBlogData(data)
-        
+    setValue('author', {name: data.author.name} );
+
+        setFetchedBlogData(data);
       };
 
-     fetchBlogBySlug()
+      fetchBlogBySlug();
     }
-  },[postParam]);
-
-
+  }, [postParam]);
 
   const {
     register,
     handleSubmit,
     control,
+
     formState: { errors },
     watch,
     setValue,
     reset,
   } = useForm<PostType>({
-    resolver: yupResolver(postSchema),
     defaultValues: {
-      title:  fetchedBlogData?.title ,
+      title: "",
       subtitle: "",
       postSlug: postParam || "",
       image: "",
       content: "",
-      author: "",
+      author: {
+        name: "",
+      },
     },
   });
   const postImgSrc = watch("image");
@@ -90,57 +89,56 @@ export default  function Page({ searchParams }: PageProps) {
     });
   };
 
-
-
   const onSubmitHandler = (values: PostType) => {
     const data = {
       ...values,
       postSlug: postParam ? postParam : values.postSlug.trim(),
       image: postImgSrc,
-      author: { name: values.author },
+
+  
     };
     console.log(data);
-    if (session.user.role === "ADMIN") {
-      if (postParam) {
-        axios
-          .put(`/api/post`, data)
-          .then((response) => {
-            console.log(response);
-            if (response.data) {
-              setIsError(false);
-              setOpen(true);
-              reset();
-            }
-          })
-          .catch((error) => {
-            // An error occurred
-            // setError("An error occurred");
-            console.error(error);
-            // An error occurred
-            setIsError(true);
-            setOpen(true);
-          });
-      } else {
-        axios
-          .post(`/api/post`, data)
-          .then((response) => {
-            console.log(response);
-            if (response.data) {
-              setIsError(false);
-              setOpen(true);
-              reset();
-            }
-          })
-          .catch((error) => {
-            // An error occurred
-            // setError("An error occurred");
-            console.error(error);
-            // An error occurred
-            setIsError(true);
-            setOpen(true);
-          });
-      }
-    }
+    // if (session.user.role === "ADMIN") {
+    //   if (postParam) {
+    //     axios
+    //       .put(`/api/post`, data)
+    //       .then((response) => {
+    //         console.log(response);
+    //         if (response.data) {
+    //           setIsError(false);
+    //           setOpen(true);
+    //           reset();
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         // An error occurred
+    //         // setError("An error occurred");
+    //         console.error(error);
+    //         // An error occurred
+    //         setIsError(true);
+    //         setOpen(true);
+    //       });
+    //   } else {
+    //     axios
+    //       .post(`/api/post`, data)
+    //       .then((response) => {
+    //         console.log(response);
+    //         if (response.data) {
+    //           setIsError(false);
+    //           setOpen(true);
+    //           reset();
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         // An error occurred
+    //         // setError("An error occurred");
+    //         console.error(error);
+    //         // An error occurred
+    //         setIsError(true);
+    //         setOpen(true);
+    //       });
+    //   }
+    // }
   };
 
   return (
@@ -177,7 +175,6 @@ export default  function Page({ searchParams }: PageProps) {
               <TextField
                 fullWidth
                 label="Title"
-              
                 {...register("title", {
                   required: "Field is required",
                 })}
@@ -255,17 +252,3 @@ export default  function Page({ searchParams }: PageProps) {
     </Box>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

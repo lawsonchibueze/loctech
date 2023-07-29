@@ -90,8 +90,18 @@ subtitle: string
 postSlug: string
 image : string
 content: string
-author: string
-authorId?: string
+author: {
+  name: string
+}
 createdAt?: string
+
+}
+
+
+export type AuthorType = {
+id: string
+name: string
+image?: string
+
 
 }
