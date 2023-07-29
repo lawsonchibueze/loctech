@@ -10,6 +10,9 @@ export const GET = async (req: Request, { params }: { params: PostParams }) => {
     where: {
       postSlug: slug,
     },
+    include: {
+      author: true,
+    },
   });
   return new Response(JSON.stringify(post), { status: 200 });
 };
