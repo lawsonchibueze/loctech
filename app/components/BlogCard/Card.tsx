@@ -21,29 +21,36 @@ export default function Card({ blog }: CardProps) {
   const MotionBtn = motion(Button);
 
   return (
-    <Grid container item xs={12} md={6} height="850px" m="10px 0">
+    <Grid container flexDirection="column" item xs={12} md={6} maxHeight="690px" m="10px 0">
       <Box width="100%">
         <Image
           src={blog.image}
           alt="image"
           height={1000}
           width={1000}
-          style={{ width: "100%", height: "500px", objectFit: "cover" }}
+          style={{ width: "100%", height: "400px", objectFit: "cover" }}
         />
       </Box>
-      <Grid container m="10px 0" flexDirection="column" height="200px">
-        <Typography variant="h2" fontWeight="bold">
-          {blog.title}
-        </Typography>
-        <Typography m="10px 0">
-          <span> {formatDate(blog.createdAt!)} </span>{" "}
-          <span> / BLOG / {blog.postSlug}</span>
-        </Typography>
 
-        <Typography variant="h5" className="line-clamp-5">
-          {blog.subtitle}
-        </Typography>
+      <Grid container flexDirection="column" gap={1}>
+      <Typography variant="h2" fontWeight="bold" m="10px 0">
+{blog.title}
+</Typography>
+
+<Typography  >
+  <span> {formatDate(blog.createdAt!)} </span>{" "}
+  <span> / BLOG / {blog.postSlug}</span>
+</Typography>
+
+
+
+<Box>
+<Typography variant="h5" className="line-clamp-5" m="10px 0">
+{blog.subtitle}
+</Typography>
+</Box>
       </Grid>
+      
       <Link href={`/blogDetail/${blog.postSlug}`}>
         <MotionBtn
           whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
@@ -63,3 +70,16 @@ export default function Card({ blog }: CardProps) {
     </Grid>
   );
 }
+
+
+
+// 
+// // <Box>
+
+
+// <Box>
+
+// </Box>
+// </Box>
+
+// 
