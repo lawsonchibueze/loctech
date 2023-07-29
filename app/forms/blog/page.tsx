@@ -8,7 +8,7 @@ import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -19,14 +19,47 @@ interface PageProps {
   };
 }
 
-export default function Page({ searchParams }: PageProps) {
+export default  function Page({ searchParams }: PageProps) {
   const postParam = searchParams.slug;
 
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const { data: session } = useSession() as unknown as any;
-  console.log(postParam);
+  const [fetchedBlogData, setFetchedBlogData] = useState<PostType>()
+  // console.log(fetchedBlogData);
+
+
+
+  useEffect(() => {
+    if (postParam) {
+      //if param exist fetch databyslug
+      const fetchBlogBySlug = async () => {
+        const res = await fetch(`/api/post/${postParam}`, {
+          method: "GET",
+          cache: "no-cache",
+        });
+        if (!res.ok) {
+          throw new Error("Something went wrong");
+        }
+       const data  = await res.json()
+
+       for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          console.log(key as unknown as any, data[key])
+
+          setValue(key as unknown as any, data[key]);
+        }
+      }
+       setFetchedBlogData(data)
+        
+      };
+
+     fetchBlogBySlug()
+    }
+  },[postParam]);
+
+
 
   const {
     register,
@@ -39,7 +72,7 @@ export default function Page({ searchParams }: PageProps) {
   } = useForm<PostType>({
     resolver: yupResolver(postSchema),
     defaultValues: {
-      title: "",
+      title:  fetchedBlogData?.title ,
       subtitle: "",
       postSlug: postParam || "",
       image: "",
@@ -56,6 +89,8 @@ export default function Page({ searchParams }: PageProps) {
       shouldValidate: true,
     });
   };
+
+
 
   const onSubmitHandler = (values: PostType) => {
     const data = {
@@ -142,6 +177,7 @@ export default function Page({ searchParams }: PageProps) {
               <TextField
                 fullWidth
                 label="Title"
+              
                 {...register("title", {
                   required: "Field is required",
                 })}
@@ -219,3 +255,17 @@ export default function Page({ searchParams }: PageProps) {
     </Box>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
