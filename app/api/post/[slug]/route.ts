@@ -10,7 +10,23 @@ export const GET = async (req: Request, { params }: { params: PostParams }) => {
     where: {
       postSlug: slug,
     },
-    include: {
+    // include: {
+    //   author: {
+    //     select: {
+    //       name: true,
+    //     },
+    //   },
+    // },
+
+    select: {
+      content: true,
+      createdAt: true,
+      image: true,
+      postSlug: true,
+      subtitle: true,
+      title: true,
+      updatedAt: true,
+      id: true,
       author: {
         select: {
           name: true,
