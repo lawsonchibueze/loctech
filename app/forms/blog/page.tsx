@@ -60,7 +60,7 @@ export default function Page({ searchParams }: PageProps) {
   }, [postParam]);
 
 
-  console.log(fetchedBlogData)
+  // console.log(fetchedBlogData)
 
   const {
     register,
@@ -94,55 +94,62 @@ export default function Page({ searchParams }: PageProps) {
   };
 
   const onSubmitHandler = (values: PostType) => {
-    // const data = {
-    //   ...values,
-    //   postSlug: postParam ? postParam : values.postSlug.trim(),
-    //   image: postImgSrc,
+    const data = {
+      ...values,
+      postSlug: values.postSlug.trim(),
+      image: postImgSrc,
+      content: values.content,
+      subtitle: values.subtitle,
+      title : values.title,
+      author:{
+        name:values.author.name
+      }
 
   
-    // };
-    console.log(values);
-    // if (session.user.role === "ADMIN") {
-    //   if (postParam) {
-    //     axios
-    //       .patch(`/api/post`, data)
-    //       .then((response) => {
-    //         console.log(response);
-    //         if (response.data) {
-    //           setIsError(false);
-    //           setOpen(true);
-    //           reset();
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         // An error occurred
-    //         // setError("An error occurred");
-    //         console.error(error);
-    //         // An error occurred
-    //         setIsError(true);
-    //         setOpen(true);
-    //       });
-    //   } else {
-    //     axios
-    //       .post(`/api/post`, data)
-    //       .then((response) => {
-    //         console.log(response);
-    //         if (response.data) {
-    //           setIsError(false);
-    //           setOpen(true);
-    //           reset();
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         // An error occurred
-    //         // setError("An error occurred");
-    //         console.error(error);
-    //         // An error occurred
-    //         setIsError(true);
-    //         setOpen(true);
-    //       });
-    //   }
-    // }
+    };
+    console.log(data);
+    if (session.user.role === "ADMIN") {
+      if (postParam) {
+        console.log("update")
+        axios
+          .patch(`/api/post/${postParam}`, data)
+          .then((response) => {
+            console.log(response);
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            // setError("An error occurred");
+            console.error(error);
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      } else {
+        axios
+          .post(`/api/post`, data)
+          .then((response) => {
+            console.log(response);
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            // setError("An error occurred");
+            console.error(error);
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      }
+    }
   };
 
   return (
