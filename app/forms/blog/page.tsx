@@ -47,9 +47,10 @@ export default function Page({ searchParams }: PageProps) {
         setValue("subtitle", data.subtitle);
         setValue("image", data.image);
         setValue("content", data.content);
+        setValue("author",{name:data.author.name})
   // Check if the author data exists before setting the value
 
-    setValue('author', {name: data.author.name} );
+    // setValue('author', {name:data.author.name} );
 
         setFetchedBlogData(data);
       };
@@ -57,6 +58,9 @@ export default function Page({ searchParams }: PageProps) {
       fetchBlogBySlug();
     }
   }, [postParam]);
+
+
+  console.log(fetchedBlogData)
 
   const {
     register,
@@ -90,18 +94,18 @@ export default function Page({ searchParams }: PageProps) {
   };
 
   const onSubmitHandler = (values: PostType) => {
-    const data = {
-      ...values,
-      postSlug: postParam ? postParam : values.postSlug.trim(),
-      image: postImgSrc,
+    // const data = {
+    //   ...values,
+    //   postSlug: postParam ? postParam : values.postSlug.trim(),
+    //   image: postImgSrc,
 
   
-    };
-    console.log(data);
+    // };
+    console.log(values);
     // if (session.user.role === "ADMIN") {
     //   if (postParam) {
     //     axios
-    //       .put(`/api/post`, data)
+    //       .patch(`/api/post`, data)
     //       .then((response) => {
     //         console.log(response);
     //         if (response.data) {
@@ -197,9 +201,10 @@ export default function Page({ searchParams }: PageProps) {
               <TextField
                 fullWidth
                 label="Author"
-                {...register("author", {
+                {...register("author.name", {
                   required: "Field is required",
                 })}
+              
                 error={!!errors.author}
                 helperText={errors.author?.message}
               />
