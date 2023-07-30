@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"; // this is the fix
-("use client");
+"use client";
 import Header from "@/app/components/Header";
 import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
