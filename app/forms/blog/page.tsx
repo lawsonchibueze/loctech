@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic"; // this is the fix
-"use client";
+("use client");
 import Header from "@/app/components/Header";
 import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
@@ -30,32 +30,6 @@ export default function Page({ searchParams }: PageProps) {
   const [fetchedBlogData, setFetchedBlogData] = useState<PostType>();
   // console.log(fetchedBlogData);
 
-  useEffect(() => {
-    if (postParam) {
-      //if param exist fetch databyslug
-      const fetchBlogBySlug = async () => {
-
-        axios
-          .get<PostType>(`/api/post/${postParam}`)
-          .then((response) => {
-         
-            if (response.data) {
-              setValue("title", response.data.title);
-              setValue("subtitle", response.data.subtitle);
-              setValue("image", response.data.image);
-              setValue("content", response.data.content);
-              setValue("author",{name:response.data.author.name})
-            }
-          })
-          .catch((error) => {
-        
-          });
-
-
-      }
-      fetchBlogBySlug();
-    }
-  }, [postParam]);
 
 
   // console.log(fetchedBlogData)
@@ -83,6 +57,31 @@ export default function Page({ searchParams }: PageProps) {
   });
   const postImgSrc = watch("image");
 
+
+
+  useEffect(() => {
+    if (postParam) {
+      //if param exist fetch databyslug
+      const fetchBlogBySlug = async () => {
+        axios
+          .get<PostType>(`/api/post/${postParam}`)
+          .then((response) => {
+            if (response.data) {
+              setValue("title", response.data.title);
+              setValue("subtitle", response.data.subtitle);
+              setValue("image", response.data.image);
+              setValue("content", response.data.content);
+              setValue("author", { name: response.data.author.name });
+            }
+          })
+          .catch((error) => {});
+      };
+      fetchBlogBySlug();
+    }
+  }, [postParam, setValue]);
+
+
+
   const setCustomValue = (id: any, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
@@ -98,17 +97,15 @@ export default function Page({ searchParams }: PageProps) {
       image: postImgSrc,
       content: values.content,
       subtitle: values.subtitle,
-      title : values.title,
-      author:{
-        name:values.author.name
-      }
-
-  
+      title: values.title,
+      author: {
+        name: values.author.name,
+      },
     };
     console.log(data);
     if (session.user.role === "ADMIN") {
       if (postParam) {
-        console.log("update")
+        console.log("update");
         axios
           .patch(`/api/post/${postParam}`, data)
           .then((response) => {
@@ -209,7 +206,6 @@ export default function Page({ searchParams }: PageProps) {
                 {...register("author.name", {
                   required: "Field is required",
                 })}
-              
                 error={!!errors.author}
                 helperText={errors.author?.message}
               />
