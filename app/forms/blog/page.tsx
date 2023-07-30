@@ -34,27 +34,25 @@ export default function Page({ searchParams }: PageProps) {
     if (postParam) {
       //if param exist fetch databyslug
       const fetchBlogBySlug = async () => {
-        const res = await fetch(`/api/post/${postParam}`, {
-          method: "GET",
-          cache: "no-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Something went wrong");
-        }
-        const data: PostType = await res.json();
 
-        setValue("title", data.title);
-        setValue("subtitle", data.subtitle);
-        setValue("image", data.image);
-        setValue("content", data.content);
-        setValue("author",{name:data.author.name})
-  // Check if the author data exists before setting the value
+        axios
+          .get<PostType>(`/api/post/${postParam}`)
+          .then((response) => {
+         
+            if (response.data) {
+              setValue("title", response.data.title);
+              setValue("subtitle", response.data.subtitle);
+              setValue("image", response.data.image);
+              setValue("content", response.data.content);
+              setValue("author",{name:response.data.author.name})
+            }
+          })
+          .catch((error) => {
+        
+          });
 
-    // setValue('author', {name:data.author.name} );
 
-        setFetchedBlogData(data);
-      };
-
+      }
       fetchBlogBySlug();
     }
   }, [postParam]);
