@@ -63,8 +63,7 @@ export default function Page({ searchParams }: PageProps) {
     if (postParam) {
       //if param exist fetch databyslug
       const fetchBlogBySlug = async () => {
-        axios
-          .get<PostType>(`/api/post/${postParam}`)
+        axios.get<PostType>(`/api/post/${postParam}`)
           .then((response) => {
             if (response.data) {
               setValue("title", response.data.title);
