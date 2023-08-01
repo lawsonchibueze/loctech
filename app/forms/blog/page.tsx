@@ -13,6 +13,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { log } from "console";
 
 interface PageProps {
   searchParams: {
@@ -58,12 +59,13 @@ export default function Page({ searchParams }: PageProps) {
   const postImgSrc = watch("image");
 
 
-
+console.log("======whats gooimg on", postParam )
   useEffect(() => {
+    console.log("postparam insude useEffext", postParam)
     if (postParam) {
       //if param exist fetch databyslug
   
-        axios.get<PostType>(`/api/post/${postParam}`)
+        axios.get<PostType>(`/api/post/`+postParam)
           .then((response) => {
             if (response.data) {
               console.log(
@@ -76,13 +78,16 @@ export default function Page({ searchParams }: PageProps) {
               setValue("author", { name: response.data.author.name });
             }
           })
-          .catch((error) => {});
+          .catch((error) => {
+            console.log("postparam insude useEffext", postParam, error)
+
+          });
     
       
     }
   }, [postParam, setValue]);
 
-
+console.log("param", postParam)
 
   const setCustomValue = (id: any, value: any) => {
     setValue(id, value, {
