@@ -66,6 +66,9 @@ export default function Page({ searchParams }: PageProps) {
         axios.get<PostType>(`/api/post/${postParam}`)
           .then((response) => {
             if (response.data) {
+              console.log(
+                '========',response.data,"============"
+              )
               setValue("title", response.data.title);
               setValue("subtitle", response.data.subtitle);
               setValue("image", response.data.image);
