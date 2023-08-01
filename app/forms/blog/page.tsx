@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"; // this is the fix
+export const dynamic = "auto"; // this is the fix
 "use client";
 import Header from "@/app/components/Header";
 import BasicModal from "@/app/components/Modal";
@@ -62,7 +62,7 @@ export default function Page({ searchParams }: PageProps) {
   useEffect(() => {
     if (postParam) {
       //if param exist fetch databyslug
-      const fetchBlogBySlug = async () => {
+      const fetchBlogBySlug =  () => {
         axios.get<PostType>(`/api/post/${postParam}`)
           .then((response) => {
             if (response.data) {
