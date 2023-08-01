@@ -60,8 +60,9 @@ export default function Page({ searchParams }: PageProps) {
 
 
   useEffect(() => {
+    if (postParam) {
+      //if param exist fetch databyslug
   
-      const fetchBlogBySlug =  () => {
         axios.get<PostType>(`/api/post/${postParam}`)
           .then((response) => {
             if (response.data) {
@@ -73,8 +74,8 @@ export default function Page({ searchParams }: PageProps) {
             }
           })
           .catch((error) => {});
-
-      fetchBlogBySlug();
+    
+      
     }
   }, [postParam, setValue]);
 
