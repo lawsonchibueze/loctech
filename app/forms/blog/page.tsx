@@ -13,7 +13,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { log } from "console";
+import { useSearchParams } from 'next/navigation'
 
 interface PageProps {
   searchParams: {
@@ -21,8 +21,10 @@ interface PageProps {
   };
 }
 
-export default function Page({ searchParams }: PageProps) {
-  const postParam = searchParams.slug;
+export default function Page() {
+  const searchParams = useSearchParams()
+
+  const postParam = searchParams.get('slug')
 
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
