@@ -44,6 +44,7 @@ export const PATCH = async (
   await checkCurrentUser();
 
   const { slug } = params;
+  
   const {
     title,
     subtitle,
@@ -53,7 +54,7 @@ export const PATCH = async (
     createdAt,
     updatedAt,
     author,
-    comment,
+    
   } = await req.json();
 
   const updatedPost = await prisma.post.update({
@@ -73,9 +74,7 @@ export const PATCH = async (
         update: author,
       },
 
-      comment: {
-        update: comment,
-      },
+ 
     },
   });
 

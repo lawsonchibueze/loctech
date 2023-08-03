@@ -21,7 +21,15 @@ export default function Card({ blog }: CardProps) {
   const MotionBtn = motion(Button);
 
   return (
-    <Grid container flexDirection="column" item xs={12} md={6} maxHeight="690px" m="10px 0">
+    <Grid
+      container
+      flexDirection="column"
+      item
+      xs={12}
+      md={6}
+      maxHeight="750px"
+      m="10px 0"
+    >
       <Box width="100%">
         <Image
           src={blog.image}
@@ -32,26 +40,25 @@ export default function Card({ blog }: CardProps) {
         />
       </Box>
 
-      <Grid container flexDirection="column" gap={1}>
-      <Typography variant="h2" fontWeight="bold" m="10px 0">
-{blog.title}
-</Typography>
+      <Grid container flexDirection="column" gap={1}    height={270}>
+        <Typography variant="h2" fontWeight="bold" m="10px 0">
+          {blog.title}
+        </Typography>
 
-<Typography  >
-  <span> {formatDate(blog.createdAt!)} </span>{" "}
-  <span> / BLOG / {blog.postSlug}</span>
-</Typography>
+        <Typography>
+          <span> {formatDate(blog.createdAt!)} </span>{" "}
+          <span> / BLOG / {blog.postSlug}</span>
+        </Typography>
 
-
-
-<Box>
-<Typography variant="h5" className="line-clamp-5" m="10px 0">
-{blog.subtitle}
-</Typography>
-</Box>
+        <Box>
+          <Typography variant="h5" className="line-clamp-4" m="10px 0">
+            {blog.subtitle}
+          </Typography>
+        </Box>
       </Grid>
-      
-      <Link href={`/blogDetail/${blog.postSlug}`}>
+
+     <Grid container flexDirection="column" >
+     <Link href={`/blogDetail/${blog.postSlug}`}>
         <MotionBtn
           whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
           variant="contained"
@@ -67,19 +74,10 @@ export default function Card({ blog }: CardProps) {
           Read More
         </MotionBtn>
       </Link>
+     </Grid>
     </Grid>
   );
 }
 
 
 
-// 
-// // <Box>
-
-
-// <Box>
-
-// </Box>
-// </Box>
-
-// 

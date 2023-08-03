@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // this is the fix
+
 import { PostType } from "@/app/types/_types";
 import React from "react";
 import Card from "./Card";
@@ -20,7 +22,7 @@ export default function CardItem({ blogs }: CardItemProps) {
             content: blog.content,
             author: blog.author,
             createdAt: blog.createdAt,
-            authorId: blog.authorId,
+          
           }}
         />
       ))}

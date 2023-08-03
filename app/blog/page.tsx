@@ -22,7 +22,7 @@ export default async function Blog() {
 
   const blogData = await getBlog();
   const [blog] = await Promise.all([blogData]);
-  // console.log(blog,"=====")
+ 
   return (
     <AnimatedRoute>
       <Grid container>

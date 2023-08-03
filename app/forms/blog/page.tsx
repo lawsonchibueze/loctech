@@ -1,9 +1,10 @@
+export const dynamic = "force-dynamic"; // this is the fix
 "use client";
 import Header from "@/app/components/Header";
 import BasicModal from "@/app/components/Modal";
 import { Box, Grid, TextField } from "@/app/lib/mui";
 import { postSchema } from "@/app/lib/yup";
-import { PostType } from "@/app/types/_types";
+import { AuthorType, PostType } from "@/app/types/_types";
 import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -12,75 +13,70 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useSearchParams } from 'next/navigation'
 
-interface PageProps {
-  searchParams: {
-    slug: string;
-  };
-}
 
-export default  function Page({ searchParams }: PageProps) {
-  const postParam = searchParams.slug;
+export default function Page() {
+  const searchParams = useSearchParams()
+
+  const postParam = searchParams.get('slug')
 
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const { data: session } = useSession() as unknown as any;
-  const [fetchedBlogData, setFetchedBlogData] = useState<PostType>()
-  // console.log(fetchedBlogData);
-
-
-
-  useEffect(() => {
-    if (postParam) {
-      //if param exist fetch databyslug
-      const fetchBlogBySlug = async () => {
-        const res = await fetch(`/api/post/${postParam}`, {
-          method: "GET",
-          cache: "no-cache",
-        });
-        if (!res.ok) {
-          throw new Error("Something went wrong");
-        }
-       const data  = await res.json()
-
-       for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          console.log(key as unknown as any, data[key])
-
-          setValue(key as unknown as any, data[key]);
-        }
-      }
-       setFetchedBlogData(data)
-        
-      };
-
-     fetchBlogBySlug()
-    }
-  },[postParam]);
-
-
+  const [fetchedBlogData, setFetchedBlogData] = useState<PostType>();
+  
 
   const {
     register,
     handleSubmit,
     control,
+
     formState: { errors },
     watch,
     setValue,
     reset,
   } = useForm<PostType>({
-    resolver: yupResolver(postSchema),
     defaultValues: {
-      title:  fetchedBlogData?.title ,
+      title: "",
       subtitle: "",
       postSlug: postParam || "",
       image: "",
       content: "",
-      author: "",
+      author: {
+        name: "",
+      },
     },
   });
   const postImgSrc = watch("image");
+
+
+  useEffect(() => {
+    if (postParam) {
+      //if param exist fetch databyslug
+  
+        axios.get<PostType>(`/api/post/`+postParam)
+          .then((response) => {
+            if (response.data) {
+             
+              setValue("title", response.data.title);
+              setValue("subtitle", response.data.subtitle);
+              setValue("image", response.data.image);
+              setValue("content", response.data.content);
+              setValue("author", { name: response.data.author.name });
+            }
+          })
+          .catch((error) => {
+            console.log("postparam insude useEffext", postParam, error)
+
+          });
+    
+      
+    }
+  }, [postParam, setValue]);
+
+console.log("param", postParam)
 
   const setCustomValue = (id: any, value: any) => {
     setValue(id, value, {
@@ -90,25 +86,30 @@ export default  function Page({ searchParams }: PageProps) {
     });
   };
 
-
-
   const onSubmitHandler = (values: PostType) => {
     const data = {
       ...values,
-      postSlug: postParam ? postParam : values.postSlug.trim(),
+      postSlug: values.postSlug.trim(),
       image: postImgSrc,
-      author: { name: values.author },
+      content: values.content,
+      subtitle: values.subtitle,
+      title: values.title,
+      author: {
+        name: values.author.name,
+      },
     };
     console.log(data);
     if (session.user.role === "ADMIN") {
       if (postParam) {
+        
         axios
-          .put(`/api/post`, data)
+          .patch(`/api/post/${postParam}`, data)
           .then((response) => {
             console.log(response);
             if (response.data) {
               setIsError(false);
               setOpen(true);
+
               reset();
             }
           })
@@ -177,7 +178,6 @@ export default  function Page({ searchParams }: PageProps) {
               <TextField
                 fullWidth
                 label="Title"
-              
                 {...register("title", {
                   required: "Field is required",
                 })}
@@ -200,7 +200,7 @@ export default  function Page({ searchParams }: PageProps) {
               <TextField
                 fullWidth
                 label="Author"
-                {...register("author", {
+                {...register("author.name", {
                   required: "Field is required",
                 })}
                 error={!!errors.author}
@@ -255,17 +255,3 @@ export default  function Page({ searchParams }: PageProps) {
     </Box>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

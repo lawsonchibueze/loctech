@@ -27,12 +27,13 @@ import {
 interface DynamicFieldProps {
   fields: FieldArrayWithId<CourseType, "prerequisites", "id">[];
   registeredName: string;
-  register: UseFormRegister<CourseType>;
+  register: any;
   onAppendHandler: () => void;
   label: string;
   btnText: string;
   error?: FieldErrors<CourseType>
   helperText:string | undefined
+  params?: string | null
 }
 
 export default function DynamicField({
@@ -43,7 +44,8 @@ export default function DynamicField({
   label,
   btnText,
   error,
-  helperText
+  helperText,
+  params
 }: DynamicFieldProps) {
   const MotionBtn = motion(Button);
   const theme = useTheme();
@@ -62,7 +64,7 @@ export default function DynamicField({
             error={!!error }
             helperText={helperText}
             fullWidth
-            {...register(`${registeredName}.${index}.name` as unknown as any ,{required: true} ) }
+            {...register(params ? `${registeredName}.${index}`:`${registeredName}.${index}.name` as unknown as any ,{required: true} ) }
             />
           {error  && <p style={{color:"red"}}>This fieid is required</p>}
         </Grid>
