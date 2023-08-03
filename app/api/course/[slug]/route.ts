@@ -15,6 +15,35 @@ export const GET = async (
     where: {
       courseSlug: slug,
     },
+
+    select: {
+      courseTitle: true,
+      imageSrc: true,
+      createdAt: true,
+      updatedAt: true,
+      description: true,
+      coursePrice: true,
+      video: true,
+      category: true,
+      duration: true,
+      learningObj: true,
+      targetAud: true,
+      prerequisites: true,
+      courseSlug: true,
+      curriculum: true,
+      curriculumList: true,
+      published: true,
+
+      isFeatured: true,
+      isOnline: true,
+      isTrending: true,
+
+      RelatedCourses: true,
+
+      Instructor: {
+        select: { name: true },
+      },
+    },
   });
 
   return new Response(JSON.stringify(course), { status: 200 });
