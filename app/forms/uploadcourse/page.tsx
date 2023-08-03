@@ -20,16 +20,20 @@ import BasicModal from "@/app/components/Modal";
 import { redirect } from "next/navigation";
 import { booleanOptions, categoryOptions } from "@/app/utils/data";
 import { tokens } from "@/app/lib/theme";
+import { useSearchParams } from "next/navigation";
 
-export default function  Page() {
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
+export default function Page() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mount, setMount] = useState(false);
   const { data: session } = useSession() as unknown as any;
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const searchParams = useSearchParams();
+  const courseSlug = searchParams.get("slug");
+
   // const [editorState, setEditorState] = useState(EditorState.createEmpty()); //wysiwyg state
   // const [editorError, setEditorError] = useState(false); //wysiwyg error state
 
@@ -75,7 +79,41 @@ export default function  Page() {
     },
   });
 
- 
+  useEffect(() => {
+    if (courseSlug) {
+      //if param exist fetch databyslug
+      axios
+        .get<CourseType>(`/api/course/` + courseSlug)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data) {
+   //setting all values from the backend 
+            setValue("courseTitle", response.data.courseTitle);
+            setValue("description", response.data.description);
+            setValue("courseSlug", response.data.courseSlug);
+            setValue("Instructor", response.data.Instructor);
+            setValue("coursePrice", response.data.coursePrice);
+            setValue("category", response.data.category);
+            setValue("isFeatured", response.data.isFeatured);
+            setValue("isTrending", response.data.isTrending);
+            setValue("isOnline", response.data.isOnline);
+            setValue("imageSrc", response.data.imageSrc);
+            setValue("prerequisites", response.data.prerequisites);
+            setValue("curriculumList", response.data.curriculumList);
+            setValue("learningObj", response.data.learningObj);
+            setValue("targetAud", response.data.targetAud);
+            setValue("curriculum", response.data.curriculum);
+            setValue("imageSrc", response.data.imageSrc);
+            setValue("video", response.data.video);
+            setValue("Instructor", response.data.Instructor);
+          }
+        })
+        .catch((error) => {
+          console.log("postparam insude useEffext", courseSlug, error);
+        });
+    }
+  }, [courseSlug, setValue]);
+
   const {
     fields: prerequisitesField,
     append: prerequisitesAppend,
@@ -167,18 +205,12 @@ export default function  Page() {
   ////////FILE INPUT
 
   const submitHandler = (values: CourseType) => {
-    // const isValid = validateEditorContent(editorState);
-
-    // if (!isValid) {
-    //   setEditorError(true);
-    //   return null;
-    // }
-
+  
     const data = {
       ...values,
       imageSrc: imageSrc,
       courseSlug: values.courseSlug.trim(),
-    
+
       coursePrice: +values.coursePrice,
       isFeatured: values.isFeatured === "true", //converting the string values to boolen
       isTrending: values.isTrending === "true", //converting the string values to boolen
@@ -188,31 +220,49 @@ export default function  Page() {
       curriculumList: values.curriculumList.map(({ name }) => name?.trim()),
       learningObj: values.learningObj.map(({ name }) => name?.trim()),
       targetAud: values.targetAud.map(({ name }) => name?.trim()),
-      
-      video: imageSrc,
+
+      video: videoSrc,
       duration: duration,
       Instructor: {
         name: values.Instructor,
       },
     };
-
-    if (session.user.role === "ADMIN") {
-      axios
-        .post("/api/course", data)
-        .then((response) => {
-          // Request was successful
-          if (response.data) {
-            setIsError(false);
-            setOpen(true);
-            reset();
-          }
-        })
-        .catch((error) => {
-          // An error occurred
-          setIsError(true);
-          setOpen(true);
-        });
-    }
+    console.log(data);
+    // if (session.user.role === "ADMIN") {
+    //   if (courseSlug) {
+    //     axios
+    //       .patch("/api/course", data)
+    //       .then((response) => {
+    //         // Request was successful
+    //         if (response.data) {
+    //           setIsError(false);
+    //           setOpen(true);
+    //           reset();
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         // An error occurred
+    //         setIsError(true);
+    //         setOpen(true);
+    //       });
+    //   } else {
+    //     axios
+    //       .post("/api/course", data)
+    //       .then((response) => {
+    //         // Request was successful
+    //         if (response.data) {
+    //           setIsError(false);
+    //           setOpen(true);
+    //           reset();
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         // An error occurred
+    //         setIsError(true);
+    //         setOpen(true);
+    //       });
+    //   }
+    // }
   };
 
   return (
@@ -316,20 +366,25 @@ export default function  Page() {
                     name="category"
                   />
                 </Grid>
-           <Grid container item xs={12}>
-           <TextField
-            id="outlined-multiline-static"
-            label="description"
-            multiline
-            placeholder="Course description"
-            rows={30}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-            fullWidth
-            {...register("description",{required:"This filed id required"})}
-            sx={{border: `2px solid ${colors.rose[500]}`, borderRadius:"8px"}}
-          />
-           </Grid>
+                <Grid container item xs={12}>
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="description"
+                    multiline
+                    placeholder="Course description"
+                    rows={30}
+                    error={!!errors.description}
+                    helperText={errors.description?.message}
+                    fullWidth
+                    {...register("description", {
+                      required: "This filed id required",
+                    })}
+                    sx={{
+                      border: `2px solid ${colors.rose[500]}`,
+                      borderRadius: "8px",
+                    }}
+                  />
+                </Grid>
                 {/* <Draft
                   initialContent={editorState}
                   name="description"
@@ -434,6 +489,7 @@ export default function  Page() {
                   onAppendHandler={onAppendPrerequisitesHandler}
                   btnText="Add Prerequisites"
                   error={errors.prerequisites}
+                  params={courseSlug}
                   helperText={errors.prerequisites?.message}
                 />
               </Grid>
@@ -452,6 +508,7 @@ export default function  Page() {
                   register={register}
                   onAppendHandler={onAppendLearningObjHandler}
                   btnText="Add Learning Obj"
+                  params={courseSlug}
                   error={errors.learningObj}
                   helperText={errors.learningObj?.message}
                 />
@@ -469,6 +526,7 @@ export default function  Page() {
                   fields={curriculumField}
                   registeredName="curriculumList"
                   register={register}
+                  params={courseSlug}
                   onAppendHandler={onAppendCurriculumListHandler}
                   btnText="Add Curriculum List"
                   error={errors.curriculumList}
@@ -489,6 +547,7 @@ export default function  Page() {
                   fields={targetAudField}
                   registeredName="targetAud"
                   register={register}
+                  params={courseSlug}
                   onAppendHandler={onAppendTargetAudHandler}
                   btnText="Add Target Audience"
                   error={errors.targetAud}

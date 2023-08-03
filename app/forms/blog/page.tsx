@@ -15,11 +15,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useSearchParams } from 'next/navigation'
 
-interface PageProps {
-  searchParams: {
-    slug: string;
-  };
-}
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -31,11 +26,7 @@ export default function Page() {
   const handleClose = () => setOpen(false);
   const { data: session } = useSession() as unknown as any;
   const [fetchedBlogData, setFetchedBlogData] = useState<PostType>();
-  // console.log(fetchedBlogData);
-
-
-
-  // console.log(fetchedBlogData)
+  
 
   const {
     register,
@@ -61,18 +52,14 @@ export default function Page() {
   const postImgSrc = watch("image");
 
 
-console.log("======whats gooimg on", postParam )
   useEffect(() => {
-    console.log("postparam insude useEffext", postParam)
     if (postParam) {
       //if param exist fetch databyslug
   
         axios.get<PostType>(`/api/post/`+postParam)
           .then((response) => {
             if (response.data) {
-              console.log(
-                '========',response.data,"============"
-              )
+             
               setValue("title", response.data.title);
               setValue("subtitle", response.data.subtitle);
               setValue("image", response.data.image);
@@ -114,7 +101,7 @@ console.log("param", postParam)
     console.log(data);
     if (session.user.role === "ADMIN") {
       if (postParam) {
-        console.log("update");
+        
         axios
           .patch(`/api/post/${postParam}`, data)
           .then((response) => {
@@ -122,6 +109,7 @@ console.log("param", postParam)
             if (response.data) {
               setIsError(false);
               setOpen(true);
+
               reset();
             }
           })

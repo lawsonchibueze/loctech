@@ -9,6 +9,7 @@ import CustomButton from "@/app/components/Button";
 import { PostType } from "@/app/types/_types";
 import { tokens } from "@/app/lib/theme";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 type PageProps = {
   params: {
@@ -33,6 +34,7 @@ export default async function Page({ params }: PageProps) {
   const router = useRouter();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { data: session } = useSession() as unknown as any;
 
   const blog: PostType = await getPostDetail(postSlug);
   const [blogData] = await Promise.all([blog]);
@@ -82,6 +84,7 @@ export default async function Page({ params }: PageProps) {
             {blogData.content}
           </Typography>
         </Box>
+
         <Grid
           container
           item

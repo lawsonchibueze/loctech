@@ -98,17 +98,29 @@ export default async function Page({ params }: PageProps) {
             <Perquisite prerequisites={courseData?.prerequisites} />
             <Audience target={courseData?.targetAud} />
             <Curriculum />
-            {session?.user.role === "ADMIN" && (
-              <Grid
-                container
-                item
-                columnSpacing={{ xs: 3, md: 5 }}
-                rowSpacing={1}
-                mt="2rem "
-              >
+
+            <Grid
+              container
+              item
+              columnSpacing={{ xs: 3, md: 5 }}
+              rowSpacing={1}
+              mt="2rem "
+            >
+              <CustomButton
+                title="Delete Course"
+                onClick={DeleteCourse}
+                sx={{
+                  backgroundColor: "#ff539c",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  color: "#fff",
+                  m: "0 15px",
+                }}
+              />
+
+              <Link href={`forms/uploadcourse?slug=${courseSlug}`}>
                 <CustomButton
-                  title="Delete Course"
-                  onClick={DeleteCourse}
+                  title="Update Course"
                   sx={{
                     backgroundColor: "#ff539c",
                     fontWeight: "bold",
@@ -117,11 +129,8 @@ export default async function Page({ params }: PageProps) {
                     m: "0 15px",
                   }}
                 />
-
-
-
-              </Grid>
-            )}
+              </Link>
+            </Grid>
           </Grid>
 
           <Grid
