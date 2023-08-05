@@ -27,7 +27,7 @@ export type CourseType = {
   imageSrc: string;
   duration: number;
   curriculum: string;
-  Instructor?: string;
+  Instructor: {name : string};
 };
 
 // Define a type that transforms 'learningObj' to an array of strings

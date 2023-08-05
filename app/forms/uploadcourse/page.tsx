@@ -62,7 +62,7 @@ export default function Page() {
       courseTitle: "",
       description: "",
       courseSlug: "",
-      Instructor: "",
+      Instructor: { name: "" },
       coursePrice: 0,
       category: "",
       isFeatured: "false",
@@ -85,9 +85,9 @@ export default function Page() {
       axios
         .get<CourseType>(`/api/course/` + courseSlug)
         .then((response) => {
-          console.log(response.data)
+          console.log(typeof response.data.isTrending);
           if (response.data) {
-   //setting all values from the backend 
+            //setting all values from the backend
             setValue("courseTitle", response.data.courseTitle);
             setValue("description", response.data.description);
             setValue("courseSlug", response.data.courseSlug);
@@ -105,7 +105,7 @@ export default function Page() {
             setValue("curriculum", response.data.curriculum);
             setValue("imageSrc", response.data.imageSrc);
             setValue("video", response.data.video);
-            setValue("Instructor", response.data.Instructor);
+            setValue("Instructor", { name: response.data.Instructor?.name });
           }
         })
         .catch((error) => {
@@ -205,7 +205,6 @@ export default function Page() {
   ////////FILE INPUT
 
   const submitHandler = (values: CourseType) => {
-  
     const data = {
       ...values,
       imageSrc: imageSrc,
@@ -216,53 +215,62 @@ export default function Page() {
       isTrending: values.isTrending === "true", //converting the string values to boolen
       isOnline: values.isOnline === "true", //converting the string values to boolen
       description: values.description,
-      prerequisites: values.prerequisites.map(({ name }) => name?.trim()), // converting   prerequisites from array of objects to array of strings
-      curriculumList: values.curriculumList.map(({ name }) => name?.trim()),
-      learningObj: values.learningObj.map(({ name }) => name?.trim()),
-      targetAud: values.targetAud.map(({ name }) => name?.trim()),
+      //if courseParam is true pass in the  respective array values than spreading them 
+      prerequisites: courseSlug
+        ? values.prerequisites
+        : values.prerequisites.map(({ name }) => name?.trim()), // converting   prerequisites from array of objects to array of strings
+      curriculumList: courseSlug
+        ? values.curriculumList
+        : values.curriculumList.map(({ name }) => name?.trim()),
+      learningObj: courseSlug
+        ? values.learningObj
+        : values.learningObj.map(({ name }) => name?.trim()),
+      targetAud: courseSlug
+        ? values.targetAud
+        : values.targetAud.map(({ name }) => name?.trim()),
 
       video: videoSrc,
       duration: duration,
       Instructor: {
-        name: values.Instructor,
+        name: values.Instructor.name,
       },
     };
     console.log(data);
-    // if (session.user.role === "ADMIN") {
-    //   if (courseSlug) {
-    //     axios
-    //       .patch("/api/course", data)
-    //       .then((response) => {
-    //         // Request was successful
-    //         if (response.data) {
-    //           setIsError(false);
-    //           setOpen(true);
-    //           reset();
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         // An error occurred
-    //         setIsError(true);
-    //         setOpen(true);
-    //       });
-    //   } else {
-    //     axios
-    //       .post("/api/course", data)
-    //       .then((response) => {
-    //         // Request was successful
-    //         if (response.data) {
-    //           setIsError(false);
-    //           setOpen(true);
-    //           reset();
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         // An error occurred
-    //         setIsError(true);
-    //         setOpen(true);
-    //       });
-    //   }
-    // }
+    if (session.user.role === "ADMIN") {
+      if (courseSlug) {
+        axios
+          .patch(`/api/course/${courseSlug}`, data)
+          .then((response) => {
+            // Request was successful
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      } else {
+        axios
+          .post("/api/course", data)
+          .then((response) => {
+            // Request was successful
+            if (response.data) {
+              setIsError(false);
+              setOpen(true);
+              reset();
+            }
+          })
+          .catch((error) => {
+            // An error occurred
+            setIsError(true);
+            setOpen(true);
+          });
+      }
+    }
   };
 
   return (
@@ -579,7 +587,7 @@ export default function Page() {
 
                 <Grid container item xs={12} md={6}>
                   <Input
-                    register={register("Instructor", {
+                    register={register(courseSlug? "Instructor.name" : "Instructor", {
                       required: "Field is required",
                     })}
                     label="Instructor name"
