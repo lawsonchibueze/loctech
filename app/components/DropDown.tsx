@@ -40,7 +40,7 @@ const DropDown = ({
 
   useEffect(() => {
     setValue(name as unknown as any, defaultValue || "");
-  }, [defaultValue, setValue,name]);
+  }, [defaultValue, setValue, name]);
 
   return (
     <FormControl
