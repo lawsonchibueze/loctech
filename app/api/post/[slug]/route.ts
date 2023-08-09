@@ -10,14 +10,7 @@ export const GET = async (req: Request, { params }: { params: PostParams }) => {
     where: {
       postSlug: slug,
     },
-    // include: {
-    //   author: {
-    //     select: {
-    //       name: true,
-    //     },
-    //   },
-    // },
-
+    
     select: {
       content: true,
       createdAt: true,
@@ -44,7 +37,7 @@ export const PATCH = async (
   await checkCurrentUser();
 
   const { slug } = params;
-  
+
   const {
     title,
     subtitle,
@@ -54,7 +47,6 @@ export const PATCH = async (
     createdAt,
     updatedAt,
     author,
-    
   } = await req.json();
 
   const updatedPost = await prisma.post.update({
@@ -73,8 +65,6 @@ export const PATCH = async (
       author: {
         update: author,
       },
-
- 
     },
   });
 

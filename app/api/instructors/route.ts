@@ -58,5 +58,7 @@ export const POST = async (req: Request) => {
     },
   });
 
-  return new Response(JSON.stringify(newInstructor), { status: 201 });
+  return new Response("Deleted Successfully", {
+    status: 200,
+  });
 };

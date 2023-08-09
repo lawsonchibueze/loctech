@@ -1,29 +1,30 @@
-import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 import prisma from "@/prisma/prisma";
+import { checkCurrentUser } from "@/app/utils/checkCurrentUser";
 
-interface CIParams {
-  id?: string;
+interface InstructorParams {
+  iname: string;
 }
 
-export const GET = async (req: Request, { params }: { params: CIParams }) => {
-  const { id } = params;
-
-  const course = await prisma.instructor.findUnique({
+export const GET = async (
+  req: Request,
+  { params }: { params: InstructorParams }
+) => {
+  const { iname } = params;
+  const instructor = await prisma.instructor.findUnique({
     where: {
-      id,
-    },
-    include: {
-      Course: true,
+      name: iname,
     },
   });
-
-  return new Response(JSON.stringify(course), { status: 200 });
+  return new Response(JSON.stringify(instructor), { status: 200 });
 };
 
-export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
+export const PATCH = async (
+  req: Request,
+  { params }: { params: InstructorParams }
+) => {
   await checkCurrentUser();
 
-  const { id } = params;
+  const { iname } = params;
 
   const {
     name,
@@ -44,7 +45,7 @@ export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
 
   const updatedInstructor = await prisma.instructor.update({
     where: {
-      id,
+      name: iname,
     },
     data: {
       name,
@@ -69,14 +70,17 @@ export const PATCH = async (req: Request, { params }: { params: CIParams }) => {
   return new Response(JSON.stringify(updatedInstructor), { status: 200 });
 };
 
-export const DELETE = async (req: Request) => {
+export const DELETE = async (
+  req: Request,
+  { params }: { params: InstructorParams }
+) => {
   await checkCurrentUser();
 
-  const { id } = await req.json();
+  const { iname } = params;
 
   const deletedInstructor = await prisma.instructor.delete({
     where: {
-      id,
+      name: iname,
     },
   });
 
