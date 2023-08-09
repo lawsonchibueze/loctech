@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // this is the fix
+
 "use client";
 
 import "./globals.css";

@@ -17,13 +17,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import BasicModal from "@/app/components/Modal";
-import { redirect } from "next/navigation";
+import { redirect , useRouter} from "next/navigation";
 import { booleanOptions, categoryOptions } from "@/app/utils/data";
 import { tokens } from "@/app/lib/theme";
 import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   const theme = useTheme();
+  const router = useRouter();
+
   const colors = tokens(theme.palette.mode);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [mount, setMount] = useState(false);
@@ -245,7 +247,8 @@ export default function Page() {
             if (response.data) {
               setIsError(false);
               setOpen(true);
-              reset();
+              router.push("/courses")
+            
             }
           })
           .catch((error) => {

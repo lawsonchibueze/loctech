@@ -70,7 +70,7 @@ export default function DynamicField({
         </Grid>
       ))}
 
-      <Grid container item>
+  {  !params &&  <Grid container item>
         <MotionBtn
           whileHover={{ scale: 1.1, backgroundColor: colors.rose[600] }}
           variant="contained"
@@ -87,7 +87,7 @@ export default function DynamicField({
         >
           <AddIcon sx={{ fontSize: "28px", fontWeight: "bold" }} /> {btnText}
         </MotionBtn>
-      </Grid>
+      </Grid>}
     </>
   );
 }

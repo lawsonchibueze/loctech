@@ -95,7 +95,7 @@ export default function NavContent() {
                   <NavItem title="Forms" to="/forms" />
                 )}
 
-                <NavItem title="Instructors" to="/instructor/instructors" />
+                <NavItem title="Instructors" to="/instructor" />
 
                 {status === "authenticated" ? (
                   <div onClick={SignOutHandler}>
@@ -152,7 +152,7 @@ export default function NavContent() {
 
             <NavItem title="About us" to="/" />
 
-            <NavItem title="Instructors" to="/instructor/instructors" />
+            <NavItem title="Instructors" to="/instructor" />
           </Box>
         </Box>
       )}
