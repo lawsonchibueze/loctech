@@ -47,3 +47,31 @@
 
   }
   
+  .star {
+    font-size: 24px;
+    color: gray;
+    margin-right: 5px;
+  }
+  
+  .full {
+    color: #ff2883;;
+  }
+  
+  .half {
+    position: relative;
+    color: #ff2883;;
+    margin-right: 0;
+  }
+  
+  .half::before {
+    /* content: '\00bd'; */
+    position: absolute;
+    left: -9px;
+    top: 0;
+    color: gray;
+  }
+  
+  .empty {
+    color: gray;
+  }
+  

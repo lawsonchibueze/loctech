@@ -54,6 +54,7 @@ export type SignUpType = {
 };
 
 export type InstructorType = {
+  id: string
   name: string;
   email: string | undefined;
   instructorImage: string | undefined;

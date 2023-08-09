@@ -9,13 +9,11 @@ import { ImageUpload } from "@/app/utils/ImageAndVideoUpload";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useSearchParams } from 'next/navigation'
-
-
 export default function Page() {
   const searchParams = useSearchParams()
 
@@ -146,7 +144,8 @@ console.log("param", postParam)
 
   return (
     <Box sx={{ p: { xs: "10px 25px", md: "20px 50px" } }}>
-      {isError ? (
+
+{isError ? (
         <BasicModal
           color="red"
           icon={<ErrorOutlineIcon sx={{ color: "red", fontSize: "30px" }} />}
