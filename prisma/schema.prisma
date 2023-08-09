@@ -92,8 +92,8 @@ model Hero {
 
 model Instructor {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  email           String?  
+  name            String   @unique
+  email           String?
   image           String?
   bio             String?
   rating          Float?
@@ -191,7 +191,7 @@ model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   subtitle  String?
-  postSlug      String    @unique
+  postSlug  String    @unique
   image     String?
   content   String
   author    Author    @relation(fields: [authorId], references: [id])
